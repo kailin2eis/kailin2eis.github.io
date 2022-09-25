@@ -1,0 +1,520 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>第三章 栈和队列(上) | 派总</title><meta name="keywords" content="408数据结构"><meta name="author" content="kailin2eis"><meta name="copyright" content="kailin2eis"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="3.1 栈 Stack栈的基本概念 栈的定义  栈是只允许在一端进行插入或删除操作的线性表。限定这种线性表只能在某一端进行插入和删除操作。  栈顶:线性表允许进行插入删除的那一端。 栈底:固定的，不允许进行插入和删除的另一端。 空栈:栈里没有存任何数据元素，相当于线性表的空表。   特性：后进先出 Last In First Out, LIFO  栈的数学性质：卡特兰数 Catalan Numbe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章 栈和队列(上)">
+<meta property="og:url" content="http://blog.evalexp.ml/p/63528/index.html">
+<meta property="og:site_name" content="派总">
+<meta property="og:description" content="3.1 栈 Stack栈的基本概念 栈的定义  栈是只允许在一端进行插入或删除操作的线性表。限定这种线性表只能在某一端进行插入和删除操作。  栈顶:线性表允许进行插入删除的那一端。 栈底:固定的，不允许进行插入和删除的另一端。 空栈:栈里没有存任何数据元素，相当于线性表的空表。   特性：后进先出 Last In First Out, LIFO  栈的数学性质：卡特兰数 Catalan Numbe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.evalexp.ml/img/1.png">
+<meta property="article:published_time" content="2022-09-25T06:31:31.000Z">
+<meta property="article:modified_time" content="2022-09-25T06:47:56.077Z">
+<meta property="article:author" content="kailin2eis">
+<meta property="article:tag" content="408数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.evalexp.ml/img/1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.evalexp.ml/p/63528/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第三章 栈和队列(上)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-25 14:47:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第三章 栈和队列(上)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-25T06:31:31.000Z" title="发表于 2022-09-25 14:31:31">2022-09-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-25T06:47:56.077Z" title="更新于 2022-09-25 14:47:56">2022-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第三章 栈和队列(上)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="3-1-栈-Stack"><a href="#3-1-栈-Stack" class="headerlink" title="3.1 栈 Stack"></a>3.1 栈 Stack</h2><h3 id="栈的基本概念"><a href="#栈的基本概念" class="headerlink" title="栈的基本概念"></a>栈的基本概念</h3><ul>
+<li><p>栈的定义</p>
+<ul>
+<li><p>栈是<font color='orange'>只允许在一端进行插入或删除操作的线性表</font>。限定这种线性表只能在某一端进行插入和删除操作。</p>
+<ul>
+<li>栈顶:线性表允许进行插入删除的那一端。</li>
+<li>栈底:固定的，不允许进行插入和删除的另一端。</li>
+<li>空栈:栈里没有存任何数据元素，相当于线性表的空表。</li>
+</ul>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-2.svg"  /></li>
+<li><p><strong>特性</strong>：后进先出 Last In First Out, LIFO</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-1.png" style="zoom: 75%;" /></li>
+<li><p>栈的数学性质：卡特兰数 Catalan Number</p>
+<p>卡特兰数一般可用于这种结论:n个不同元素进栈，出栈元素不同排列的个数为:</p>
+<ul>
+<li>$$<br>\frac 1{n+1}C^n_{2n}<br>$$</li>
+</ul>
+<p>所以，如果像上面那样有五个元素进栈，那么所有合法的出栈顺序有:<br>$$<br>\frac 1{5+1}C^5_{10}=42<br>$$<br>可见，即使只有5个元素进栈，合法的出栈顺序就有42种，就很多了。所以考试题基本不会让你全部写出所有的，而是以选择题的形式让你选出一个合法的出栈顺序。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="栈的基本操作"><a href="#栈的基本操作" class="headerlink" title="栈的基本操作"></a>栈的基本操作</h3><ul>
+<li>InitStack(&amp;S)：<font color='red'>初始化</font>栈操作。构造一个空栈S，分配内存空间。</li>
+<li>DestroyStack(&amp;S)：<font color='red'>销毁</font>栈操作，并<font color='red'>释放</font>栈S所占的内存空间</li>
+<li>StackEmpty(S)：判定S是否为空栈。空，则返回ture,否则返回false</li>
+<li>StackLength(S)：求栈的长度 <a target="_blank" rel="noopener" href="https://cplusplus.com/reference/stack/stack/size/">cpp::std::stack::size</a></li>
+<li>GetTop(S, &amp;e)：取栈顶元素 <a target="_blank" rel="noopener" href="https://cplusplus.com/reference/stack/stack/top/">cpp::std::stack::top</a></li>
+<li>ClearStack(&amp;S)：栈置空操作 <a target="_blank" rel="noopener" href="https://cplusplus.com/reference/stack/stack/empty/">cpp::std::stack::empty</a></li>
+<li>Push(&amp;S, e)：入栈操作（压栈）<a target="_blank" rel="noopener" href="https://cplusplus.com/reference/stack/stack/push/">cpp::std::stack::push</a></li>
+<li>Pop(&amp;S, &amp;e)：出栈操作（弹栈）</li>
+</ul>
+<h3 id="栈的顺序存储结构"><a href="#栈的顺序存储结构" class="headerlink" title="栈的顺序存储结构"></a>栈的顺序存储结构</h3><ul>
+<li><p>结点的类型定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXSIZE 100 <span class="comment">//定义栈中元素的最大个数</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  ElemType data[MAXSIZE];<span class="comment">//静态数组存放栈中元素</span></span><br><span class="line">  <span class="type">int</span> top;  <span class="comment">// 栈顶指针</span></span><br><span class="line">&#125; SqStack;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">testStack</span><span class="params">()</span>&#123;</span><br><span class="line">	SqStack S;	<span class="comment">//声明一个顺序栈</span></span><br><span class="line">	<span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>栈顶指针：S.top，初始时设置 S.top = -1;</p>
+<p>栈顶元素：s.data[s.Top]；</p>
+<p>进栈操作：栈不满时，栈顶指针先加1，再送值到栈顶元素。</p>
+<p>出栈操作：栈非空时，先去栈顶元素值，再将栈顶指针减1。</p>
+<p>栈空条件：S.top == -1；</p>
+<p>栈满条件：S.top == MaxSize-1;</p>
+<p>栈长：S.top +1 。</p>
+<p>此类一开始分配了最大空间的顺序栈要对栈溢出有相应的处理机制。</p>
+</li>
+<li><p>顺序栈的基本运算</p>
+<ul>
+<li><p>初始化<code>InitStack(&amp;S)</code>:初始化栈，构造一个空栈S，分配内存空间</p>
+<p>初始化栈就是让栈顶指针 top 指向 -1，因为栈顶指针指向的是栈顶元素，开始的时候没有元素，所以栈顶指针指向 0 这个位置是不合适的</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-3.png" style="zoom: 75%;" /></li>
+<li><p>判栈空<code>StackEmpty(S)</code>:如上图，由于栈空的时候，数组中是没有任何元素的。如果要让栈顶指针指向0，显然是不合适的。所以空栈让栈顶指针的值为-1。因此，判断是否栈空时，只需要判断它的栈顶指针top是否等于-1就可以。</p>
+</li>
+<li><p>进栈<code>Push(&amp;S,x)</code>:进栈，若栈S未满，则将 x 加入使之成为新栈顶；进栈时先让栈顶指针 top 加一，之后将新元素放在 top 指针所指向的位置</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-4.png" style="zoom: 75%;" />
+
+<p>或者写的更简洁一点，如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//新元素入栈</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">Push</span><span class="params">(SqStack &amp;S, ElemType x)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(S.top == MaxSize<span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">false</span>;	<span class="comment">//栈满，报错</span></span><br><span class="line">	S.data[++S.top] = x;	<span class="comment">//合并两句 </span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>出栈<code>Pop(&amp;S,&amp;x)</code>:出栈，若栈S非空，则弹出栈顶元素，并用x返回</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-5.png" style="zoom:75%;" />
+
+<p>同上文，此处也可以将其中两句合并成一句更简洁的写法，如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//出栈操作</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">Pop</span><span class="params">(SqStack &amp;S, ElemType &amp;x)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(S.top == <span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">false</span>;	<span class="comment">//栈空，报错</span></span><br><span class="line">	x = S.data[S.top--];	<span class="comment">//合并两句</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>读栈顶元素<code>GetTop(S,&amp;x)</code>:读取栈顶元素，若栈 S 非空，则用 x 返回栈顶元素</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-6.png" style="zoom: 75%;" /></li>
+</ul>
+</li>
+<li><p>另一种操作方式</p>
+<p><strong>初始化</strong>时，令栈顶指针指向0，而不是-1。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	ElemType data[MaxSize];</span><br><span class="line">	<span class="type">int</span> top;</span><br><span class="line">&#125;SqStack; </span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化栈</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitStack</span><span class="params">(SqStack &amp;S)</span> &#123;</span><br><span class="line">	S.top = <span class="number">0</span>;	<span class="comment">//初始指向0 </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断栈空</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">StackEmpty</span><span class="params">(SqStack S)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(S.top == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//此时注意栈空条件</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>进栈、出栈</strong>时。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//新元素入栈</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">Push</span><span class="params">(SqStack &amp;S, ElemType x)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(S.top == MaxSize) <span class="keyword">return</span> <span class="literal">false</span>;	<span class="comment">//判断栈满的条件不同</span></span><br><span class="line">	S.data[S.top++] = x;	<span class="comment">//赋值操作与指针移动操作顺序不同</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//出栈操作</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">Pop</span><span class="params">(SqStack &amp;S, ElemType &amp;x)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(S.top == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	x = S.data[--S.top];</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>栈顶指针为-1和0的区别<br>在遇到相关问题时，一定要注意看清初始化栈顶指针的值。<br>（1）当初始化为-1时，栈顶指针指向的是当前栈中的实际位置，而当初始化为为0时，栈顶指针指向的是下一次要插入的位置。<br>（2）在进行入栈和出栈的操作时，二者核心操作是相反的。<br>（3）在获取栈顶元素的操作中，如果初始化栈顶为0，那么需要先对指针减1才能取到栈顶元素的值，这点与初始化栈顶为-1时的操作有所不同。并且，如果函数定义中参数使用了引用传递，那么栈顶指针还需要再加1，保持栈顶指针原来的位置。如果使用值传递，则不需要，因为值传递不会改变原来的栈。</p>
+</blockquote>
+</li>
+<li><p>共享栈</p>
+<p><strong>顺序栈的缺点</strong>：栈的大小不可变。</p>
+<ul>
+<li>可以用链式存储的方式进行存储。</li>
+<li>也可以在初始化的时候就声明一个较大的存储空间。</li>
+</ul>
+<blockquote>
+<p>但我们知道，若一开始就申请较大空间的话，会造成空间的浪费。但是，我们可以通过<strong>共享栈</strong>的方式，来提高这一大片内存空间的利用率。</p>
+<p>共享栈的意思就是，两个栈共享同一片空间。</p>
+</blockquote>
+<p>我们可以设置两个栈顶指针。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-7.png" style="zoom:75%;" />
+
+<p>如果要往0号栈存放数据元素的话，是由下到上依次递增的；</p>
+<p>如果要往1号栈存放数据元素的话，是由上到下依次递减的。</p>
+<p>这两个栈，从逻辑上来说是两个不同的栈，但是在物理上，它们又共享同一片存储空间。这样就提高了空间利用率。</p>
+<p>共享栈也是会满的。判断共享栈是否满了的条件，就是看<code>top0 + 1 == top1</code></p>
+<p><a target="_blank" rel="noopener" href="https://www.cxymm.net/article/zag666/105600288">一文搞懂共享栈</a></p>
+</li>
+</ul>
+<p>==用一个数组实现两个栈==</p>
+<p><strong>思路</strong>:从 <strong>两头开始向中间生长</strong>，当两个栈的 <strong>栈顶指针相遇</strong> 时，表示两个栈都满了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXSIZE 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ElementType int</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ERROR -1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DStack</span> &#123;</span></span><br><span class="line">    ElementType Data[MAXSIZE];</span><br><span class="line">    <span class="type">int</span> Top1;  <span class="comment">// 栈 1 的栈顶指针</span></span><br><span class="line">    <span class="type">int</span> Top2;  <span class="comment">// 栈 2 的栈顶指针</span></span><br><span class="line">&#125; S;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Push</span><span class="params">(<span class="keyword">struct</span> DStack* PtrS, ElementType item, <span class="type">int</span> Tag)</span> &#123;</span><br><span class="line">    <span class="comment">/* Tag 作为区分两个堆栈的标志，取值为 1 和 2 */</span></span><br><span class="line">    <span class="keyword">if</span> (PtrS-&gt;Top2 - PtrS-&gt;Top1 == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;栈满\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (Tag == <span class="number">1</span>) &#123;</span><br><span class="line">        PtrS-&gt;Data[++(PtrS-&gt;Top1)] = item;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        PtrS-&gt;Data[--(PtrS-&gt;Top2)] = item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ElementType <span class="title function_">Pop</span><span class="params">(<span class="keyword">struct</span> DStack* PtrS, <span class="type">int</span> Tag)</span> &#123;</span><br><span class="line">    <span class="comment">/* Tag 作为区分两个堆栈的标志，取值为 1 和 2 */</span></span><br><span class="line">    <span class="keyword">if</span> (Tag == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (PtrS-&gt;Top1 == <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;栈1空\n&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> PtrS-&gt;Data[(PtrS-&gt;Top1)--];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (PtrS-&gt;Top2 == MAXSIZE) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;栈2空\n&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> PtrS-&gt;Data[(PtrS-&gt;Top2)++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="栈的链式存储结构"><a href="#栈的链式存储结构" class="headerlink" title="栈的链式存储结构"></a>栈的链式存储结构</h3><ul>
+<li><p>采用链式存储的栈称为==链栈==，其优点是便于多个栈共享存储空间和提高其效率，且不存在栈满上溢的情况</p>
+</li>
+<li><p>结点的类型定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> &#123;</span></span><br><span class="line">  SElemType data;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; StackNode, *LinkStack;</span><br></pre></td></tr></table></figure>
+
+<p>进栈和出栈操作就对应于单链表的插入和删除操作（只在头结点那一端进行）。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds3-112.png" style="zoom:55%;" />
+
+<p>那么对于单链表在头结点处的插入删除，我们在第二章已经讲的很详细了，这里就不再赘述。</p>
+<p>和单链表类似。对于链栈，我们也可以实现<strong>带头结点</strong>的版本，和<strong>不带头结点</strong>的版本，道理同单链表是一样的。</p>
+</li>
+<li><p>初始化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stack <span class="title function_">CreateStack</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">/* 构建一个栈的头结点，返回指针 */</span></span><br><span class="line">    Stack S;</span><br><span class="line">    S = (Stack)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> SNode));</span><br><span class="line">    S-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>入栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Push</span><span class="params">(ElementType item, Stack S)</span> &#123;</span><br><span class="line">    <span class="comment">/* 将元素 item 压入栈 S */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">SNode</span>* <span class="title">TmpCell</span>;</span></span><br><span class="line">    TmpCell = (<span class="keyword">struct</span> SNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> SNode));</span><br><span class="line">    TmpCell-&gt;Data = item;</span><br><span class="line">    TmpCell-&gt;next = S-&gt;next;</span><br><span class="line">    S-&gt;next = TmpCell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>出栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ElementType <span class="title function_">Pop</span><span class="params">(Stack S)</span> &#123;</span><br><span class="line">    <span class="comment">/* 删除并返回栈 S 的栈顶元素 */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">SNode</span>* <span class="title">FirstCell</span>;</span></span><br><span class="line">    ElementType TopElem;</span><br><span class="line">    <span class="keyword">if</span> (IsEmpty(S)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;栈空\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        FirstCell = S-&gt;next;</span><br><span class="line">        S-&gt;next = FirstCell-&gt;next;</span><br><span class="line">        TopElem = FirstCell-&gt;Data;</span><br><span class="line">        <span class="built_in">free</span>(FirstCell);</span><br><span class="line">        <span class="keyword">return</span> TopElem;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>判栈空</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">IsEmpty</span><span class="params">(Stack S)</span> &#123;</span><br><span class="line">    <span class="comment">/* 判断栈 S 是否为空，若为空函数返回整数 1，否则返回 0 */</span></span><br><span class="line">    <span class="keyword">return</span> (S-&gt;next == <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h3><ul>
+<li><p>【2010】若元素 abcdef 依次进栈，允许出栈、退栈操作交替进行，但不允许连续 3 次进行退栈操作，不可能得到的出栈序列是→D</p>
+<p>A. d c e b f a<br>B. c b d a e f<br>C. b c a e f d<br>D. a f e d c b</p>
+<blockquote>
+<p>选项A,可由a入栈，b入栈，c入栈，d入栈，==d出栈==，==c出栈==，e入栈，==e出栈==，==b出栈==，f入栈，==f出栈==，==a出栈==得到</p>
+<p>选项B,可由a入栈，b入栈，c入栈，==c出栈==，==b出栈==，d入栈，==d出栈==，==a出栈==，e入栈，==e出栈==，f入栈，==f出栈==得到</p>
+<p>选项C，可由a入栈，b入栈，==b出栈==，c入栈，==c出栈==，==a出栈==，d入栈，e入栈，==e出栈==，f入栈，==f出栈==，==d出栈==得到</p>
+<p>选项D，可由a入栈，==a出栈==，b入栈，c入栈，d入栈，e入栈，f入栈，==f出栈==，==e出栈==，==d出栈==，==c出栈==，==b出栈==得到  但不允许连续3次退栈</p>
+</blockquote>
+</li>
+<li><p>【2009】设栈S和队列Q的初始状态均为空，元素abcdefg依次进入栈S。若每个元素出栈后立即进入队列Q，且7个元素出队的顺序是bdcfeag，则栈S的容量至少是–&gt;3</p>
+<blockquote>
+<p>由于<strong>队列的特点是先进先出</strong>，即栈S的出栈顺序就是队Q的出队顺序。故本题只需注意栈的特点是先进后出。出入栈的详细过程见下表。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>说明</th>
+<th>栈内</th>
+<th>栈外</th>
+<th>序号</th>
+<th>说明</th>
+<th>栈内</th>
+<th>栈外</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>a入栈</td>
+<td>a</td>
+<td></td>
+<td>8</td>
+<td>e入栈</td>
+<td>ae</td>
+<td>bdc</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b入栈</td>
+<td>ab</td>
+<td></td>
+<td>9</td>
+<td>f入栈</td>
+<td>aef</td>
+<td>bdc</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b出栈</td>
+<td>a</td>
+<td>b</td>
+<td>10</td>
+<td>f出栈</td>
+<td>ae</td>
+<td>bdcf</td>
+</tr>
+<tr>
+<td>4</td>
+<td>c入栈</td>
+<td>ac</td>
+<td>b</td>
+<td>11</td>
+<td>e出栈</td>
+<td>a</td>
+<td>bdcfe</td>
+</tr>
+<tr>
+<td>5</td>
+<td>d入栈</td>
+<td>acd</td>
+<td>b</td>
+<td>12</td>
+<td>a出栈</td>
+<td></td>
+<td>bdcfea</td>
+</tr>
+<tr>
+<td>6</td>
+<td>d出栈</td>
+<td>ac</td>
+<td>bd</td>
+<td>13</td>
+<td>g入栈</td>
+<td>g</td>
+<td>bdcfea</td>
+</tr>
+<tr>
+<td>7</td>
+<td>c出栈</td>
+<td>a</td>
+<td>bdc</td>
+<td>14</td>
+<td>g出栈</td>
+<td></td>
+<td>bdcfeag</td>
+</tr>
+</tbody></table>
+<p>栈内的最大深度为3，故栈S的容量至少是3。</p>
+<p>【另解】元素的出栈顺序是b，d，c，f，e，a，g，可推出进栈出栈顺序为Push(S,a)，Push(S,b)，Pop(S,b)，Push(S,c)，Push(S,d)，Pop(S,d)，Pop(S,c)，Push(S,e)，Push(S,f)，Pop(S,f)，Pop(S,e)，Pop(S,a)，Push(S,g)，Pop(S,g)。假设初始所需容量为0，每做一次Push进行一次“+1”操作，每做一次Pop进行一次“-1”操作，记录容量的最大值为3。</p>
+</blockquote>
+</li>
+<li><p>【2011】元素a,b,c,d,e依次进入初始为空的栈中，若元素进栈后可停留、可出栈，直到所有元素都出栈，则在所有可能的出栈序列中，以元素d开头的序列个数是–&gt;4</p>
+<blockquote>
+<p>考虑到题目要求是d先出栈，所以abcd的入栈顺序已经确定，e的入栈和出栈决定有几种顺序。 </p>
+<p>1.abcd依次入栈，d出栈，e入栈，然后剩下的出栈顺序为ecba </p>
+<p>2.abcd依次入栈，d出栈，c出栈，e入栈，e出栈，剩下的出栈顺序ba </p>
+<p>3.abcd依次入栈，d出栈，c出栈，b出栈，e入栈，e出栈，a出栈 </p>
+<p>4.abcd依次入栈，d出栈，c出栈，b出栈，a出栈，e入栈，e出栈，a出栈</p>
+</blockquote>
+</li>
+<li><p>【2013】一个栈的入栈序列为1,2,3,…,n,出栈序列是P1,P2,P3,…,Pn。若P2 = 3，则 P3 可能取值的个数是–&gt;(n-1)个</p>
+<blockquote>
+<p>首先，栈的先进后出原则大家应该是知道的。</p>
+<p>根据题意 P2 = 3，可以知道P1的可能情况有三种：<strong>1,2或4</strong> 。（看到有些人只想到了1，2）</p>
+<p>为啥这样想呢？这里估计还有一个关键是要<strong>考虑到 n 的大小</strong>。</p>
+<p><strong>当 n = 3 时</strong>， P2 = 3 的话，那么 P1 有两种情况 1 和 2 。</p>
+<ul>
+<li>如果 P1 = 1 ，那么 P3 = 2 ；</li>
+<li>如果 P1 = 2 ，那么 P3 = 1 ；</li>
+</ul>
+<p>此时的话我们就可以看到 P3 只有两种可能 1或者2       （n - 1）个。</p>
+<p><strong>当 n &gt; 3 时</strong>： P2 = 3 的话，那么 P1 有三种情况1,2和4。</p>
+<ul>
+<li>如果 P1 = 1 ，那么 P3 = 2，4，5，…  n     （n - 2）个    </li>
+<li>如果 P1 = 2 ，那么 P3 = 1，4，5，…  n     （n - 2）个    </li>
+<li>如果 P1 = 4 ，那么 P3 = 2，5，6，…  n     （n - 3）个  </li>
+</ul>
+<p>此时的话我们就可以看到 P3 的情况有 1，2，4，5，… n （n - 1）个。</p>
+<p>综上所述就是 P3 可能取值的个数是 （n - 1）个。</p>
+</blockquote>
+</li>
+<li><p>【2017】下列关于栈的叙述中，错误的是-&gt;I、Ⅲ、Ⅳ</p>
+<p>Ⅰ．采用非递归方式重写递归程序时必须使用栈 </p>
+<p>Ⅱ．函数调用时，系统要用栈保存必要的信息 </p>
+<p>Ⅲ．只要确定了入桟次序，即可确定出栈次序</p>
+<p>Ⅳ．栈是一种受限的线性表，允许在其两端进行操作</p>
+<blockquote>
+<p>I. 尾递归可以直接使用循环</p>
+<p>II.确定了入桟次序，不能确定出栈次序</p>
+<p>IV．栈是一种受限的线性表，允许在其一端（栈顶）进行操作</p>
+</blockquote>
+</li>
+<li><p>【2018】若栈S1中保存整数，栈S2中保存运算符，函数F()依次执行下述各步操作:</p>
+<p>（1）从S1中依次弹出两个操作数a和b；<br>（2）从S2中弹出一个运算符op；<br>（3）执行相应的运算b op a；<br>（4）将运算结果压入S1中。</p>
+<p>  假定S1中的操作数依次是5,8,3,2（2在栈顶），S2中的运算符依次是*,-,+（+在栈顶） </p>
+<p>  调用3次F()后，S1栈顶保存的值是–&gt;15</p>
+<blockquote>
+<p>S1第一次弹出a,b 即 2,3  S2 弹出 “ +”  操作为 b + a  即 （3 + 2） 压入 S1 现在 S1 为 5 8 5 </p>
+<p>S1第二次弹出a,b 即 5，8 S2弹出”-“ 操作为 b - a 即（8-5）压入S1 现在 S1 为 5 3 </p>
+<p>S1第三次弹出a,b 即 3,5  S2弹出 “<em>” 操作为 b</em>a  即 5*3 压入S 现在S1 为 15<br>所以三次后S1 栈顶为15</p>
+</blockquote>
+</li>
+<li><p>【2020】对空栈S进行Push和Pop操作，入栈序列为a,b,c,d,e，经过Push，Push，Pop，Push，Pop，Push，Push，Pop 操作后得到的出栈序列是–&gt;b,c,e</p>
+<blockquote>
+<p>根据题意，出入栈操作的过程如下:</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>栈内元素</th>
+<th>出栈元素</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Push</td>
+<td>a</td>
+<td></td>
+</tr>
+<tr>
+<td>Push</td>
+<td>a b</td>
+<td></td>
+</tr>
+<tr>
+<td>Pop</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>Push</td>
+<td>a c</td>
+<td></td>
+</tr>
+<tr>
+<td>Pop</td>
+<td>a</td>
+<td>c</td>
+</tr>
+<tr>
+<td>Push</td>
+<td>a d</td>
+<td></td>
+</tr>
+<tr>
+<td>Push</td>
+<td>a d e</td>
+<td></td>
+</tr>
+<tr>
+<td>Pop</td>
+<td>a d</td>
+<td>e</td>
+</tr>
+</tbody></table>
+<p>所以出栈元素序列为b,c,e</p>
+</blockquote>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://blog.evalexp.ml">kailin2eis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://blog.evalexp.ml/p/63528/">http://blog.evalexp.ml/p/63528/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.evalexp.ml" target="_blank">派总</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></div><div class="post_share"><div class="social-share" data-image="/img/1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/p/12625/"><img class="next-cover" src="/img/1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第二章 线性表(下)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/24523/" title="第一章 绪论"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第一章 绪论</div></div></a></div><div><a href="/p/14457/" title="第二章 线性表(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(上)</div></div></a></div><div><a href="/p/12625/" title="第二章 线性表(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(下)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%A0%88-Stack"><span class="toc-text">3.1 栈 Stack</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">栈的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">栈的基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-text">栈的顺序存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-text">栈的链式存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/63528/" title="第三章 栈和队列(上)">第三章 栈和队列(上)</a><time datetime="2022-09-25T06:31:31.000Z" title="发表于 2022-09-25 14:31:31">2022-09-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/12625/" title="第二章 线性表(下)">第二章 线性表(下)</a><time datetime="2022-09-25T06:14:10.000Z" title="发表于 2022-09-25 14:14:10">2022-09-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/14457/" title="第二章 线性表(上)">第二章 线性表(上)</a><time datetime="2022-09-25T05:45:18.000Z" title="发表于 2022-09-25 13:45:18">2022-09-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/24523/" title="第一章 绪论">第一章 绪论</a><time datetime="2022-09-25T02:05:22.000Z" title="发表于 2022-09-25 10:05:22">2022-09-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
