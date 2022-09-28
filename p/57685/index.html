@@ -1,0 +1,595 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>第七章 查找(上) | 派总</title><meta name="keywords" content="408数据结构"><meta name="author" content="kailin2eis"><meta name="copyright" content="kailin2eis"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="7.1 查找的基本概念基本概念查找————在数据集合中寻找满足某种条件的数据元素的过程称为查找。结果分为查找成功与查找失败。 查找表（查找结构）————用于查找的数据集合称为查找表，它由同一类型的数据元素(或记录)组成。 关键字———数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。   上图学号可以唯一标识，而姓名不能唯一标识(可能存在重名)；下图同理，微信名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第七章 查找(上)">
+<meta property="og:url" content="http://tikxeis.fun/p/57685/index.html">
+<meta property="og:site_name" content="派总">
+<meta property="og:description" content="7.1 查找的基本概念基本概念查找————在数据集合中寻找满足某种条件的数据元素的过程称为查找。结果分为查找成功与查找失败。 查找表（查找结构）————用于查找的数据集合称为查找表，它由同一类型的数据元素(或记录)组成。 关键字———数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。   上图学号可以唯一标识，而姓名不能唯一标识(可能存在重名)；下图同理，微信名">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tikxeis.fun/img/1.png">
+<meta property="article:published_time" content="2022-09-28T08:03:04.000Z">
+<meta property="article:modified_time" content="2022-09-28T08:04:17.311Z">
+<meta property="article:author" content="kailin2eis">
+<meta property="article:tag" content="408数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tikxeis.fun/img/1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://tikxeis.fun/p/57685/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第七章 查找(上)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-28 16:04:17'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第七章 查找(上)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-28T08:03:04.000Z" title="发表于 2022-09-28 16:03:04">2022-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-28T08:04:17.311Z" title="更新于 2022-09-28 16:04:17">2022-09-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第七章 查找(上)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="7-1-查找的基本概念"><a href="#7-1-查找的基本概念" class="headerlink" title="7.1 查找的基本概念"></a>7.1 查找的基本概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><strong>查找</strong>————在数据集合中寻找满足某种条件的数据元素的过程称为<strong>查找</strong>。结果分为查找成功与查找失败。</p>
+<p><strong>查找表</strong>（查找结构）————用于查找的数据集合称为<strong>查找表</strong>，它由同一类型的数据元素(或记录)组成。</p>
+<p><strong>关键字</strong>———数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-1.png" style="zoom:80%;" />
+
+<p>上图学号可以唯一标识，而姓名不能唯一标识(可能存在重名)；下图同理，微信名、昵称不能唯一标识</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-2.png" style="zoom:80%;" />
+
+
+
+<p>==注意==:查找表并不是一个新的数据结构，只是你要查找的数据元素的一个集合而已。</p>
+<h3 id="对查找表的常见操作"><a href="#对查找表的常见操作" class="headerlink" title="对查找表的常见操作"></a>对查找表的常见操作</h3><ol>
+<li>查找符合条件的数据元素<ul>
+<li>查询某个特定的元素是否在查找表中</li>
+<li>检索满足条件的某个特定的数据元素的各种属性</li>
+</ul>
+</li>
+<li>插入、删除某个数据元素<ul>
+<li>在查找表中插入一个数据元素</li>
+<li>从查找表中删除某个数据元素</li>
+</ul>
+</li>
+</ol>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-3.png" style="zoom:80%;" />
+
+<p><strong>静态查找表</strong>————只涉及操作1，则无须动态修改查找表，称为静态查找表。适合其的查找方法有顺序查找、折半查找、散列查找等。</p>
+<p><strong>动态查找表</strong>————与之对应，需要动态的插入、删除的查找表称为动态查找表。适合其的查找方法有二叉排序树的查找、散列查找等。</p>
+<h3 id="查找算法的平均指标"><a href="#查找算法的平均指标" class="headerlink" title="查找算法的平均指标"></a>查找算法的平均指标</h3><p><strong>查找长度</strong>————在查找运算中，需要对比关键字的次数称为查找长度</p>
+<p><strong>平均查找长度</strong>(ASL)————所有查找过程中进行关键字的比较次数的平均值<br>$$<br>ASL = \sum^n_{i=1}P_iC_i<br>$$<br>其中n表示数据元素个数；Pi表示查找第i个元素的概率，一般认为每个数据元素的查找概率相等；Ci表示查找第i个元素所需进行的比较次数(查找第i个元素的查找长度)。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-4.png" style="zoom:80%;" />
+
+<p>图中为二叉排序树的ASL，公式为ASL=（层数该层的结点个数）每个结点被查找的概率</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-5.png" style="zoom:80%;" />
+
+<p>查找失败的情况，就是查询到紫色框框（紫色框框就是 NULL）都发现没有找到要比对的数字，那么此时查找失败，其计算方式同成功时一样，只是我们只用计算失败的那些紫色的框框。后面会详细说一下</p>
+<h2 id="7-2-顺序查找和折半查找"><a href="#7-2-顺序查找和折半查找" class="headerlink" title="7.2 顺序查找和折半查找"></a>7.2 顺序查找和折半查找</h2><h3 id="顺序查找"><a href="#顺序查找" class="headerlink" title="顺序查找"></a>顺序查找</h3><p><strong>顺序查找</strong>又称<strong>线性查找</strong>，它对顺序表和链表都是适用的。对于<strong>顺序表</strong>，可通过数组下标递增来顺序扫描每个元素；对于<strong>链表</strong>，可通过指针next来依次扫描每个元素。顺序查找通常分为对<font color='cornflowerblue'>一般的无序线性表的顺序查找</font>和对<font color='cornflowerblue'>按关键字有序的线性表的顺序查找</font></p>
+<h4 id="一般线性表的顺序查找"><a href="#一般线性表的顺序查找" class="headerlink" title="一般线性表的顺序查找"></a>一般线性表的顺序查找</h4><p>从数据结构线形表的一端开始，顺序扫描，依次将扫描到的结点关键字与给定值key相比较，若相等则表示查找成功；若扫描结束仍没有找到关键字等于key的结点，表示查找失败。</p>
+<h5 id="顺序查找的实现"><a href="#顺序查找的实现" class="headerlink" title="顺序查找的实现"></a>顺序查找的实现</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span>     <span class="comment">//查找表的数据结果(顺序表)</span></span><br><span class="line">    ElemType *elem; <span class="comment">//动态数组基址</span></span><br><span class="line">    <span class="type">int</span> TableLen;   <span class="comment">//表的长度</span></span><br><span class="line">&#125;SSTable;</span><br><span class="line"><span class="comment">//顺序查找</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Search_Seq</span><span class="params">(SSTable ST,ElemType key)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;ST.TableLen &amp;&amp; ST.elem[i]! =key;++i);</span><br><span class="line">    <span class="comment">//查找成功，则返回元素下标；查找失败，则返回-1</span></span><br><span class="line">    <span class="keyword">return</span> i==ST.TableLen?<span class="number">-1</span>:i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-6.png" style="zoom:70%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-7.png" style="zoom:80%;" />
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式一</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Search_Seq</span><span class="params">(SSTable ST,KeyType key)</span>&#123;</span><br><span class="line">   	<span class="comment">// 若成功返回其位置信息,否则返回0</span></span><br><span class="line">    <span class="keyword">for</span>(i=ST.TableLen;i≥<span class="number">1</span>;--i)&#123;</span><br><span class="line">        <span class="keyword">if</span>(ST.elem[i] == key)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方式二</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Search_Seq</span><span class="params">(SSTable ST,KeyType key)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(i=ST.TableLen;ST.elem[i]! =key;--i)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;<span class="keyword">if</span>(i&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方法二也可以这么写</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Search_Seq</span><span class="params">(SSTable ST,KeyType key)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(i=ST.TableLen;ST.elem[i]! =key &amp;&amp; i&gt;<span class="number">0</span>;--i);</span><br><span class="line">    <span class="keyword">if</span>(i&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述每执行一次循环都要进行两次比较，我们还可以改进：把待查关键字key存入表头(“哨兵”),从后向前挨个比较，可免去查找过程中每一步都要检测是否查找完毕，加快速度。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-8.png" style="zoom: 80%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-9.png" style="zoom: 80%;" />
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Search_Seq</span><span class="params">(SSTable ST,KeyType key)</span>&#123;</span><br><span class="line">    ST.elem[<span class="number">0</span>] = key;      <span class="comment">//&quot;哨兵&quot;</span></span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=ST.TableLen;ST.elem[i]! =key;--i);<span class="comment">//从后往前找</span></span><br><span class="line">    <span class="keyword">return</span> i;<span class="comment">//查找成功，返回元素下标；查找失败，则返回0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ST.elem[0]称为”哨兵“。引入它的目的是使得Search_Seq内的循环不必判断数组是否会越界，因为满足i==0时，循环一定会跳出。需要说明的是。<font color='red'>”哨兵“并不是这个算法独有的</font>。引入”哨兵“可以避免很多不必要的判断语句，当ST.TableLen较大时，此改进能使进行一次查找所需的平均时间几乎减少一半，从而提高程序效率。</p>
+<h5 id="查找效率分析"><a href="#查找效率分析" class="headerlink" title="查找效率分析"></a>查找效率分析</h5><p>对于有n个元素的表，给定值key与表中第i个元素相等，即定位第i个元素时，需进行n-i+1次关键字的比较，即Ci=n-i+1。查找成功时，顺序查找的平均长度为<br>$$<br>ASL_{成功}=\sum_{i=1}^{n}{P_i(n-i+1)}<br>$$<br>当每个元素的查找概率相等，即Pi=1/n时，有<br>$$<br>ASL_{成功}=\sum_{i=1}^{n}{P_i(n-i+1)}=\frac{n+1}{2}<br>$$<br>查找失败时，与表中各关键字的比较次数显然是n+1次，从而顺序表查找失败的平均查找长度为<br>$$<br>ASL_{失败}=n+1<br>$$<br><font color='orange'>通常，查找表中记录的查找概率并不相等。若能预先得知每个记录的查找概率，则应先对记录的查找概率进行排序，使表中记录按查找概率由大至小重新排序。</font></p>
+<p>综上，顺序查找的<strong>缺点</strong>:当n较大时，平均查找长度较大，效率低；</p>
+<p><strong>优点</strong>:对数据元素的存储没有要求，逻辑次序无要求，顺序或链式存储皆可。</p>
+<h4 id="有序表的顺序查找"><a href="#有序表的顺序查找" class="headerlink" title="有序表的顺序查找"></a>有序表的顺序查找</h4><p>若查找前就已知道表是关键字有序的，则查找失败时可以不用再比较到表的另一端就能返回查找失败的信息，从而降低顺序查找失败的平均查找长度。</p>
+<p>假设表L是按关键字从小到大排列的，查找的顺序是从前往后，待查找元素的关键字为key，当查找到第i个元素时，发现第i个元素对于的关键字小于key，但第i+1个元素对应的关键字大于key，这时就可返回查找失败的信息，因为第i个元素之后的元素的关键字均大于key，所以表中不存在关键字为key的元素。</p>
+<p>==例如==：<font color='orange'>7 13 19 29 37 43</font></p>
+<p>我们要查找的目标为：<font color='cornflowerblue'>21</font></p>
+<p>若从前往后查找，那么，当我们访问到<font color='red'>29</font>时，就已经说明查找失败，就不必继续向后检查了。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-10.png" style="zoom:69%;" />
+
+<p>==用查找判定树分析ASL==</p>
+<p>如上图所示，即为<strong>查找判定树</strong>。</p>
+<p>其中，有n+1个“失败结点”，有n个“成功结点”。</p>
+<ul>
+<li>一个成功结点的查找长度 = 自身所在层数</li>
+<li>一个失败节点的查找长度 = 其父节点所在层数</li>
+</ul>
+<p>默认情况下，各种失败情况或成功情况都等概率发生。</p>
+<hr>
+<p>在有序线性表的顺序查找中，查找成功的平均查找长度和一般线性表的查找顺序一样。查找失败时，查找指针一定走到了某个失败结点。这些失败结点是我们虚构的空结点，实际上是不存在的，所以到达失败结点时所查找的长度等于它上面的一个圆形结点的所在层数。查找不成功的平均查找长度在相等查找概率的情形下为<br>$$<br>ASL_{失败}=\sum_{j=1}^{n}{q_j(l_j-1)}=\frac{1+2+…+n+n}{n+1}=\frac{n}{2}+\frac{n}{n+1}<br>$$<br>式中，qj是到达第j个失败结点的概率，在相等查找概率的情形下，它为1/(n+1)；lj是第j个失败结点所在的层数。当n=6时，ASL失败=6/2+6/7=3.86，比一般的顺序查找算法好:+1:。</p>
+<h4 id="顺序查找的优化-被查概率不相等"><a href="#顺序查找的优化-被查概率不相等" class="headerlink" title="顺序查找的优化(被查概率不相等)"></a>顺序查找的优化(被查概率不相等)</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-11.png" style="zoom:67%;" />
+
+<h3 id="折半查找"><a href="#折半查找" class="headerlink" title="折半查找"></a>折半查找</h3><p>折半查找又称<strong>二分查找</strong>。二分查找要求：<font color='cornflowerblue'>线性表是有序表</font>，即表中结点按关键字有序排列，并且用向量作为表的存储结构，例如递增有序的数组。</p>
+<p>折半查找的<strong>基本思想</strong>:首先将给定值key与表中中间位置的元素比较，若相等，则查找成功，返回该元素的存储位置；若不等，则所需查找的元素只能在中间元素以外的前半部分或后半部分(例如，在查找表升序排列时，若给定值key大于中间元素，则所查找的元素只可能在后半部分)。然后在缩小的范围内继续进行同样的查找，如此重复，直到找到为止，或确定表中没有所需要查找的元素，则查找失败，返回查找失败信息。</p>
+<p>① low=1；high=length； // 设置初始区间</p>
+<p>② 当low&gt;high 时，返回查找失败信息// 表空，查找失败</p>
+<p>③ low≤high，mid=(low+high)/2; //确定该区间的中点位置<br>   a. 若kx&lt;tbl.elem[mid].key，high = mid-1；转② // 查找在左半区进行<br>   b. 若kx&gt;tbl.elem[mid].key，low = mid+1； 转② // 查找在右半区进行<br>   c. 若kx=tbl.elem[mid].key，返回数据元素在表中位置// 查找成功</p>
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span>    <span class="comment">//查找表的数据结构</span></span><br><span class="line">    ElemType *elem; <span class="comment">//动态数组基址</span></span><br><span class="line">    <span class="type">int</span> TableLen;  <span class="comment">//表的长度</span></span><br><span class="line">&#125;SSTable;</span><br><span class="line"><span class="comment">//折半查找</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Binary_Search</span><span class="params">(SSTable L,ElemType key)</span>&#123;</span><br><span class="line">    <span class="type">int</span> low=<span class="number">0</span>,high=L.TableLen<span class="number">-1</span>,mid;</span><br><span class="line">    <span class="keyword">while</span>(low&lt;=high)&#123;</span><br><span class="line">        mid=(low+high)/<span class="number">2</span>;     <span class="comment">//取中间位置</span></span><br><span class="line">        <span class="keyword">if</span>(L.elem[mid]==key)</span><br><span class="line">            <span class="keyword">return</span> mid;       <span class="comment">//查找成功则返回所在位置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(L.elem[mid]&gt;key)</span><br><span class="line">            high=mid<span class="number">-1</span>;       <span class="comment">//从前半部分继续查找</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            low=mid+<span class="number">1</span>;        <span class="comment">//从后半部分继续查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;                <span class="comment">//查找失败，返回-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>递归算法</strong>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Search_Bin</span><span class="params">(SSTable L,ELemType key,<span class="type">int</span> low,<span class="type">int</span> high)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low&gt;high)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span> ;	<span class="comment">// 查找不到时返回0</span></span><br><span class="line">    &#125;</span><br><span class="line">    mid = (low+high)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(key == L.elem[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(key&lt;L.elem[mid])&#123;</span><br><span class="line">        <span class="comment">// 递归,在前半区间进行查找</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 递归，在后半区间进行查找</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>，以上代码是基于我们的查找表内元素是升序排列的。如果是降序排列，则大于/小于判定后的操作要进行相应的更改。（原理是一样的）</p>
+</blockquote>
+<p>举个算法应用的例子：已知如下11个数据元素的有序表：（3，6，7，14，19，24，30，35，56，65，88）查找元素30。</p>
+<p>起始，low指向a[0]，high指向a[10]，mid=(0+10)/2=5，即mid指向a[5]，如图所示：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-12.png"  />
+
+<p>由于查找元素key=30大于a[mid]，所以low=mid+1=6，mid=(6+10)/2=8，再一次进行比较：</p>
+<p><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-13.png"></p>
+<p>此时，查找元素key=30小于a[mid]，所以high=mid-1=7，mid=(6+7)/2=6，再一次进行比较：</p>
+<p><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-14.png"></p>
+<p>此时，查找元素key=30等于a[mid]，查找成功，返回mid=6。</p>
+<h4 id="一个查找成功的例子"><a href="#一个查找成功的例子" class="headerlink" title="一个查找成功的例子"></a>一个查找成功的例子</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-15.png" style="zoom: 67%;" />
+
+<p>首先，我们定义<strong>low</strong>和<strong>high</strong>。</p>
+<p>low指向第一个元素，high指向最后一个元素。</p>
+<p>然后使最中间的元素为<strong>mid</strong>。（mid=(low+high)/2）</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-16.png" style="zoom: 67%;" />
+
+<p>由于我们的查找目标33&gt;mid，所以只可能在右边区域。（即下标6~10范围）</p>
+<p>因此，我们需要把low指向下标为6的位置。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-17.png" style="zoom: 67%;" />
+
+<p><strong>注：只有在[low, high]之间才有可能找到目标关键字</strong></p>
+<p>同样地，我们取low和high的最中间元素mid，并判断目标元素在左边区域，还是右边区域。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-18.png" style="zoom:67%;" />
+
+<p>由于我们的查找目标33&lt;mid，所以只可能在左边区域。（即下标6~7范围）</p>
+<p>因此，我们需要把high指向下标为7的位置。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-19.png" style="zoom:67%;" />
+
+<p>同样地，我们取low和high的最中间元素mid，mid = (low+high) / 2 = (6+7)/2 = 6，因此mid指向下标6的位置。</p>
+<p>由于我们的查找目标33&gt;mid，所以只可能在右边区域。（即下标7）</p>
+<p>因此，我们需要把low指向下标为7的位置。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-20.png" style="zoom:67%;" />
+
+<p>同样地，我们取mid = (low+high) / 2。因此mid指向下标为7的位置。</p>
+<p>此时，我们的查找目标33==mid。查找成功。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-21.png" style="zoom:67%;" />
+
+<h4 id="一个查找失败的例子"><a href="#一个查找失败的例子" class="headerlink" title="一个查找失败的例子"></a>一个查找失败的例子</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-22.png" style="zoom:67%;" />
+
+<p>首先，让low和high指向整个数组的头和尾部。</p>
+<p>然后令mid = (low+high)/2 = 5。然后看目标元素在mid的左、右、相等？</p>
+<p>由于12&lt;mid，则只可能在左边区域。因此将high指向4。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-23.png" style="zoom:67%;" />
+
+<p>令mid = (low+high) / 2 = 2。然后看目标元素在mid的左、右、相等？</p>
+<p>由于12&lt;mid，则只可能在左边区域。因此将high指向1。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-24.png" style="zoom:67%;" />
+
+<p>令mid = (low+high) / 2 = 0。然后看目标元素在mid的左、右、相等？</p>
+<p>由于12&gt;mid，则只可能在右边区域。因此将low指向1。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-25.png" style="zoom:67%;" />
+
+<p>令mid = 1。然后看目标元素在mid的左、右、相等？</p>
+<p>由于12&gt;mid，则只可能在右边区域。因此将low指向2。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-26.png" style="zoom:67%;" />
+
+<p>此时，<strong>low&gt;high，查找失败</strong>。</p>
+<blockquote>
+<p>到此，我们可以理解，为什么折半查找仅适用于<strong>有序</strong>的<strong>顺序表</strong>。</p>
+<p>用顺序表，我们才可以直接根据下标找到中间位置mid。如果查找表是用链表，我们要找到中间元素，只能从头开始依次往后找。链表不具有随机存取的特性，而顺序表有。</p>
+</blockquote>
+<h4 id="折半查找判定树的构造"><a href="#折半查找判定树的构造" class="headerlink" title="折半查找判定树的构造"></a>折半查找判定树的构造</h4><p>对于查找算法的查找效率分析，我们都是基于查找判定树来看的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-27.png" style="zoom: 80%;" />
+
+<p>如果当前low和high之间<strong>有奇数个</strong>元素，则mid分隔后，<strong>左右两部分元素个数相等</strong>。分隔后，左右两部分均为奇数个元素。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-28.png" style="zoom: 80%;" />
+
+<p>如果当前low和high之间<strong>有偶数个</strong>元素，则mid分隔后，<strong>左半部分比右半部分少一个元素</strong>。并且分隔以后，左半部分是偶数个元素，右半部分是奇数个元素。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-29.png" style="zoom:80%;" />
+
+<p><strong>折半查找的判定树中</strong>，若mid = ⌊(low+high)/2⌋，则对于任何一个结点，必有：</p>
+<p><strong>右子树结点数 - 左子树结点数 = 0或1</strong> （也就是，左子树结点数不可能比右子树的多）</p>
+<h5 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h5><p>若mid = ⌊(low+high)/2⌋，画出含1个元素、2个元素、3个元素…16个元素的查找表对应的折半查找判定树，注：暂不考虑失败结点。（Key：<strong>右子树结点数 - 左子树结点数 = 0或1</strong>）</p>
+<ul>
+<li><p>对于1个元素，就不说了。</p>
+</li>
+<li><p>对于2个元素的判定树，2号元素一定是右子树，如下。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-30.png" style="zoom: 33%;" />
+
+<p>这是由于，左子树结点数不可能比右子树结点数多</p>
+</li>
+<li><p>对于3个元素的判定树</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-31.png" style="zoom:50%;" />
+
+<p>一定不可能是这个样子，因为右子树最多比左子树多1个结点。而此图，对于1来说，其右子树比左子树多2个结点了。</p>
+<p>所以一定是如下所示<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-32.png" style="zoom: 40%;" /></p>
+</li>
+<li><p>对于4个元素的判定树，只有可能是下图所示</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-33.png" style="zoom: 45%;" /></li>
+<li><p>中间的不再赘述。16个元素的判定树，如下所示：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-34.png" style="zoom: 67%;" /></li>
+</ul>
+<h5 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h5><ul>
+<li><p>不难发现，折半查找的判定树一定是<strong>平衡二叉树</strong>。（任何一个结点的左子树、右子树深度之差，都不会超过1）</p>
+</li>
+<li><p>另外，折半查找的判定树中，<strong>只有最下面一层是不满的</strong>。</p>
+</li>
+</ul>
+<p>因此，元素个数为n时，<font color='orange'>树高h=⌈log₂(n+1)⌉</font>。（和完全二叉树的树高，计算方法是一样的）</p>
+<ul>
+<li><p>而这个树高的数量级，就反映了折半查找算法的时间复杂度。</p>
+<p>因此，折半查找的时间复杂度为<font color='orange'>O(log₂n)</font></p>
+</li>
+<li><p>判定树结点关键字：左 &lt; 中 &lt; 右，满足二叉排序树的定义。</p>
+</li>
+<li><p><font color='orange'>失败结点：n+1个</font>（等于成功结点的空链域数量）</p>
+</li>
+</ul>
+<h4 id="查找效率分析-1"><a href="#查找效率分析-1" class="headerlink" title="查找效率分析"></a>查找效率分析</h4><p>用折半查找法查找到给定值的比较次数最多不会超过树的高度。在等概率查找时，查找成功的平均查找长度为<br>$$<br>ASL=\frac{1}{n}\sum_{i=1}^{n}{l_i}=\frac{1}{n}(1<em>1+2</em>2+…+h*2^{h-1})=\frac{n+1}{n}log_2(n+1)-1\approx log_2(n+1)-1<br>$$<br>式中，h是树的高度，并且元素个数为n时树高h=⌈log₂(n+1)⌉。所以，折半查找的时间复杂度为O(log₂n)，平均情况下比顺序查找的效率高</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-35.png" style="zoom:80%;" />
+$$
+ASL_{成功}=\frac{每个结点的比较次数之后}{结点数}
+$$
+
+<p>$$<br>ASL_{失败}=\frac{空指针处比较次数之和}{空指针数}<br>$$</p>
+<p><strong>NOTE:<br>每个结点的比较次数之和，即该结点所在的层次数<br>空指针处比较次数之和，就是该空指针的双亲结点所在的层次</strong></p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds6-189.png" style="zoom:67%;" />
+
+<h4 id="拓展思考"><a href="#拓展思考" class="headerlink" title="拓展思考"></a>拓展思考</h4><p>==1.折半查找是否一定更快==</p>
+<p>折半查找的时间复杂度 = O(log₂n)；顺序查找的时间复杂度 = O(n)</p>
+<p><font color='cornflowerblue'>那么，折半查找的速度一定比顺序查找更快？</font></p>
+<p>显然不是，如下例子</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-36.png" style="zoom:67%;" />
+
+<p>所以我们只能说，大部分情况下，折半查找比顺序查找更快。但是不能说，任何情况下，折半查找都一定比顺序查找更快。</p>
+<p>==2.mid的取法问题==</p>
+<p>另外，刚才我们构造判定树时，<font color='cornflowerblue'>mid = ⌊(low+high)/2⌋</font>，是向下取整。</p>
+<p>如果我们让<font color='cornflowerblue'>mid = ⌈(low+high)/2⌉</font>，向上取整，那么判定树是什么样的？</p>
+<p>稍加思考，不难想到，按照这样取mid的话。</p>
+<ul>
+<li>如果当前low和high之间有偶数个元素，则mid分隔后，<strong>左半部分比右半部分多一个元素</strong>。</li>
+</ul>
+<p>折半查找的判定树中，若<font color='cornflowerblue'>mid = ⌈(low+high)/2⌉</font>，则对于任何一个结点，必有：</p>
+<p><strong>左子树结点数 - 右子树结点数 = 0或1</strong></p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-37.png" style="zoom:67%;" />
+
+<h3 id="分块查找"><a href="#分块查找" class="headerlink" title="分块查找"></a>分块查找</h3><p>分块查找又称索引顺序查找，它吸取了顺序查找和折半查找各自的优点，既有动态结构，又适于快速查找。</p>
+<h4 id="分块查找的算法思想"><a href="#分块查找的算法思想" class="headerlink" title="分块查找的算法思想"></a>分块查找的算法思想</h4><p>分块查找的<strong>基本思想</strong>:将查找表分为若干子块。块内元素可以无序，但块之间是有序的，即第一个块中的最大关键字小于第二个块中的所有记录的关键字，第二个块中的最大关键字小于第三个块中的所有记录的关键字，以此类推。再建立一个索引表，索引表中的每个元素含有各块的最大关键字和各块中的第一个元素的地址，索引表按关键字有序排列。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-38.png" style="zoom:67%;" />
+
+<p>对于这个数组，看上去是没什么规律的，其实，如果仔细观察，可以发现。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-39.png" style="zoom:67%;" />
+
+<p>如果把这些元素分块，会发现，第一块都是小于等于10的；第二块都是小于等于20的；……。</p>
+<p>这个数组看上去是乱序的，但是当我们把它分成一小块一小块的小区间后，会发现，各个区间内其实是有特点的，区间与区间之间相比较来看是有序的。</p>
+<p>于是我们可以给这个查找表，建立上一级的索引。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-40.png" style="zoom:67%;" />
+
+<p>“索引表”中保存每个分块的最大关键字和分块的存储区间。</p>
+<p><strong>特点</strong>：块内无序、块间有序。将每一块看作一个整体的话，会发现块与块之间呈一个递增/递减的顺序。</p>
+<p>查找过程：先确定待查记录所在块(顺序或折半查找)，再在块内查找(顺序查找)。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//索引表</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    ElemType maxValue;</span><br><span class="line">    <span class="type">int</span> low, high;</span><br><span class="line">&#125;Index;</span><br><span class="line"></span><br><span class="line"><span class="comment">//顺序表存储实际元素</span></span><br><span class="line">ElemType List[<span class="number">100</span>];</span><br></pre></td></tr></table></figure>
+
+<h5 id="查找成功的例子"><a href="#查找成功的例子" class="headerlink" title="查找成功的例子"></a>查找成功的例子</h5><p>如果我们要查找的元素为：<font color='cornflowerblue'>22</font>。那么，先在索引表中查找：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-41.png" style="zoom:67%;" />
+
+<p>10，小于22；20，小于22；30，大于等于22。因此，要查找的22一定是在”30”这个分块内</p>
+<p>接下来，就从“30”这个块表示的区间，即数组的[6,8]内寻找。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-42.png" style="zoom:67%;" />
+
+<p>27，不对；22，对。查找成功。</p>
+<h5 id="查找失败的例子"><a href="#查找失败的例子" class="headerlink" title="查找失败的例子"></a>查找失败的例子</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-43.png" style="zoom:67%;" />
+
+<p>若查找目标为：<font color='cornflowerblue'>29</font>。</p>
+<p>同样地，29应该是在“30”这个块内。因此，我们从查找表的下标为[6, 8]范围内进行查找。</p>
+<p>遍历完下标为6、7、8的元素后，均未匹配成功。此时遍历到9号元素，而下标为9，超出了“30”这个块的范围，即查找失败。</p>
+<h5 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h5><p>分块查找的过程分为两步:</p>
+<p>第一步是在索引表中确定查记录所在的块，可以顺序查找或折半查找索引表；</p>
+<p>第二步是在块内顺序查找。</p>
+<h4 id="用折半查找查索引"><a href="#用折半查找查索引" class="headerlink" title="用折半查找查索引"></a>用折半查找查索引</h4><h5 id="情形一-索引表中包含该关键字"><a href="#情形一-索引表中包含该关键字" class="headerlink" title="情形一:索引表中包含该关键字"></a>情形一:索引表中包含该关键字</h5><p>若查找目标为索引表中包含的关键字，则经过若干次mid即可找到。（即折半查找的“查找成功”的情形）</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-44.png" style="zoom:67%;" />
+
+<h5 id="情形二-索引表中不包含该关键字，但能查找成功"><a href="#情形二-索引表中不包含该关键字，但能查找成功" class="headerlink" title="情形二:索引表中不包含该关键字，但能查找成功"></a>情形二:索引表中不包含该关键字，但能查找成功</h5><p>若查找目标为19，则过程如下：</p>
+<ul>
+<li><p>首先，low和high各指向头（0号）、尾部（4号），mid指向中间（2号）。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-45.png" style="zoom:67%;" /></li>
+<li><p>由于19&lt;mid，则令high = mid-1，high指向1号。此时mid指向0号。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-46.png" style="zoom:67%;" /></li>
+<li><p>由于19&gt;mid，则令low = mid + 1，low指向1号。此时mid指向1号。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-47.png" style="zoom:67%;" /></li>
+<li><p>由于19&lt;mid，则令high = mid - 1，high指向0号。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-48.png" style="zoom:67%;" /></li>
+<li><p>此时low &gt; high。若按照折半查找的规则，实际上属于是“查找失败”了。但实际上对于索引表来说，我们的<strong>查找目标其实是在low指向的块当中</strong>。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-49.png" style="zoom:67%;" /></li>
+</ul>
+<p>因此，若索引表中不包含目标关键字，则折半查找索引表最终停在low &gt; high，要<strong>在low所指分块内查找</strong>。</p>
+<p><strong>原因</strong>：最终low左边一定小于目标关键字，high右边一定大于目标关键字。（因为key&gt;mid，则low=mid+1；key&lt;mid，则high=mid-1）而分块存储的索引表中保存的是各个分块的最大关键字。</p>
+<h5 id="情形三-查找失败"><a href="#情形三-查找失败" class="headerlink" title="情形三:查找失败"></a>情形三:查找失败</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-50.png" style="zoom:67%;" />
+
+<p>我们省略中间具体过程。最终会停在上图所示位置。</p>
+<p>和上面一模一样：若索引表中不包含目标关键字，则折半查找索引表最终停在low &gt; high，要<strong>在low所指分块内查找</strong>。但此时low所指向的，已经超出了索引表。所以这种情况就是查找失败。</p>
+<h4 id="查找效率分析-2"><a href="#查找效率分析-2" class="headerlink" title="查找效率分析"></a>查找效率分析</h4><h5 id="采用顺序查找"><a href="#采用顺序查找" class="headerlink" title="采用顺序查找"></a>采用顺序查找</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-51.png" style="zoom:67%;" />
+
+<p>如果对索引表采用的是顺序查找。</p>
+<p>则查找到7这个元素，需要先在索引表中对比1次，再在块内对比1次，共2次。</p>
+<p>查找到10这个元素，需要先在索引表中对比1次，再在块内对比2次，共3次。以此类推。</p>
+<blockquote>
+<p>若索引表采用顺序查找，则</p>
+<p>7：2次；10：3次；13：3次……</p>
+</blockquote>
+<p>总之，最后可以算出平均查找长度ASL。</p>
+<h5 id="采用折半查找"><a href="#采用折半查找" class="headerlink" title="采用折半查找"></a>采用折半查找</h5><p>如果对索引表采用的是折半查找。</p>
+<p>则查找到30这个元素，需要在索引表中对比1次，再在块内对比3次，共4次。没问题。</p>
+<p><font color='cornflowerblue'>但是，对于查找到27这个元素，需要在索引表中对比1次，再在块内对比1次，共2次。是这样吗？</font></p>
+<p>不是的。</p>
+<p>对于30这个元素，由于它本身是包含在索引表中的，所以进行一次对比即可查找到。</p>
+<p>但是对于27这个元素，由于它不是索引表的关键字，所以并不是对比一次就完成了的。而是需要完成若干次，直到low&gt;high时，才算确定了27所在的分块！</p>
+<p>27具体需要对比几次，此处不再分析，自己按照折半查找的过程，考虑一下即可。</p>
+<blockquote>
+<p>不难发现，对于索引表采用折半查找的例子，这么多元素，如果一个一个计算它们的对比次数，是过于繁杂的。因此考试一般不会考这样的情况。一般只会考一下索引表为顺序查找下的ASL。</p>
+</blockquote>
+<blockquote>
+<p>而且，以上均为查找成功的情况。而查找失败的情况呢？</p>
+<p>因为对于每个分块内，元素都是无序排放的，所以我们不能像之前的折半查找那样明确的表明，就是在某个指定的区间内，是查找失败的情况。</p>
+<p>因此对于分块查找，查找失败的情况，会更加复杂。因此考试一般不考查找失败的情况，可以跳过这个问题。</p>
+</blockquote>
+<h5 id="特殊情形"><a href="#特殊情形" class="headerlink" title="特殊情形"></a>特殊情形</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-52.png" style="zoom:67%;" />
+
+<p>刚才我们举的两个例子都是比较杂乱的。</p>
+<p>此处，若长度为n的查找表被均匀地分为b块，每块s个元素。</p>
+<p>设<strong>索引查找和块内查找</strong>的平均查找长度分别为LI、LS，则分块查找的平均查找长度为<br>$$<br>ASL=L_I+L_S<br>$$<br>在<strong>等概率情况</strong>下，若在块内和索引表中均采用<strong>顺序查找索引表</strong>时<br>$$<br>L_I=\frac{1+2+…+b}{b}=\frac{b+1}{2},L_S=\frac{1+2+…+s}{s}=\frac{s+1}{2}<br>$$<br>则<br>$$<br>ASL = L_I+L_S=\frac {s^2+2s+n}{2s},当s=\sqrt n时，ASL_{最小}=\sqrt n+1<br>$$</p>
+<p>这个ASL相加之和为什么等于这个结果呢？因为上面我们说了，长度为n的查找表被均匀地分为b块，每块s个元素。所以n = s * b，代入即可。</p>
+<p>而ASL的最小值是什么？其实就是一个求极值的问题。求ASL的导数，令导数等于0即可。</p>
+<blockquote>
+<p>由此，可以看出。</p>
+<p>若n = 10000，也就是查找表中共有10000个元素。</p>
+<p>则ASL最小值 = 101，即最优的分块策略为：将n个元素分成100块，每块有100个元素。</p>
+<p>即对于这10000个元素来说，平均来看对每个元素只需要101次对比即可找到。</p>
+<p>那相比于单纯的顺序查找来说，我们这样的分块查找，效率是提升了很多的。</p>
+<p>（对于10000个元素，若采用顺序查找，则ASL = 5000）</p>
+</blockquote>
+<p>若对索引表采用折半查找时，则平均查找长度为<br>$$<br>ASL = L_I+L_S=\lceil\log_2(b+1)\rceil+\frac {s+1}2<br>$$</p>
+<p>折半查找这个地方有个印象就可以，不是特别重要，也不再深入探讨。</p>
+<h4 id="拓展思考-1"><a href="#拓展思考-1" class="headerlink" title="拓展思考"></a>拓展思考</h4><p><font color='cornflowerblue'>若查找表是“动态查找表”，有没有更好的实现方式？</font>——链式存储</p>
+<p>对于之前的例子，我们的数据都是用顺序存储的方式进行存放的。</p>
+<p>但是如果查找表中经常需要进行元素的增加、删除。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-53.png" style="zoom:67%;" />
+
+<p>比如我要添加一个8，那么我肯定不是在查找表的最后一位插入的。如果我们要插入8，是要在第一个分块内插入8。</p>
+<p><font color='cornflowerblue'>那么这会导致什么</font>？</p>
+<p>会导致，我们需要把其之后的全部元素，全部往后移一位。</p>
+<p>所以，如果我们使用数组的方式来实现查找表的话，那么如果你是一个动态查找表，即需要进行插入、删除操作，那么你要维护块间有序的特性，就要付出很大的代价。</p>
+<p><font color='cornflowerblue'>那么有没有更好的实现方式</font>？<br>其实我们可以用<strong>链式存储</strong>。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-54.png" style="zoom:67%;" />
+
+<p>索引表中的元素，链式地存储起来。对应的各个分块中的数据元素，也链式地存储起来。</p>
+<p>那么这样一来，你若要添加8这个元素，只需要在第一个分块的链表尾部插入8即可，如下</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-55.png" style="zoom: 33%;" />
+
+<p>删除一个元素也是类似的。</p>
+<p>甚至，如果你感觉某一个分块内的元素太多了，你也可以对这个分块的链表进行拆分。总之，可以根据现实遇到的需求，进行灵活的决定。（数据结构这门课不可能给你把所有能够遇到的情况全部罗列出来，它只是点明一种逻辑思想）</p>
+<h3 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h3><ul>
+<li><p>由n个数据元素组成的两个表：一个递增有序，一个无序。采用顺序查找算法，对有序表从头开始查找，发现当前元素已不小于待查元素时，停止查找，确定查找不成功，已知查找任一元素的概率是相同的，则在两种表中成功查找→B</p>
+<p>A 平均时间后者小<br>B 平均时间两者相同<br>C 平均时间前者小<br>D 无法确定</p>
+</li>
+<li><p>【2010】已知一个长度为16的顺序表L，其元素按关键字有序排列，若采用折半查找法查找一个L中不存在的元素，则关键字的比较次数最多是→5</p>
+<blockquote>
+<p>一次找到最边界的那一个数的情况下是最多次数的。 </p>
+<p>eg:  找的是第16个数 </p>
+<p>(0+15)/2  7   　第1次   (8+15)/2  11  　第2次 </p>
+<p>(12+15)/2  13 　第3次   (14+15)/2 14   第4次 </p>
+<p>(15+15)/2  15  第5次</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-56.png" style="zoom: 33%;" /></blockquote>
+</li>
+<li><p>【2015】下列选项中，不能构成折半查找中关键字比较序列的是–&gt;A</p>
+<p>A. 500,200,450,180</p>
+<p>B. 500,450,200,180</p>
+<p>C. 180,500,200,450</p>
+<p>D. 180,200,500,450</p>
+<blockquote>
+<p>试着画出查找路径图，因为折半查找的判定树是一棵二叉排序树，看其是否满足二叉排序树的要求。很显然，选项 A 的查找路径不满足。</p>
+</blockquote>
+</li>
+<li><p>【2016】在有n(n&gt;1000)个元素的升序数组A中查找关键字x。查找算法的伪代码如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(k&lt;n 且 A[k]&lt;x) k=k+<span class="number">3</span>;</span><br><span class="line"><span class="keyword">if</span>(k&lt;n 且 A[k]==x) 查找成功;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(k<span class="number">-1</span>&lt;n 且 A[k<span class="number">-1</span>]==x) 查找成功;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(k<span class="number">-2</span>=n 且 A[k<span class="number">-2</span>]==x) 查找成功;</span><br><span class="line">                <span class="keyword">else</span> 查找失败;</span><br></pre></td></tr></table></figure>
+
+<p>本算法与折半查找算法相比，有可能具有更少比较次数的情形是–&gt;B</p>
+<p>A．当x不在数组中</p>
+<p>B．当x接近数组开头处</p>
+<p>C．当x接近数组结尾处</p>
+<p>D．当x位于数组中间位置</p>
+<blockquote>
+<p>该程序采用跳跃式的顺利查找法查找升序数组中的x，显然是x越靠前，比较次数才会越少。</p>
+</blockquote>
+</li>
+<li><p>【2017】下列二叉树中，可能成为折半查找判定树(不含外部结点)的是–&gt;A</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-57.png" style="zoom: 33%;" />
+
+<blockquote>
+<p>折半查找判定树实际上是一棵二叉排序树，它的中序序列是一个有序序列。可以在树结点上依次填上相应的元素，符合折半查找规则的树即是所求。 </p>
+<p>B选项4、5相加除二向上取整，7、8相加除二向下取整，矛盾。C选项，3、4相加除二向上取整，6、7相加除二向下取整，矛盾。D选项，1、10相加除二向下取整，6、7相加除二向上取整，矛盾。A符合折半查找规则，正确。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-58.png" style="zoom:67%;" />
+
+<p>可以看看<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41754065/article/details/106590844">https://blog.csdn.net/qq_41754065/article/details/106590844</a></p>
+</blockquote>
+</li>
+<li><p>综合题【2013】设包含4个数据元素的集合S={‘do’,’for’,’repeat’,’while’}，各元素的查找概率依次为p1 = 0.35 ,p2 = 0.15,p3 = 0.15,p4 = 0.35。将S保存在一个长度为4 的顺序表中，采用折半査找法，査找成功时的平均查找长度为2.2。请回答： </p>
+<p>(1) 若采用顺序存储结构保存S,且要求平均査找长度更短，则元素应如何排列？应使用何种查找方法？査找成功时的平均査找长度是多少？ </p>
+<p>(2) 若釆用链式存储结构保存S,且要求平均査找长度更短，则元素应如何排列？应使用何种查找方法？查找成功时的平均查找长度是多少？</p>
+<blockquote>
+<p>(1)采用顺序存储结构，数据元素按其查找概率降序排列。</p>
+<p>采用顺序查找方法。</p>
+<p>查找成功时的平均查找长度=0.35x1+0.35x2+0.15x3+0.15x4=2.1。</p>
+<p>(2)</p>
+<p>答案一：</p>
+<p>采用链式存储结构，数据元素按其查找概率降序排列，构成单链表。</p>
+<p>采用顺序查找方法。</p>
+<p>查找成功时的平均查找长度=0.35x1+0.35x2+0.15x3+0.15x4=2.1。</p>
+<p>答案二：</p>
+<p>采用二叉链表存储结构，构造二叉排序树，元素存储方式见下图</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds7-59.png" style="zoom:67%;" />
+
+<p>采用二叉排序树的查找方法。</p>
+<p>查找成功时的平均查找长度=0.15x1+0.35x2+0.35x2+0.15x3=2.0</p>
+</blockquote>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tikxeis.fun">kailin2eis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tikxeis.fun/p/57685/">http://tikxeis.fun/p/57685/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tikxeis.fun" target="_blank">派总</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></div><div class="post_share"><div class="social-share" data-image="/img/1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/p/12342/"><img class="next-cover" src="/img/1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第六章 图(下)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/24523/" title="第一章 绪论"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第一章 绪论</div></div></a></div><div><a href="/p/14457/" title="第二章 线性表(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(上)</div></div></a></div><div><a href="/p/12625/" title="第二章 线性表(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(下)</div></div></a></div><div><a href="/p/63528/" title="第三章 栈、队列和数组(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第三章 栈、队列和数组(上)</div></div></a></div><div><a href="/p/17647/" title="第四章 串"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第四章 串</div></div></a></div><div><a href="/p/58315/" title="第三章 栈、队列和数组(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第三章 栈、队列和数组(下)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E6%9F%A5%E6%89%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">7.1 查找的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E6%89%BE%E8%A1%A8%E7%9A%84%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="toc-text">对查找表的常见操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E7%9A%84%E5%B9%B3%E5%9D%87%E6%8C%87%E6%A0%87"><span class="toc-text">查找算法的平均指标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E5%92%8C%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE"><span class="toc-text">7.2 顺序查找和折半查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="toc-text">顺序查找</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="toc-text">一般线性表的顺序查找</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">顺序查找的实现</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%95%88%E7%8E%87%E5%88%86%E6%9E%90"><span class="toc-text">查找效率分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="toc-text">有序表的顺序查找</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E7%9A%84%E4%BC%98%E5%8C%96-%E8%A2%AB%E6%9F%A5%E6%A6%82%E7%8E%87%E4%B8%8D%E7%9B%B8%E7%AD%89"><span class="toc-text">顺序查找的优化(被查概率不相等)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE"><span class="toc-text">折半查找</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%9F%A5%E6%89%BE%E6%88%90%E5%8A%9F%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">一个查找成功的例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%9F%A5%E6%89%BE%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">一个查找失败的例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE%E5%88%A4%E5%AE%9A%E6%A0%91%E7%9A%84%E6%9E%84%E9%80%A0"><span class="toc-text">折半查找判定树的构造</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0"><span class="toc-text">练习</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%95%88%E7%8E%87%E5%88%86%E6%9E%90-1"><span class="toc-text">查找效率分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E6%80%9D%E8%80%83"><span class="toc-text">拓展思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E6%9F%A5%E6%89%BE"><span class="toc-text">分块查找</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E6%9F%A5%E6%89%BE%E7%9A%84%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="toc-text">分块查找的算法思想</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%88%90%E5%8A%9F%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">查找成功的例子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">查找失败的例子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA-1"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE%E6%9F%A5%E7%B4%A2%E5%BC%95"><span class="toc-text">用折半查找查索引</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%83%85%E5%BD%A2%E4%B8%80-%E7%B4%A2%E5%BC%95%E8%A1%A8%E4%B8%AD%E5%8C%85%E5%90%AB%E8%AF%A5%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">情形一:索引表中包含该关键字</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%83%85%E5%BD%A2%E4%BA%8C-%E7%B4%A2%E5%BC%95%E8%A1%A8%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E8%AF%A5%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E4%BD%86%E8%83%BD%E6%9F%A5%E6%89%BE%E6%88%90%E5%8A%9F"><span class="toc-text">情形二:索引表中不包含该关键字，但能查找成功</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%83%85%E5%BD%A2%E4%B8%89-%E6%9F%A5%E6%89%BE%E5%A4%B1%E8%B4%A5"><span class="toc-text">情形三:查找失败</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%95%88%E7%8E%87%E5%88%86%E6%9E%90-2"><span class="toc-text">查找效率分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%87%87%E7%94%A8%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="toc-text">采用顺序查找</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%87%87%E7%94%A8%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE"><span class="toc-text">采用折半查找</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%BD%A2"><span class="toc-text">特殊情形</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E6%80%9D%E8%80%83-1"><span class="toc-text">拓展思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/57685/" title="第七章 查找(上)">第七章 查找(上)</a><time datetime="2022-09-28T08:03:04.000Z" title="发表于 2022-09-28 16:03:04">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/12342/" title="第六章 图(下)">第六章 图(下)</a><time datetime="2022-09-28T07:19:14.000Z" title="发表于 2022-09-28 15:19:14">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/63800/" title="第六章 图(上)">第六章 图(上)</a><time datetime="2022-09-28T07:04:39.000Z" title="发表于 2022-09-28 15:04:39">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/56280/" title="第五章 树与二叉树(下)">第五章 树与二叉树(下)</a><time datetime="2022-09-28T06:47:26.000Z" title="发表于 2022-09-28 14:47:26">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/48066/" title="第五章 树与二叉树(中)">第五章 树与二叉树(中)</a><time datetime="2022-09-28T06:37:49.000Z" title="发表于 2022-09-28 14:37:49">2022-09-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="关关雎鸠,在河之洲,窈窕淑女,what' your qq" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
