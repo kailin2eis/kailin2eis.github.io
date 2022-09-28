@@ -51,7 +51,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2022-09-28 16:04:29'
+  postUpdate: '2022-09-28 19:57:01'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -140,7 +140,245 @@
       }
     }
     detectApple()
-    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">派总</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/57685/" title="第七章 查找(上)">第七章 查找(上)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T08:03:04.000Z" title="发表于 2022-09-28 16:03:04">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">7.1 查找的基本概念基本概念查找————在数据集合中寻找满足某种条件的数据元素的过程称为查找。结果分为查找成功与查找失败。
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><style>.mjpage .MJX-monospace {
+  font-family: monospace;
+}
+
+.mjpage .MJX-sans-serif {
+  font-family: sans-serif;
+}
+
+.mjpage {
+  display: inline;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  text-indent: 0;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  float: none;
+  direction: ltr;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.mjpage * {
+  transition: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+}
+
+.mjx-svg-href {
+  fill: blue;
+  stroke: blue;
+}
+
+.MathJax_SVG_LineBox {
+  display: table !important;
+}
+
+.MathJax_SVG_LineBox span {
+  display: table-cell !important;
+  width: 10000em !important;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.mjpage__block {
+  text-align: center;
+  margin: 1em 0em;
+  position: relative;
+  display: block !important;
+  text-indent: 0;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+}
+</style></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">派总</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/44803/" title="第八章 排序(四)">第八章 排序(四)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T11:54:17.000Z" title="发表于 2022-09-28 19:54:17">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">8.7 外部排序外部排序外存、内存之间的数据交换此处的外存特指“磁盘”。而磁盘是以所谓的“磁盘块”为单位的。
+操作系统也是以这些“磁盘块”，对磁盘的存储空间进行管理。
+每个磁盘块的大小，比如1KB，比如4KB。此处以1KB为例。
+数据信息可以存放在各个磁盘块上。
+
+
+现在，比如磁盘块4、磁盘块11，里面存放了一些数据。
+问题：如果要修改磁盘里面存储的数据，应该怎么办？
+我们要修改磁盘里的数据，需要做的事，就是把对应磁盘块里的数据，读到内存里。
+比如说，我们要在内存里申请开辟一块1KB的缓冲区。这样一个缓冲区的大小，是可以和一个磁盘块的大小保持一致的。
+接下来，我们就可以把磁盘块4当中的数据，读到内存当中。
+磁盘的读/写，都是以”块“为单位进行的。也就是说每次都读一块、写一块。
+数据已经读入内存了，接下来我们就可以用程序代码，对内存里的数据进行修改。
+
+
+现在，我们只是把内存里面的数据修改了，如果要更改磁盘块的数据，那么还需要把这些数据写回磁盘。同样地，还是以“块”为单位，进行“写”操作的。
+所以我们可以把这1KB内存缓冲区中的内容，写回磁盘块4。当然，也可以把它写到其他的磁盘块，比如同 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/14847/" title="第八章 排序(三)">第八章 排序(三)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T11:52:50.000Z" title="发表于 2022-09-28 19:52:50">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">8.5 归并排序和基数排序归并排序 Merge Sort什么是归并/合并
+归并：把两个或多个已经有序的序列合并成一个。
+
+
+
+现在，左边这个数组和右边这个数组，都是有序的，现在我们要把它合并成一个。
+首先我们肯定得定义一个更大的数组，才能把所有的这些元素都存放在一起。
+接下来要做的事情是，我们可以设置这样的三个指针。
+
+
+接下来，我们每一次会对比 i、j 所指元素，选择一个更小的放入 k 所指位置。
+此时，i、j 所指元素较小的是7，于是将j 所指元素7放入 k 所指位置。之后，将j、k向后移动一位。
+
+
+此时，i、j 所指元素较小的是10，所以把10放入，之后将j、k向后移。
+之后，12更小，所以将12放入，之后将i、k向后移。
+…………
+
+
+此时，i、j 所指的元素，都是24。
+如果是我们自己写代码的话，可以在代码里设计，让 i 所指的元素优先放入，也可以设计让 j 所指的元素优先放入。
+这个地方，我们让 i 所指的优先。
+
+
+所以会把 i 所指的24先放进来。
+下一步，对比，把 j 所指的24放进来。
+
+
+
+
+到了这一步，j 指针已经超出了它所对应的数组的范围了。也就是说明右边这 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/43357/" title="第八章 排序(二)">第八章 排序(二)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T11:50:30.000Z" title="发表于 2022-09-28 19:50:30">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">8.3 交换排序冒泡排序 Bubble Sort算法思想从后往前（或从前往后）两两比较相邻元素的值，若为逆序（即A[i-1] &gt; A[i]），则交换它们，直到序列比较完。称这样过程为“一趟”冒泡排序。
+
+
+
+从后往前两两对比相邻元素，依次对27 49，13 27……进行对比
+由于我们的目标是使整个表呈递增，因此，若后一个元素较小，则交换这两个元素。
+
+
+
+第二趟同理。并且同样将最小的元素“冒”到最前面。
+
+
+此时需要注意，之前已经确定位置的元素，不用再与之进行对比了。
+因此，第二趟结束后，会导致，最小的两个元素已经“冒”到了最前边。
+第三趟同理。同样地，之前确定过位置的元素不用再与之对比。
+
+
+第三趟结束后，值最小的三个元素已经“冒”到了最前边。
+第四趟同理，两两对比，该交换交换。
+
+
+当两个数的值相等时，我们不应该交换它们两个的位置，这么做能保证算法的稳定性。能保证原本在右边的元素不会跑到左边去。
+接下来，进行第五趟排序。
+
+
+会发现，两两对比，每一对数字都不需要进行交换。那么这种情况其实说明，整体已经达到了一个有序的状态了。所以经过第五趟处理，我们就可以确定，整个表已经有序了 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/27129/" title="第八章 排序(一)">第八章 排序(一)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T11:47:17.000Z" title="发表于 2022-09-28 19:47:17">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">8.1 排序的基本概念排序的定义排序啥意思，就是字面意思 😆！比如原来数组的元素是[1, 3, 2]，排完序就是[1, 2, 3]，所谓排序，就是把n个关键字，按照递增或递减的顺序，把它们给重新排列一遍。
+输入:n个记录R1，R2,…,Rn，对应的关键字为k1,k2,…,kn。
+输出:输入序列的一个重排R1‘，R2’，…,Rn’,使得有k1’&lt;=k2’&lt;=…&lt;=kn’(也可递减)
+
+
+排序的应用排序着有非常的应用。是生活中必不可少的算法。
+如王者荣耀战力
+
+
+
+
+
+
+
+
+排序算法的评价指标算法的稳定性。若待排序表中有两个元素Ri和Rj，其对应的关键字相同即keyi = keyj，且在排序前Ri在Rj的前面，若使用某一排序算法排序后，Ri仍在Rj的前面，则称这个排序算法是稳定的，否则称排序算法是不稳定的。
+
+
+
+稳定的：关键字相同的元素在排序之后相对位置不变。反之是不稳定的。
+
+问：稳定的排序算法一定比不稳定的好？
+答：不一定，要结合实际需求出发。例如实际场景对排序的稳定性没有要求，或者关键字根本就没有重复的，那么稳定不稳定都一样。
+排序算法的分类
+内部排序：数据都在 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/15017/" title="第七章 查找(四)">第七章 查找(四)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T11:33:21.000Z" title="发表于 2022-09-28 19:33:21">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">7.5 散列表散列表的基本概念散列表：根据关键字而直接进行访问的数据结构。也就是说，散列表建立了关键字和存储地址之间的一种直接映射关系
+散列函数:一个把查找表中的关键字映射成该关键字对应的地址的函数，记为$$\rm Hash(key) = Addr$$
+特点是：数据元素的关键字与其存储地址直接相关。
+就是数据元素本身的关键字，和它的存储地址之间有一个映射关系。
+
+如何建立“关键字”与“存储地址”的关系？
+通过“散列函数（哈希函数）”：Addr = H(key)
+
+例：有一堆数据元素，关键字分别为&#123;19, 14, 23, 1, 68, 20, 84, 27, 55, 11, 10, 79&#125;，散列函数H(key) = key%13。
+因此，任何一个关键字，都会被映射到0~12这个区间内。
+
+
+
+依次计算：
+19%13 = 6   14%13 = 1     23%13 = 10
+
+
+
+
+但是，当继续计算至： 1%13 = 1时
+
+
+
+会发现，1这数据，应该放在下标为1的位置处，但是放不进去。因为已经有14这个数据占住了。
+基于这个问题，我们引出两个概念：
+散列函数可能会 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/4437/" title="第七章 查找(三)">第七章 查找(三)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T08:14:56.000Z" title="发表于 2022-09-28 16:14:56">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content"> 7.4 B 树和 B+树
+ B树
+ 回顾二叉查找(排序)树
+
+二叉查找树也叫二叉排序树。
+其意义在于，把搜索的范围不断的分为两个部分。（小于的，和大于的）
+
+例如，我们原本的搜索范围为：(-∞, +∞)
+经过了根结点29后，搜索范围被划分为了：(-∞, 29)，(29, +∞)，到这两个范围之一中进行进一步查找。
+
+问题来了：能不能把二叉查找树，拓展为m叉查找树？
+ 5叉查找树
+
+
+和二叉查找树其实是类似的。
+只不过二叉查找树的每个结点将范围分割成了两个部分。
+而多叉查找树，对每个结点，其将查找范围可能分为了多个部分。
+例如：
+根结点22将范围划分为了两个部分。
+而根结点的右孩子，包含两个关键字36和45，因此，在该结点处，查找范围被划分为了：
+(22, 36)，(36, 45)，(45, +∞)。
+也就是可能不只是将范围一分为二了，有可能多加了几个分割点。
+
+因此对于5叉查找树，每个节点最少有1个关键字，2个分叉；最多4个关键字，5个分叉。
+此外，结点中的关键字都是有序的，要么递增要么递减。
+同时，失败结点的区间范围都是很明确的，因为结点中关键字是有序的。
+
+如，最下面一层，从左到 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/33271/" title="第七章 查找(二)">第七章 查找(二)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T08:07:53.000Z" title="发表于 2022-09-28 16:07:53">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content"> 7.3 树型查找
+ 二叉排序树（BST）
+ 二叉排序树的定义
+二叉排序树，又称二叉查找树(BST,Binary Search Tree),一棵二叉树或者是空二叉树，或者是具有如下性质的二叉树：
+
+左子树上所有结点的关键字均小于根结点的关键字
+右子树上所有结点的关键字均大于根结点的关键字
+左子树和右子树又各是一棵二叉排序树
+
+
+ 二叉排序树的查找
+若树非空，目标值与根节点的值比较，若相等，则查找成功。若小于根节点，则在左子树上查找，否则在右子树上查找。
+例如，对于如下二叉排序树，查找关键字为30的结点：
+①指针T指向根结点19
+②30&gt;19，则T往右子树查找，T指向50
+③30&lt;50，则T往左子树查找，T指向26
+④30&gt;26，则T往右子树查找，T指向30
+⑤30==30，则查找成功，返回指针T
+
+1234567891011121314151617// 二叉排序树结点typedef struct BSTNode&#123;    int key;    struct BSTNode *lchild,*rchild;&#125;BSTNode,*BSTree;// 在二 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/57685/" title="第七章 查找(一)">第七章 查找(一)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T08:03:04.000Z" title="发表于 2022-09-28 16:03:04">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">7.1 查找的基本概念基本概念查找————在数据集合中寻找满足某种条件的数据元素的过程称为查找。结果分为查找成功与查找失败。
 查找表（查找结构）————用于查找的数据集合称为查找表，它由同一类型的数据元素(或记录)组成。
 关键字———数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。
 
@@ -232,173 +470,14 @@ TD(A) = 1+4 = 5
 
 
 这个图里面有三个连通分量——整个大陆区域的铁路图、海南岛铁路图、台湾岛铁路图。
-当然，对于大陆区域的铁路图，你可以把其中长江三角区的铁路图挑出来，那么挑出来的这个图，它是一个子图，但是 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/56280/" title="第五章 树与二叉树(下)">第五章 树与二叉树(下)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T06:47:26.000Z" title="发表于 2022-09-28 14:47:26">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">5.4 树、森林 Tree Forest树的存储结构树的逻辑结构回顾树是 n(n≥0)个结点的有限集合，n=0时，称为空树，这是一种特殊情况。在任意一棵非空树中应满足：
-
-有且仅有一个特定的称为根的结点
-当 n&gt;1 时，其余结点可分为 m(m&gt;0) 个互不相交的有限集合 T1、T2、T3、…Tm ,其中每个集合本身又是一棵树，并且称为树结点的子树。
-
-
-
-双亲表示法(顺序存储)双亲表示法：每个结点中保存指向双亲的指针。
-因为在一棵树中，除了根结点外，每个结点都有且仅有一个它的父节点。
-所以，利用这一特性，我们在保存每个结点本身的数据之外，再保存一个指向它双亲的指针。
-
-即使用顺序存储，每个数据元素存放了数据data、双亲索引parent。
-根结点固定存储在0号位置，parent = -1表示没有双亲。
-当然，这个“指针”实际上是个int型变量。
-
-
-
-该存储结构利用了每个结点(根结点除外)只有唯一双亲的性质，可以很快得到每个结点的双亲结点，但求结点的孩子时需要遍历整个结构。
-若要增加一个结点，只需要在数组的空闲位置写入一个结点即可，写入其数据值，并绑定其与双亲的关系即可。而 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/48066/" title="第五章 树与二叉树(中)">第五章 树与二叉树(中)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T06:37:49.000Z" title="发表于 2022-09-28 14:37:49">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">5.3 二叉树的遍历和线索二叉树二叉树的遍历遍历：按照某种次序把所有结点都访问一遍
-对于一个线性结构，如a1 a2 a3 a4 a5
-对其进行遍历，是很简单的，我们可以从前往后依次遍历，也可以从后往前。
-但是对于树形结构，我们的遍历规则就会更复杂一些。
-由于树这种结构呈现出了一层一层的效果，因此不难想到我们可以一层一层地访问这些结点。
-
-
-这种方法叫做层次遍历，即基于树的层次特性确定的次序规则。
-而我们此节主要说的先/中/后序遍历是基于树的递归特性确定的次序规则。
-二叉树的递归特性：
-
-要么是个空二叉树
-要么就是由 “根节点 + 左子树 + 右子树” 组成的二叉树
-先序遍历：根左右
-中序遍历：左根右
-后序遍历：左右根
-
-
-我们先来看一个简单的例子：
-
-
-上述是最简单的二叉树遍历，我们再来看一个:
-
-
-先序遍历 PreOrder先序遍历的操作过程如下：
-
-若二叉树为空，则什么也不做
-若二叉树非空
-访问根节点
-先序遍历左子树
-先序遍历右子树
-
-
-
-先序遍历——第一次路过时访问结点
-先序遍历的算法实现（递归）
-1234567void PreOrder(BiTree T) &#123;  if ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/63944/" title="第五章 树与二叉树(上)">第五章 树与二叉树(上)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T04:50:11.000Z" title="发表于 2022-09-28 12:50:11">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">5.1 树的基本概念树的定义
-
-空树：结点数为 0 的树
-非空树的特性:
-
-有且仅有一个根结点
-没有后继的结点称为叶子结点(或者终端结点)
-有后继的结点称为分支结点(或者非终端结点)
-除了根节点外，任何一个结点都有且仅有一个前驱
-每个结点可以有 0 个或多个后继结点。
-
-除了根结点外，任何一个结点都有且仅有一个前驱
-
-
-树是 n(n≥0) 个结点的有限集合，n = 0 时，称为空树，这是一种特殊情况。在任意一棵非空树中应满足：
-
-有且仅有一个特定的称为根的结点。
-当 n &gt; 1 时，其余结点可分为 m(m&gt;0) 个互不相交的有限集合T1,T2,…Tm，其中每个集合本身又是一棵树，并且称为根结点的子树。
-
-
-
-基本术语
-根结点：非空树种无前驱结点的结点
-结点的度：结点拥有的子树数
-树的度：树内各结点的度的最大值
-叶子（终端结点）：没有后继元素（度 = 0）
-分支结点（非终端结点）：度 != 0；
-内部结点：根结点以外的分支结点
-孩子，双亲：结点的子树的根称为该结点的孩子，该结点称为孩子的双亲
-兄弟结点：有共同的双亲
-堂兄弟：双亲在同一层的结点
-结点的祖先：从根到该结点所经分支 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/17647/" title="第四章 串">第四章 串</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T04:38:35.000Z" title="发表于 2022-09-28 12:38:35">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">*4.1 串的定义和实现什么是串字符串，简称串，是由零个或多个字符组成的有限序列。一般记为 S = ‘a1a2…an’(n≥0)
-其中，S 是串名，单引号括起来的字符序列是串的值，ai 可以是字母、数字或其他字符；串中字符的个数 n 称为串的长度。n = 0 时的串称为空串。
-
-
-串是一种特殊的线性表，数据元素之间呈线性关系
-它们的区别是:
-
-普通的线性表里面可以存放各种各样的数据类型，是不做限制的。串的数据对象限定为字符集(如中文字符、英文字符、数字字符、标点字符等)
-
-普通的线性表，我们在进行增删改查等基本操作时，一般是对线性表中的某一个数据元素进行操作。
-而我们对串的基本操作，如增删改查等，通常以子串为操作对象。也就是一次是对一堆字符进行操作的。
-
-
-串的存储结构串的顺序存储结构类型定义（本质上就是字符数组）
-静态数组实现:定长顺序存储
-12345#define MAXLEN 255			// 预定义最大串长为255typedef struct&#123;    char ch[MAXLEN];		// 每个分量存储一个字符    int lenght;				// 串的实际长度 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/58315/" title="第三章 栈、队列和数组(下)">第三章 栈、队列和数组(下)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-28T04:30:19.000Z" title="发表于 2022-09-28 12:30:19">2022-09-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">3.3 栈和队列的应用栈在括号匹配中的应用问题分析在我们写代码的过程中，不论是大括号、小括号，还是中括号，它们总是成双成对的出现的。
-我们如果只写了左括号，而没有写与它对应的右括号，那么编辑器就会检测出来错误。
-此外，左括号、右括号除了在数量上要匹配以外，在形状上也要匹配。
-
-
-遇到左括号就入栈，遇到右括号就出栈
-例如：扫描下方括号，碰到左括号就将其压入栈底，碰到右括号就将其出栈匹配
-
-
-
-
-这里的算法演示动画非常好理解：王道考研 栈在括号匹配中的应用
-
-
-流程图:
-
-
-算法实现123456789101112131415161718192021222324252627282930313233343536373839404142// 考试中可直接食用基本操作,建议简要说明接口#define MaxSize 10							// 定义栈中元素的最大个数typedef struct&#123;							        char data[MaxSize];						// 静态数组存放栈中元素    int top;								// 栈顶指针&#125;SqStack;// 初始化 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/63528/" title="第三章 栈、队列和数组(上)">第三章 栈、队列和数组(上)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-25T06:31:31.000Z" title="发表于 2022-09-25 14:31:31">2022-09-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">3.1 栈 Stack栈的基本概念
-栈的定义
-
-栈是只允许在一端进行插入或删除操作的线性表。限定这种线性表只能在某一端进行插入和删除操作。
-
-栈顶:线性表允许进行插入删除的那一端。
-栈底:固定的，不允许进行插入和删除的另一端。
-空栈:栈里没有存任何数据元素，相当于线性表的空表。
-
-
-特性：后进先出 Last In First Out, LIFO
-
-栈的数学性质：卡特兰数 Catalan Number
-卡特兰数一般可用于这种结论:n个不同元素进栈，出栈元素不同排列的个数为:
-
-$$\frac 1{n+1}C^n_{2n}$$
-
-所以，如果像上面那样有五个元素进栈，那么所有合法的出栈顺序有:$$\frac 1{5+1}C^5_{10}=42$$可见，即使只有5个元素进栈，合法的出栈顺序就有42种，就很多了。所以考试题基本不会让你全部写出所有的，而是以选择题的形式让你选出一个合法的出栈顺序。
-
-
-
-
-栈的基本操作
-InitStack(&amp;S)：初始化栈操作。构造一个空栈S，分配内存空间。
-DestroyStack(&amp;S)：销毁栈操作，并释放栈S所占的内存空间
-StackEmpt ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/p/12625/" title="第二章 线性表(下)">第二章 线性表(下)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-25T06:14:10.000Z" title="发表于 2022-09-25 14:14:10">2022-09-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="content">2.3 线性表的链式表示链表——用链式存储方式实现的线性表。
-链表主要有四种：单链表、双链表、循环链表、静态链表。
-
-优点：不要求大片连续空间，改变容量方便
-缺点：不可随机存取，要耗费一定空间存指针域
-
-单链表的定义
-
-
-线性表的链式存储又称单链表，它是指通过一组任意的存储单元来存储线性表中的数据元素。为了建立数据元素之间的线性关系，对每个链表结点，除存放元素自身的信息外，还需要存放一个指向其后继的指针。
-
-单链表的代码实现:
-123456struct LNode&#123;		//单链表结点的结构类型 	ElemType data;	//数据域 	struct LNode *next;	//指针域 &#125;; struct LNode *p = (struct LNode *)malloc(sizeof(struct LNode));	//增加一个新的结点
-
-此处，我们发现，每次定义一个新结点，都要将它定义为struct LNode的类型。
-于是我们直接将原结构类型struct LNode使用typedef重命名一下，以简化。
-typedef的使用问题
-typedef &lt;数 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/57685/" title="第七章 查找(上)">第七章 查找(上)</a><time datetime="2022-09-28T08:03:04.000Z" title="发表于 2022-09-28 16:03:04">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/12342/" title="第六章 图(下)">第六章 图(下)</a><time datetime="2022-09-28T07:19:14.000Z" title="发表于 2022-09-28 15:19:14">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/63800/" title="第六章 图(上)">第六章 图(上)</a><time datetime="2022-09-28T07:04:39.000Z" title="发表于 2022-09-28 15:04:39">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/56280/" title="第五章 树与二叉树(下)">第五章 树与二叉树(下)</a><time datetime="2022-09-28T06:47:26.000Z" title="发表于 2022-09-28 14:47:26">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/48066/" title="第五章 树与二叉树(中)">第五章 树与二叉树(中)</a><time datetime="2022-09-28T06:37:49.000Z" title="发表于 2022-09-28 14:37:49">2022-09-28</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+当然，对于大陆区域的铁路图，你可以把其中长江三角区的铁路图挑出来，那么挑出来的这个图，它是一个子图，但是 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/44803/" title="第八章 排序(四)">第八章 排序(四)</a><time datetime="2022-09-28T11:54:17.000Z" title="发表于 2022-09-28 19:54:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/14847/" title="第八章 排序(三)">第八章 排序(三)</a><time datetime="2022-09-28T11:52:50.000Z" title="发表于 2022-09-28 19:52:50">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/43357/" title="第八章 排序(二)">第八章 排序(二)</a><time datetime="2022-09-28T11:50:30.000Z" title="发表于 2022-09-28 19:50:30">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/27129/" title="第八章 排序(一)">第八章 排序(一)</a><time datetime="2022-09-28T11:47:17.000Z" title="发表于 2022-09-28 19:47:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/15017/" title="第七章 查找(四)">第七章 查找(四)</a><time datetime="2022-09-28T11:33:21.000Z" title="发表于 2022-09-28 19:33:21">2022-09-28</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>分类</span>
             
             </div>
             <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><span class="card-category-list-name">408数据结构</span><span class="card-category-list-count">12</span></a></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">408数据结构</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">九月 2022</span><span class="card-archive-list-count">12</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">12</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-09-28T08:04:29.507Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function subtitleType () {
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><span class="card-category-list-name">408数据结构</span><span class="card-category-list-count">19</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">408数据结构</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">九月 2022</span><span class="card-archive-list-count">19</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">19</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-09-28T11:57:00.751Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function subtitleType () {
   if (true) { 
     window.typed = new Typed("#subtitle", {
       strings: ["空旷的不只是心中的一条河流","Dream most deep place, only then the smile is not tired."],

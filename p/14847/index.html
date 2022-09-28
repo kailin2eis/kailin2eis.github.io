@@ -1,0 +1,813 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>第八章 排序(三) | 派总</title><meta name="keywords" content="408数据结构"><meta name="author" content="kailin2eis"><meta name="copyright" content="kailin2eis"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="8.5 归并排序和基数排序归并排序 Merge Sort什么是归并&#x2F;合并 归并：把两个或多个已经有序的序列合并成一个。    现在，左边这个数组和右边这个数组，都是有序的，现在我们要把它合并成一个。 首先我们肯定得定义一个更大的数组，才能把所有的这些元素都存放在一起。 接下来要做的事情是，我们可以设置这样的三个指针。   接下来，我们每一次会对比 i、j 所指元素，选择一个更小的放入 k 所指位置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八章 排序(三)">
+<meta property="og:url" content="http://tikxeis.fun/p/14847/index.html">
+<meta property="og:site_name" content="派总">
+<meta property="og:description" content="8.5 归并排序和基数排序归并排序 Merge Sort什么是归并&#x2F;合并 归并：把两个或多个已经有序的序列合并成一个。    现在，左边这个数组和右边这个数组，都是有序的，现在我们要把它合并成一个。 首先我们肯定得定义一个更大的数组，才能把所有的这些元素都存放在一起。 接下来要做的事情是，我们可以设置这样的三个指针。   接下来，我们每一次会对比 i、j 所指元素，选择一个更小的放入 k 所指位置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tikxeis.fun/img/1.png">
+<meta property="article:published_time" content="2022-09-28T11:52:50.000Z">
+<meta property="article:modified_time" content="2022-09-28T11:55:55.161Z">
+<meta property="article:author" content="kailin2eis">
+<meta property="article:tag" content="408数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tikxeis.fun/img/1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://tikxeis.fun/p/14847/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第八章 排序(三)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-28 19:55:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><style>.mjpage .MJX-monospace {
+  font-family: monospace;
+}
+
+.mjpage .MJX-sans-serif {
+  font-family: sans-serif;
+}
+
+.mjpage {
+  display: inline;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  text-indent: 0;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  float: none;
+  direction: ltr;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.mjpage * {
+  transition: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+}
+
+.mjx-svg-href {
+  fill: blue;
+  stroke: blue;
+}
+
+.MathJax_SVG_LineBox {
+  display: table !important;
+}
+
+.MathJax_SVG_LineBox span {
+  display: table-cell !important;
+  width: 10000em !important;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.mjpage__block {
+  text-align: center;
+  margin: 1em 0em;
+  position: relative;
+  display: block !important;
+  text-indent: 0;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+}
+</style></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第八章 排序(三)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-28T11:52:50.000Z" title="发表于 2022-09-28 19:52:50">2022-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-28T11:55:55.161Z" title="更新于 2022-09-28 19:55:55">2022-09-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第八章 排序(三)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="8-5-归并排序和基数排序"><a href="#8-5-归并排序和基数排序" class="headerlink" title="8.5 归并排序和基数排序"></a>8.5 归并排序和基数排序</h2><h3 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序 Merge Sort"></a>归并排序 Merge Sort</h3><h4 id="什么是归并-合并"><a href="#什么是归并-合并" class="headerlink" title="什么是归并/合并"></a>什么是归并/合并</h4><blockquote>
+<p>归并：把<strong>两个</strong>或<strong>多个</strong>已经有序的序列合并成一个。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-140.png" style="zoom:80%;" />
+
+<p>现在，左边这个数组和右边这个数组，都是有序的，现在我们要把它合并成一个。</p>
+<p>首先我们肯定得定义一个更大的数组，才能把所有的这些元素都存放在一起。</p>
+<p>接下来要做的事情是，我们可以设置这样的三个指针。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-141.png" style="zoom:80%;" />
+
+<p>接下来，我们每一次会<strong>对比 i、j 所指元素，选择一个更小的放入 k 所指位置</strong>。</p>
+<p>此时，i、j 所指元素较小的是<code>7</code>，于是将j 所指元素7放入 k 所指位置。之后，将j、k向后移动一位。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-142.png" style="zoom:80%;" />
+
+<p>此时，i、j 所指元素较小的是<code>10</code>，所以把10放入，之后将j、k向后移。</p>
+<p>之后，12更小，所以将12放入，之后将i、k向后移。</p>
+<p>…………</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-143.png" style="zoom:80%;" />
+
+<p>此时，i、j 所指的元素，都是<code>24</code>。</p>
+<p>如果是我们自己写代码的话，可以在代码里设计，让 i 所指的元素优先放入，也可以设计让 j 所指的元素优先放入。</p>
+<p>这个地方，我们让 i 所指的优先。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-145.png" style="zoom:80%;" />
+
+<p>所以会把 i 所指的<code>24</code>先放进来。</p>
+<p>下一步，对比，把 j 所指的24放进来。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-144.png" style="zoom:80%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-146.png" style="zoom: 67%;" />
+
+<p>到了这一步，j 指针已经超出了它所对应的数组的范围了。也就是说明右边这个数组中所有的元素，我们都已经进行了合并。</p>
+<p>那现在，只有左边这个数组，是还没有合并完毕所有元素的。所以接下来我们就不再需要进行关键字的对比，我们可以直接把其中剩余元素全部加入总表。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-147.png" style="zoom:67%;" />
+
+<p>到此为止，我们就完成了两个有序序列的归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-148.png" style="zoom:67%;" />
+
+<h4 id="”2路“归并"><a href="#”2路“归并" class="headerlink" title="”2路“归并"></a>”2路“归并</h4><blockquote>
+<p>什么叫2路归并呢？</p>
+<p>就是我们刚刚所做的这个过程。</p>
+<p>我们把<strong>两个</strong>有序的序列合二为一，这就是2路归并。</p>
+<p>“2路” —— 二合一。</p>
+</blockquote>
+<p>“2路”归并 —— 每选出一个小元素需对比关键字1次。</p>
+<h4 id="“4路”归并"><a href="#“4路”归并" class="headerlink" title="“4路”归并"></a>“4路”归并</h4><blockquote>
+<p>既然有2路归并，当然也可以有<strong>多路归并</strong>。</p>
+<p>比如说“4路”归并。</p>
+<p>“4路” —— 四合一。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-149.png" style="zoom:80%;" />
+
+<p>我们给出了4个有序的数组，我们将它们四合一。</p>
+<p>“4路”归并 —— 每选出一个小元素需对比关键字3次。</p>
+<p><strong>结论</strong>：<strong>m路归并，每选出一个元素需要对比关键字m-1次</strong>。</p>
+<h4 id="归并排序-手算"><a href="#归并排序-手算" class="headerlink" title="归并排序(手算)"></a>归并排序(手算)</h4><blockquote>
+<p>在内部排序中，我们对于归并排序算法，一般采用的是2路归并。</p>
+<p>每相邻的两两进行归并。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-150.png" style="zoom: 50%;" />
+
+<p>给定一个初始序列。我们会把它看作一个、一个的，独立的，排好序的部分，每部分含有1个元素。</p>
+<p>接下来，我们会对相邻的两个部分进行2路归并。</p>
+<p>比如说，0和1两处的元素，进行2路归并。接下来，2和3进行归并；4和5进行归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-151.png" style="zoom: 50%;" />
+
+<p>而6处的这个元素，它是单个的，所以对它的处理相当于什么也没做。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-152.png" style="zoom:50%;" />
+
+<p>这是<strong>第一趟归并</strong>排序。</p>
+<p>之后，第二趟归并排序，会基于第一趟归并的结果，再次地对它们归并。</p>
+<p>可见第一部分（0、1）已经有序，第二部分（2、3）也已经有序。把这两个有序的子序列归并成一个。第三、四部分同理。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-153.png" style="zoom:50%;" />
+
+<p>这是<strong>第二趟归并</strong>排序。</p>
+<p>此时，我们得到了2个已经有序的子序列。最后再进行一次归并就可以了，就能得到整体有序的一个序列。</p>
+<p>整个过程如下所示。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-154.png" style="zoom: 80%;" />
+
+<blockquote>
+<p>核心操作：</p>
+<p>把数组内的两个有序序列归并成一个。</p>
+</blockquote>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-155.png" style="zoom: 50%;" />
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *B = (<span class="type">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="type">int</span>));	<span class="comment">//辅助数组B</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//A[low...mid]和A[mid+1...high]各自有序，将两个部分归并</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Merge</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> low, <span class="type">int</span> mid, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i,j,k;</span><br><span class="line">	<span class="keyword">for</span>(k=low; k&lt;=high; k++)</span><br><span class="line">		B[k] = A[k];	<span class="comment">//将A中所有元素都复制到B中 </span></span><br><span class="line">	<span class="keyword">for</span>(i=low,j=mid+<span class="number">1</span>,k=i; i&lt;=mid &amp;&amp; j&lt;=high; k++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(B[i] &lt;= B[j])</span><br><span class="line">			A[k] = B[i++];	<span class="comment">//将较小值复制到A中 </span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			A[k] = B[j++];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(i&lt;=mid)	A[k++] = B[i++];</span><br><span class="line">	<span class="keyword">while</span>(j&lt;=high)  A[k++] = B[j++];</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>对于两个有序子序列来说（如上图3-6已经是有序的、7-9已经是有序的），我们会将low指针指向最前面的元素，然后让mid指向第一个有序子序列的最后一个元素，让high指针指向第二个子序列的最后一个元素。</p>
+<p>这样，我们就可以用low、mid、high，区分出两个要归并的有序子序列的范围。</p>
+<p>而且这两个子序列是相邻的。</p>
+<p>那么，这就契合了我们之前对于归并排序手算过程中，提出的需求（核心操作），即每次归并，都是要归并两两相邻的子序列。</p>
+<blockquote>
+<p>此代码当中，我们</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(B[i] &lt;= B[j])</span><br><span class="line"> A[k] = B[i++];	<span class="comment">//将较小值复制到A中 </span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> A[k] = B[j++];</span><br></pre></td></tr></table></figure>
+
+<p>即两数相等时，我们也将 i 所指的元素优先放入，而 i 是靠前的那个元素。保证了<strong>稳定性</strong>。</p>
+</blockquote>
+<p>以上是归并排序的核心操作。</p>
+<p>接下来看归并排序的完整代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *B = (<span class="type">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="type">int</span>));	<span class="comment">//辅助数组B</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//A[low...mid]和A[mid+1...high]各自有序，将两个部分归并</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Merge</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> low, <span class="type">int</span> mid, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i,j,k;</span><br><span class="line">	<span class="keyword">for</span>(k=low; k&lt;=high; k++)</span><br><span class="line">		B[k] = A[k];	<span class="comment">//将A中所有元素都复制到B中 	</span></span><br><span class="line">	<span class="keyword">for</span>(i=low,j=mid+<span class="number">1</span>,k=i; i&lt;=mid &amp;&amp; j&lt;=high; k++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(B[i] &lt;= B[j])</span><br><span class="line">			A[k] = B[i++];	<span class="comment">//将较小值复制到A中 </span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			A[k] = B[j++];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(i&lt;=mid)		A[k++] = B[i++];	 </span><br><span class="line">	<span class="keyword">while</span>(j&lt;=high)		A[k++] = B[j++];</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">//用递归</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MergeSort</span><span class="params">(<span class="type">int</span> A[], <span class="type">int</span> low, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(low &lt; high)&#123;</span><br><span class="line">		<span class="type">int</span> mid = (low+high)/<span class="number">2</span>;	<span class="comment">//从中间划分</span></span><br><span class="line">		MergeSort(A, low, mid);	<span class="comment">//对左半部分归并排序</span></span><br><span class="line">		MergeSort(A, mid+<span class="number">1</span>, high);	<span class="comment">//对右半部分归并排序</span></span><br><span class="line">		Merge(A, low, mid, high);	<span class="comment">//归并 </span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-156.png" style="zoom: 33%;" />
+
+<p>对于一个待排序序列，我们首先将low和high指向其头尾，然后让mid指向它中间部分。</p>
+<p>然后对其左半部分、右半部分，递归地进行归并排序。</p>
+<blockquote>
+<p>递归地进行，就是说。</p>
+<p>对于其左半部分、右半部分，又分别要进行它们各自的左右两部分。</p>
+<p>一层套一层。直到不满足<code>low&lt;high</code>的条件，即达到递归的最深层。即每部分只有1个元素的时候。</p>
+</blockquote>
+<p>当其左半部分、右半部分变得有序后，</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-157.png" style="zoom: 80%;" />
+
+<p>我们再对左右这两个子序列进行归并即可。</p>
+<h4 id="算法效率分析"><a href="#算法效率分析" class="headerlink" title="算法效率分析"></a>算法效率分析</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-158.png" style="zoom:80%;" />
+
+<p>刚才我们2路归并的这个过程，从形态上来看，就像一棵倒立的二叉树。因此也叫<strong>归并树</strong>。</p>
+<p>把它看作一棵二叉树，接下来我们就可以用二叉树的相关知识进行分析。</p>
+<p>树高h，则进行归并的趟数就是h-1趟。</p>
+<p>而二叉树的第h层最多有2^(h-1)个结点，所以，若树高h，则应满足<code>n ≤ 2^(h-1)</code>。因为我们整个序列中的n个结点，都只会出现在二叉树的<code>第h层</code>。（即“初始序列”那一层）即<code>h-1 = ⌈log₂n⌉</code>。</p>
+<p>而刚刚我们说了，对于树高为h的2路归并排序，需要归并的趟数是h-1，也就是需要归并的趟数是⌈log₂n⌉。</p>
+<p>而每一趟的归并，时间复杂度都是O(n)。</p>
+<blockquote>
+<p>每对比关键字一次，都会挑出一个当前剩余的最小的关键字，所以对比的次数 ≤ n-1。</p>
+</blockquote>
+<p>因此，算法的<font color='orange'>时间复杂度</font>为<code>O(nlog₂n)</code>。</p>
+<p><font color='orange'>空间复杂度</font>为<code>O(n)</code>。其空间复杂度主要来源于辅助数组B。而辅助数组B的大小，和原本数组A的大小是一样的，因此是O(n)。</p>
+<blockquote>
+<p><strong>问题</strong>：既然归并排序是用递归算法实现的。</p>
+<p>那么对于空间复杂度来说，是不是还要考虑递归工作栈所使用的空间呢？</p>
+<p>的确。但是，我们递归调用的深度，是不会超过log₂n的（归并的趟数），因此递归工作栈所带来的空间复杂度为O(log₂n)，它与辅助数组带来的空间复杂度相比，我们只需要保留O(n)。</p>
+</blockquote>
+<p><font color='orange'>稳定性</font>:由于Merge()操作不好改变相同关键字记录的相对次序，所以2路归并排序算法是一种稳定的排序方法</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>归并排序</strong></p>
+<ul>
+<li>Merge（归并）<ul>
+<li>把两个或多个有序的子序列合并为一个</li>
+<li>2路归并 —— 二合一</li>
+<li>k路归并 —— k合一</li>
+</ul>
+</li>
+<li>归并排序算法<ul>
+<li>①若low&lt;high，则将序列从中间<code>mid=(low+high)/2</code>分开</li>
+<li>②对左半部分<code>[low, mid]</code>递归地进行归并排序</li>
+<li>③对右半部分<code>[mid+1, high]</code>递归地进行归并排序</li>
+<li>④将左右两个有序子序列Merge为一个</li>
+</ul>
+</li>
+<li>性能<ul>
+<li>空间复杂度：O(n)</li>
+<li>时间复杂度：O(nlog₂n)</li>
+<li>稳定性：稳定</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对于内部排序，我们的归并排序一般使用的是2路排序。</p>
+<p>对于外部排序，我们的归并排序可能还会用到多路排序，这个我们到外部排序的地方再说。</p>
+</blockquote>
+<h3 id="基数排序-Radix-Sort"><a href="#基数排序-Radix-Sort" class="headerlink" title="基数排序 Radix Sort"></a>基数排序 Radix Sort</h3><blockquote>
+<p>比较神奇的排序算法。</p>
+<p>之所以说它比较神奇，是因为之前的排序算法都比较了关键字的大小，而基数排序并没有比较关键字的大小。</p>
+</blockquote>
+<p>来看一下基数排序是怎么做的。</p>
+<h4 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h4><p>假设有这么一个序列，我们要用基数排序将它排成一个递减的序列。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-159.png" style="zoom: 67%;" />
+
+<p>对于其中的所有元素，我们会发现，都可以分为三个部分：“个位”、“十位”、“百位”。而且，这三个部分，每个部分有可能的取值只有<code>0~9</code>。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-160.png" style="zoom: 67%;" />
+
+<p>所以我们就建立一个辅助队列，分别对应<code>0~9</code>。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-161.png" style="zoom: 60%;" />
+
+<p>接下来，进行我们的<strong>第一趟处理</strong>：</p>
+<p><strong>第一趟”分配“</strong>：</p>
+<p>我们会以“个位”进行分配。</p>
+<p>由于第一个元素<code>520</code>，它的个位是0，因此会被我们放在<code>Q0</code>当中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-162.png" style="zoom:80%;" />
+
+<p>下一个元素是<code>211</code>，个位是1，因此放到<code>Q1</code>这个队列当中。</p>
+<p>如果两个数字的个位一样，由于每次放入，都是放到队列的队尾，因此先后次序不难区分。</p>
+<p>中间过程省略，最后，第一趟分配结束，结果如下</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-163.png" style="zoom:80%;" />
+
+<p>接下来，我们需要进行一个操作，就是“收集”。我们要把各个队列中的元素收集起来，把它们连成一个统一的链表。</p>
+<p><strong>第一趟“收集”</strong>：</p>
+<p>由于我们最后想要得到一个“递减”的序列，所以我们要从个位数最大的地方开始收集。也就是从<code>Q9</code>到<code>Q0</code>依次进行收集。</p>
+<p>依次将每个队列中的元素拆下来，并且让靠近队头的元素放在前面，靠近队尾的元素放在后面。</p>
+<p>中间过程省略，最后，第一趟收集结束，结果如下：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-164.png" style="zoom: 80%;" />
+
+<p>由于我们刚才是按照“个位”进行“分配”的，所以按照这种方式，我们“收集”到的是<strong>按“个位”递减</strong>的序列。</p>
+<p>以上总共是第一趟的处理。接下来我们进行第二趟的处理。</p>
+<p><strong>第二趟“分配”</strong>：以“十位”进行“分配”。</p>
+<p>第一个数<code>438</code>的十位是3，所以放到<code>Q3</code>队列中，…………</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-165.png" style="zoom: 67%;" />
+
+<blockquote>
+<p>在分配的过程中，我们会发现。</p>
+<p>由于此处对于“十位”的分配，是基于个位已经分配并收集好之后进行的。</p>
+<p>所以对于十位数相同的元素，个位数更大的会排在前面，个位数更小的会排在后面。</p>
+<p>也就是，十位数相同的元素，个位数更大的先入队，个位数更小的后入队。</p>
+</blockquote>
+<p>中间过程略，第二趟分配结果如下。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-166.png" style="zoom: 60%;" />
+
+<p>接下来进行<strong>第二趟“收集”</strong>：</p>
+<p>同理，我们从十位更大的位置开始收集，这样能够保证十位数更大的元素是排在链表的前面的。而且每个队列的队头在前，队尾在后。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-167.png" style="zoom:80%;" />
+
+<p><strong>第三趟“分配“</strong>：以”百位“进行”分配“</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-168.png" style="zoom:80%;" />
+
+<blockquote>
+<p>并且，由于我们是基于第二趟处理的结果。</p>
+<p>所以，如果有百位相同的元素，则十位越大的会越先入队。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-169.png" style="zoom:60%;" />
+
+<p>中间过程略，最终第三趟“分配”结果如图所示。</p>
+<p>接下来要进行<strong>第三趟“收集”</strong>：</p>
+<p>先收集<code>Q9</code>队列，且队头排在前面、队尾排在后面，依次收集。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-170.png" style="zoom:67%;" />
+
+<p>最终会得到一个按“百位”递减的序列。</p>
+<p>而且，对于百位相同的元素，我们是按十位递减的顺序排列的，而对于十位还相同的元素，我们又是按个位递减的顺序排列的。</p>
+<p><strong>整个过程如下</strong>:</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-171.png" style="zoom:67%;" />
+
+<p>我们再对基数排序的过程用文字的方式，完整的总结一遍，如下：<br>$$<br>假设长度为n的线性表中每个结点a_j的关键字由d元组(k_j^{d-1},k_j^{d-2},k_j^{d-3},…,k_j^{1},k_j^{0})组成<br>$$</p>
+<p>$$<br>其中，0&lt;=k_j^i&lt;=r-1(0&lt;=j&lt;n,0&lt;=i&lt;-d-1),r称为基数<br>$$</p>
+<blockquote>
+<p>每个节点把它分为“d元组”。像刚才那个例子，我们就是把每个结点分为了“三元组”：个位、十位、百位。</p>
+<p>d元组中，最靠近左边的，称为<strong>最高位关键字</strong>（最主位关键字）；最靠近右边的，称为<strong>最低位关键字</strong>（最次位关键字）。像刚才那个例子，百位就是最高位关键字，个位就是最低位关键字。</p>
+<p>（因为最左边的关键字是对整个数值大小影响最大的，所以把它称为最高位关键字；同理，最低位关键字）</p>
+<p>而每一位可能的取值，是0到r-1，r称为“<strong>基数</strong>”。像刚才的例子中，我们可能的取值是<code>0~9</code>，其基数就应该是10，即关键字的每个部分都有可能得到10种不同的取值。</p>
+</blockquote>
+<p>基数排序得到<strong>递减</strong>序列的过程如下：</p>
+<p><strong>初始化</strong>：设置<strong>r个空队列</strong>，<code>Q_(r-1)，Q_(r-2)，...，Q_0</code>。</p>
+<p>按照各个 <strong>关键字位 权重递增的次序</strong>（个、十、百），对d个关键字位分别做“分配”和“收集“。</p>
+<p><strong>分配</strong>：顺序扫描各个元素，若当前处理的关键字位 = x，则将元素插入<code>Q_x</code>队尾。</p>
+<p><strong>收集</strong>：把<code>Q_(r-1)，Q_(r-2)，...，Q_0</code>各个队列中的结点依次出队并链接。</p>
+<blockquote>
+<p>基数排序通常只考察手算的过程，几乎不考代码。</p>
+<p>所以只要理解，能用手动的方式模拟其过程即可。</p>
+</blockquote>
+<p>可见，<strong>基数排序并不是基于“比较”的排序算法</strong>。而我们学习的其他的那些排序都是基于比较的排序算法。</p>
+<blockquote>
+<p>以上是递减的序列，那么得到一个递增序列的过程，也是同理的，如下：</p>
+<p>基数排序得到<strong>递增</strong>序列的过程如下：</p>
+<p><strong>初始化</strong>：设置<strong>r个空队列</strong>，<code>Q_0，Q_1，...，Q_(r-1)</code>。</p>
+<p>按照各个 <strong>关键字位 权重递增的次序</strong>（个、十、百），对d个关键字位分别做“分配”和“收集“。</p>
+<p><strong>分配</strong>：顺序扫描各个元素，若当前处理的关键字位 = x，则将元素插入<code>Q_x</code>队尾。</p>
+<p><strong>收集</strong>：把<code>Q_0，Q_1，...，Q_(r-1)</code>各个队列中的结点依次出队并链接。</p>
+</blockquote>
+<h4 id="算法性能分析"><a href="#算法性能分析" class="headerlink" title="算法性能分析"></a>算法性能分析</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-172.png" style="zoom: 80%;" />
+
+<p>基数排序通常是基于链式存储实现的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LinkNode</span> &#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">LinkNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;LinkNode, *LinkList;</span><br></pre></td></tr></table></figure>
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-173.png" style="zoom: 67%;" />
+
+<p>接着，我们还定义了十个队列。而且这十个队列链接的是单链表中的一个一个的结点，所以这些队列又都是链队列。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span>	<span class="comment">//链式队列</span></span><br><span class="line">    LinkNode *front, *rear;	<span class="comment">//队列的队头和队尾指针</span></span><br><span class="line">&#125;LinkQueue;</span><br></pre></td></tr></table></figure>
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-174.png" style="zoom: 80%;" />
+
+<p>队头指针指向最上面那个元素，队尾指针指向最下面那个元素。</p>
+<blockquote>
+<p>可见，基数排序的背后，都是之前所学过的很熟悉的东西。</p>
+</blockquote>
+<h5 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h5><p>基数排序的空间复杂度方面，主要是需要r个辅助队列，因为我们每设立一个辅助队列，实际上就是新增了<code>LinkNode *front, *rear;</code>这两个指针域，每个队列的空间复杂度是O(1)的数量级。</p>
+<p>因此<font color='orange'>空间复杂度 = O(r)</font></p>
+<blockquote>
+<p>r的含义是，每个关键字有可能有多少种不同的取值。需要相应的设立r个辅助队列。</p>
+</blockquote>
+<h5 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><p>我们算法总共执行的过程，是进行了d趟的分配、收集。</p>
+<blockquote>
+<p>d的含义是，我们的关键字可以被拆分成几个部分。</p>
+</blockquote>
+<p>每一趟的分配，就是把整个链表从头到尾扫描了一遍。总共有n个元素，那么把它们都扫一遍，总共需要O(n)的时间。</p>
+<p>而一趟收集，只需要O®这么多的时间。因为总共有r个队列，收集的过程就是依次扫描这些队列，把每个队列当中的这些元素给拆下来，然后连到我们最终收集的那个链表当中。每收集一个队列，只需要O(1)的时间复杂度。</p>
+<blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-175.png" style="zoom: 80%;" />
+
+<p>例如，当前的收集表，p指针指向收集表的最后一个元素。</p>
+<p>此时需要将Q_6队列中的元素拆下来，连到链表最后。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;next = Q[<span class="number">6</span>].front;</span><br><span class="line">Q[<span class="number">6</span>].front = <span class="literal">NULL</span>;</span><br><span class="line">Q[<span class="number">6</span>].rear = <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们若要将某个队列中的元素拆下来，并且连到收集的链表上，只需要如上操作。</p>
+<p>因为实际上对于每个队列中串起来的元素来说，他们之间也是用<code>*next</code>链接起来的链表。</p>
+<p>所以只需要将front拆下来，连到链尾即可，之后将队列头尾指针置空。</p>
+<p>因此，对于每个队列的收集，只需要O(1)的时间。</p>
+</blockquote>
+<p>而一趟收集r个队列，所以<font color='orange'>一趟收集的时间复杂度为O(r)</font>。</p>
+<p>由于我们每一趟处理，包含了这一趟的分配+收集，而我们总共有d趟处理。</p>
+<p>因此<font color='orange'>总的时间复杂度为O(d(n+r))</font>。</p>
+<h5 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-176.png" style="zoom:67%;" />
+
+<p>假设由这么一个序列，其中有两个元素的关键字是相同的。</p>
+<p>我们在分配的时候，是从左往右依次扫描初始序列中的各个元素。所以第一个被“分配”的，应该是左边的那个<code>12</code>（不带下划线的12）。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-177.png" style="zoom:67%;" />
+
+<p>之后，不论这两个<code>12</code>之间还有多少其他的个位为2的元素，总之这两个12的相对位置是确定的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-178.png" style="zoom:67%;" />
+
+<p>而当我们把这个队列，进行“收集“的时候。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-179.png" style="zoom: 67%;" />
+
+<p>肯定也是没有下划线的12排在前面，有下划线的排在后面。</p>
+<p>所以这个算法，显然是<strong>稳定</strong>的。</p>
+<p>基数排序是<strong>稳定</strong>的。（鸡你太稳）</p>
+<h4 id="基数排序的应用"><a href="#基数排序的应用" class="headerlink" title="基数排序的应用"></a>基数排序的应用</h4><p>某学校有10000名学生，将学生信息按<strong>年龄递减</strong>排序。</p>
+<p>可以将学生的生日信息，拆分为三组关键字：年（1991-2005）、月（1-12）、日（1-31）。</p>
+<blockquote>
+<p>年有可能取得15个值，月有可能取得12个值，日有可能取得31个值。</p>
+</blockquote>
+<p>那么，生日的这三组信息，肯定是：年的影响，大于月，大于日。</p>
+<p>即，<strong>权重：年 &gt; 月 &gt; 日</strong>。</p>
+<p>所以按照基数排序的思想，我们进行“分配”和“收集“，是先按照日，再按照月，再按照年，这种权重递增的次序进行分配和收集的。</p>
+<p>所以<strong>第一趟</strong>分配，我们可以按”日“的信息来处理：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-180.png" style="zoom:67%;" />
+
+<p>而由于我们最终是要得到一个年龄递减的次序，那么日越大的，年龄越小，所以我们在收集这些信息的时候，先收集日更小的，再收集日更大的。</p>
+<p>经过这一趟处理，我们就得到了这10000个学生，按照“日”递增的一个次序。“日”越大的越靠后。</p>
+<p><strong>第二趟</strong>分配，我们会按照“月”的信息来处理：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-181.png" style="zoom:67%;" />
+
+<p>同样地，“月”更大的，年龄越小，所以，我们先收集月份更小的，再收集月份更大的。</p>
+<p><strong>第三趟</strong>分配，按照“年”的信息进行处理：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-182.png" style="zoom:67%;" />
+
+<p>同理。</p>
+<p>按照这三趟分配之后，我们就能得到这10000个学生，年龄按照递减的排序。</p>
+<blockquote>
+<p>通过这个例子，可以说明，我们的基数排序，其实并不像课本当中举的例子那样，每一个关键字的取值都是固定的<code>0~r-1</code>这样一个范围。</p>
+<p>其实像这个例子当中，我们每一个关键字的部分，它的取值有可能出现各种各样的情况。（如，年：1991-2005）。</p>
+</blockquote>
+<p><font color='cornflowerblue'>对于这个例子当中，我们分析一下它的时间复杂度是怎么样的。</font></p>
+<p>由于基数排序时间复杂度 = <code>O(d(n+r))</code>。</p>
+<p>我们此处，把每个学生的信息分为了三个关键字：年、月、日。因此d为3。</p>
+<p>n = 10000，因为总共有10000个学生。</p>
+<p>r，每一趟分配时是不一样的。第一趟是31，第二趟是12，第三趟是15。那在这三趟当中，r的值最大也就是31。所以我们按最坏的情况来考虑，就是r = 31。</p>
+<p>d，n，r代入，可得时间为<code>3*(10000+31)</code>，约为O(30000)。</p>
+<p>而如果采用之前的那些算法，有的算法是O(n²)的时间复杂度，那么就约为O(10^8)；</p>
+<p>有的是O(nlog₂n)，那么就约为O(140000)。</p>
+<blockquote>
+<p>可以看到，在这种场景下，我们基数排序的时间复杂度，比之前所有算法都要优秀不少。</p>
+</blockquote>
+<p><font color='cornflowerblue'>所以，基数排序擅长解决的问题</font>：</p>
+<p>①数据元素的关键字可以方便地拆分为d组，且d较小；</p>
+<p>②每组关键字的取值范围不大，即r较小；</p>
+<p>③数据元素个数n较大。</p>
+<blockquote>
+<p>对于①的反例：给5个人的身份证号排序。</p>
+<p>18位身份证号需要分配、回收18趟。而我们只有5个人的元素，即n很小，而d很大。所以此时效率是很低的。</p>
+<p>对于②的反例：给中文人名排序。</p>
+<p>中国人的名字，一般是两到三个字，也有四个字的，总之是d比较小的。但是我们的r，即每一位上有可能出现的汉字字符的取法，就太庞大了。所以，即使对于人名，最多只有4个分组，但是每个分组中有可能的取值有上万种，即r的值很大。相应的，空间复杂度就会很高，时间复杂度也不低，因此效率很低。</p>
+<p>对于③的反例：还是，给5个人的身份证号排序的问题。</p>
+<p>对于③的正例：给十亿人的身份证号排序。</p>
+</blockquote>
+<h3 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h3><ul>
+<li><p>【2013】对给定的关键字序列110，113，007，911，114，120，122进行基数排序， 则第 2 趟分配收集后得到的关键字序列是–&gt;C</p>
+<p>A.007,110,119,114,911,120,122</p>
+<p>B.007,110,119,114,911,122,120</p>
+<p>C.007,110,911,114,119,120,122</p>
+<p>D.110,120,911,122,114,007,119</p>
+<blockquote>
+<p><strong>基数排序是通过“分配”和“收集”过程来实现排序。</strong>  </p>
+<p><strong>1）</strong> <strong>首先根据个位数值（只看个位）来排序：</strong>  </p>
+<p>110 120 911 122 114 007 119</p>
+<p><strong>2）</strong> <strong>再看十位（只看十位数值大小）来排序：</strong>  </p>
+<p>007 110 911 114 119 120 122 </p>
+<p><strong>3）</strong> <strong>最后看百位：</strong>  </p>
+<p>007 110 114 119 120 122 </p>
+<p>所以第2趟分配收集后得到的关键字序列是{007 110 911 114 119 120 122 }。</p>
+</blockquote>
+</li>
+<li><p>【2016】 对 10TB 的数据文件进行排序，应使用的方法是→D</p>
+<p>A 希尔排序</p>
+<p>B 堆排序</p>
+<p>C 快速排序</p>
+<p>D 归并排序 </p>
+<blockquote>
+<p>外部排序指待排序文件较大，内存一次性放不下，需存放在外部介质中。外部排序通常采用归并排序法。选项A、B、C都是内部排序的方法。</p>
+</blockquote>
+</li>
+<li><p>【2017】在内部排序时，若选择了归并排序而未选择插入排序，则可能的理由是–&gt;Ⅲ</p>
+<p>Ⅰ．归并排序的程序代码更短 </p>
+<p>Ⅱ．归并排序的占用空间更少</p>
+<p>Ⅲ．归并排序的运行效率更高</p>
+<blockquote>
+<p>归并排序代码比选择插入排序更复杂，前者空间复杂度是O(n)，后者是O(1)。但是前者时间复杂度是O(nlog₂n)，后者是O(n²)。</p>
+</blockquote>
+</li>
+<li><p>【2021】设数组S[= {93, 946, 372, 9, 146, 151, 301, 485, 236, 327, 43, 892}，采用最低位优先(LSD)基数排序将S排列成升序序列。第1趟分配、收集后，元素372之前、之后紧邻的元素分别是–&gt;C</p>
+<p>A、43,892</p>
+<p>B、236,301</p>
+<p>C、301,892</p>
+<p>D、485,301</p>
+<blockquote>
+<p>基数排序是一种稳定的排序方法。由于采用最低位优先(LSD) 的基数排序，即第1趟对个位进行分配和收集的操作，因此第一-趟 分配和收集后的结果是{151, 301, 372, 892, 93, 43,485, 946, 146, 236, 327,9},元素372之前、之后紧邻的元素分别是301和892，故选C。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="8-6-各种内部排序算法的比较及应用"><a href="#8-6-各种内部排序算法的比较及应用" class="headerlink" title="8.6 各种内部排序算法的比较及应用"></a>8.6 各种内部排序算法的比较及应用</h2><h3 id="内部排序算法的比较"><a href="#内部排序算法的比较" class="headerlink" title="内部排序算法的比较"></a>内部排序算法的比较</h3><h4 id="从时间复杂度来看"><a href="#从时间复杂度来看" class="headerlink" title="从时间复杂度来看"></a>从时间复杂度来看</h4><p>简单选择排序、直接插入排序和冒泡排序平均情况下的时间复杂度都为O(n²),且实现过程也比较简单，但直接插入排序和冒泡排序最好情况下的时间复杂度可以达到O(n),而简单选择排序则与序列的初始状态无关。希尔排序作为插入排序的拓展，对较大规模的排序都可以达到很高的效率，但目前未得出其精确的渐近时间。堆排序利用了一种称为堆的数据结构，可在线性时间内完成建堆，且在O(nlog₂n)内完成排序过程。快速排序基于分治的思想，虽然最坏情况下快速排序时间会达到O(n²),但快速排序平均性能可以达到O(nlog₂n)，但实际应用中常常优于其他排序算法。归并排序同样基于分治思想，但由于其分割子序列与初始序列的排列无关，因此它的最好、最坏和平均实际复杂度均为O(nlog₂n)。</p>
+<h4 id="从空间复杂度来看"><a href="#从空间复杂度来看" class="headerlink" title="从空间复杂度来看:"></a>从空间复杂度来看:</h4><p>简单选择排序、插入排序、冒泡排序、希尔排序和堆排序都仅需要借助常数个辅助空间。快速排序在空间上只使用一个小的辅助栈，用于实现递归，平均情况下大小为O(log₂n),当然在最坏情况下可能会增长到O(n)。2路归并排序在合并操作中需要借助较多的辅助空间用于元素复制，大小为为O(n)，虽然有方法能克服这个缺点，但其代价是算法会很复杂而且时间复杂度会增加。</p>
+<h4 id="从稳定性来看"><a href="#从稳定性来看" class="headerlink" title="从稳定性来看"></a>从稳定性来看</h4><p>插入排序、冒泡排序、归并排序和基数排序是稳定的排序方法，而简单选择排序、快速排序、希尔排序和堆排序都是不稳定的排序方法。平均时间复杂度为O(nlog₂n)的稳定排序算法只有归并排序，对于不稳定的排序，只需举出一个其不稳定的例子即可。</p>
+<table>
+<thead>
+<tr>
+<th>排序算法</th>
+<th>空间效率</th>
+<th>时间效率</th>
+<th>稳定性</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>插入排序</td>
+<td>O(1)</td>
+<td>最好O(n)<br/>平均O(n²) <br/>最坏O(n²)</td>
+<td>稳定</td>
+<td>比较依赖初始状态</td>
+</tr>
+<tr>
+<td>折半插入排序</td>
+<td>O(1)</td>
+<td>最好O(n)<br/>平均O(n²) <br/>最坏O(n²)</td>
+<td>稳定</td>
+<td>比较次数约为 O(nlog₂n)</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td>O(1)</td>
+<td>大约为 O(n^{1.3})</td>
+<td>❌</td>
+<td></td>
+</tr>
+<tr>
+<td>冒泡排序</td>
+<td>O(1)</td>
+<td>最好O(n)<br/>平均O(n²)<br/>最坏 O(n²)</td>
+<td>稳定</td>
+<td></td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>最好O(log₂n)<br/>平均O(log₂n)<br/>最坏O(n²)</td>
+<td>最好O(nlog₂n)<br/>平均O(nlog₂n)<br/>最坏O(n²)</td>
+<td>❌</td>
+<td>和划分是否对称有关<br />在所有<strong>内部</strong>排序算法中平均性能最优</td>
+</tr>
+<tr>
+<td>简单选择排序</td>
+<td>O(1)</td>
+<td>O(n²)</td>
+<td>❌</td>
+<td>与初始状态无关</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td>O(1)</td>
+<td>O(nlog₂n)</td>
+<td>❌</td>
+<td></td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>O(n)</td>
+<td>O(nlog₂n)</td>
+<td>稳定</td>
+<td></td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>O(r)</td>
+<td>O(d(n+r))</td>
+<td>稳定</td>
+<td>r 为基数，d 为趟数，n 为元素个数</td>
+</tr>
+</tbody></table>
+<h3 id="内部排序算法的应用"><a href="#内部排序算法的应用" class="headerlink" title="内部排序算法的应用"></a>内部排序算法的应用</h3><ol>
+<li>选取排序方法需要考虑的因素：<ul>
+<li>待排序的元素数目n</li>
+<li>元素本生信息量的大小</li>
+<li>关键字的结构极其分布情况</li>
+<li>稳定性的要求</li>
+<li>语言工具的条件，存储结构及辅助空间的大小</li>
+</ul>
+</li>
+<li>排序算法小结<ul>
+<li>若n较小，可采用<strong>直接插入排序或简单排序</strong>。由于直接插入排序所需的记录移动次数较<strong>简单选择排序</strong>的多，因而当记录本身信息量<strong>较大</strong>时，用<strong>简单选择排序</strong>较好。</li>
+<li>若文件的初始状态已按关键字<strong>基本有序</strong>，则选用<strong>直接插入</strong>或<strong>冒泡排序</strong>为宜。</li>
+<li>若n<strong>较大</strong>，则应采用时间复杂度为O(nlog2n)的排序方法：<strong>快速排序，堆排序或归并排序</strong>。<strong>快速排序</strong>被认为是目前基于比较的内部排序方法中最好的方法，当待排序的关键字随机分布时，快速排序的平均时间最短。<strong>堆排序</strong>所需的辅助空间少于<strong>快速排序</strong>，并且不会出现快速排序可能出现的最坏情况，这俩种排序都是不稳定的。若要求排序稳定且时间复杂度为O(nlog2n)，则可选用<strong>归并排序</strong>。</li>
+<li>在基于比较的排序方法中，每次比较俩个关键字的大小之后，仅出现俩种可能的转移，因此可以用一颗二叉树来买描述比较判定过程，由此可以证明，当文件的n个关键字随机分布时，任何借助于比较的排序算法，至少需要O(nlog2n)的时间</li>
+<li>若n很大，记录的关键字为主较少且可以分解时，采用<strong>基数排序</strong>较好。</li>
+<li>当记录本身信息量较大时，为避免耗费大量时间移动记录，可用链表作为存储结构。</li>
+</ul>
+</li>
+</ol>
+<h3 id="习题-1"><a href="#习题-1" class="headerlink" title="习题"></a>习题</h3><ul>
+<li><p>【2012】在内部排序过程中，对尚未确定最终位置的所有元素进行一遍处理称为一趟排序。下列排序方法中，每趟排序结束时都至少能够确定一个元素最终位置的方法是–&gt;仅Ⅰ、 Ⅲ、 Ⅳ</p>
+<p>Ⅰ．简单选择排序 Ⅱ．希尔排序 Ⅲ．快速排序Ⅳ．堆排序 Ⅴ．二路归并排序</p>
+<blockquote>
+<p>每一次排序之后都能确定至少一个元素位置的排序方法包括： </p>
+<p>1.<strong>选择排序</strong>：每次将最大的数放到最后。所以最大的数排一次序后位置就确定了。 </p>
+<p>2.<strong>冒泡排序</strong>：同选择排序。每一次排序最大的值位置确定。 </p>
+<p>3.<strong>快排</strong>：每一次排序pivot的位置确定。 </p>
+<p>4.<strong>堆排序</strong>：每一次排序时，都是将堆顶的元素和最后一个节点互换，然后调整堆，再将堆大小减1。所以每一次排序堆顶元素确定。 </p>
+<p>不能至少确定一个元素的位置的方法包括： </p>
+<p><strong>1.插入排序</strong>：不到最后一步求的都是相对位置。 </p>
+<p>2.<strong>shell排序</strong>：对简单插入排序的改进。不到最后一步，是无法确定每个元素位置的。 </p>
+<p>3.<strong>归并排序</strong>：局部有序，并不能确定任一元素在全局的位置。 </p>
+<p>4.<strong>基数排序，计数排序</strong>：利用桶排序的思路，不是基于比较的排序，也无法在一次排序中确定某个元素的位置。因为每一次排序都是整体处理。</p>
+</blockquote>
+</li>
+<li><p>【2015】下列排序算法中，元素的移动次数与关键字的初始序列无关的是–&gt;C</p>
+<p>A.直接插入排序</p>
+<p>B.起泡排序</p>
+<p>C.基数排序</p>
+<p>D.快速排序</p>
+<blockquote>
+<p>敲黑板了：</p>
+<p>元素的<strong>移动次数</strong>与关键字的初始排列次序无关的是：基数排序</p>
+<p>元素的<strong>比较次数</strong>与初始序列无关是：选择排序</p>
+<p>算法的<strong>时间复杂度</strong>与初始序列无关的是：选择排序</p>
+</blockquote>
+</li>
+<li><p>【2017】下列排序方法中，若将顺序存储更换为链式存储，则算法的时间效率会降低的是–&gt;D</p>
+<p>Ⅰ．插入排序 Ⅱ．选择排序 Ⅲ．起泡排序 Ⅳ．希尔排序 Ⅴ．堆排序</p>
+<p>A.仅Ⅰ、Ⅱ<br>B.仅Ⅱ、Ⅲ<br>C.仅Ⅲ、Ⅳ<br>D.仅Ⅳ、Ⅴ</p>
+<blockquote>
+<p>插入排序、选择排序、起泡排序原本时间复杂度是O(n2)，更换为链式存储后的时间复杂度还是O(n2)。希尔排序和堆排序都利用了顺序存储的随机访问特性，而链式存储不支持这种性质，所以时间复杂度会增加，因此选D。</p>
+</blockquote>
+</li>
+<li><p>【2019】选择一个排序算法时，除算法的时空效率外，下列因素中，还需要考虑的是–&gt;D</p>
+<p>I．数据的规模   II．数据的存储方式   III．算法的稳定性    IV．数据的初始状态</p>
+<p>A. 仅 III<br>B. 仅 I、II<br>C. 仅 II、III、IV<br>D. I、II、III、IV</p>
+<blockquote>
+<p>当数据规模较小时可选择复杂度为0(n²)的简单排序方法，当数据规模较大时应选择复杂度为O(nlog₂n)的排序方法，当数据规模大到内存无法放下时需选择外部排序方法,I正确。<br>数据的存储方式主要分为顺序存储和链式存储，有些排序方法(如堆排序)只能用于顺序存储方式，II 正确。<br>若对数据稳定性有要求，则不能选择不稳定的排序方法，III显然正确。<br>当数据初始基本有序时，直接插入排序的效率最高，冒泡排序和直接插入排序的时间复杂度都是O(n)，而归并排序的时间复杂度依旧是O(nlog₂n)，IV正确。所以选D.</p>
+</blockquote>
+</li>
+<li><p>【2020】对大部分元素已有序的数组排序时，直接插入排序比简单选择排序效率更高，其原因是→①</p>
+<p>① 直接插入排序过程中元素之间的比较次数更少</p>
+<p>② 直接插入排序过程中所需的辅助空间更少</p>
+<p>③ 直接插入排序过程中元素的移动次数更少 </p>
+<blockquote>
+<p>考虑较极端的情况，对于有序数组，直接插入排序的比较次数为n-1,简单选择排序的比较次数始终为1+2+…+n-1=n(n-1)/2，I正确。两种排序方法的辅助空间都是0(1), 无差别，II错误。初始有序时，移动次数均为0; 对于通常情况，直接插入排序每趟插入都需要依次向后挪位，而简单选择排序只需与找到的最小元素交换位置，后者的移动次数少很多，III 错误。</p>
+</blockquote>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tikxeis.fun">kailin2eis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tikxeis.fun/p/14847/">http://tikxeis.fun/p/14847/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tikxeis.fun" target="_blank">派总</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></div><div class="post_share"><div class="social-share" data-image="/img/1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/44803/"><img class="prev-cover" src="/img/1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">第八章 排序(四)</div></div></a></div><div class="next-post pull-right"><a href="/p/43357/"><img class="next-cover" src="/img/1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第八章 排序(二)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/24523/" title="第一章 绪论"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第一章 绪论</div></div></a></div><div><a href="/p/14457/" title="第二章 线性表(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(上)</div></div></a></div><div><a href="/p/12625/" title="第二章 线性表(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(下)</div></div></a></div><div><a href="/p/63528/" title="第三章 栈、队列和数组(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第三章 栈、队列和数组(上)</div></div></a></div><div><a href="/p/17647/" title="第四章 串"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第四章 串</div></div></a></div><div><a href="/p/58315/" title="第三章 栈、队列和数组(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第三章 栈、队列和数组(下)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-5-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="toc-text">8.5 归并排序和基数排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F-Merge-Sort"><span class="toc-text">归并排序 Merge Sort</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BD%92%E5%B9%B6-%E5%90%88%E5%B9%B6"><span class="toc-text">什么是归并&#x2F;合并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%9D2%E8%B7%AF%E2%80%9C%E5%BD%92%E5%B9%B6"><span class="toc-text">”2路“归并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%9C4%E8%B7%AF%E2%80%9D%E5%BD%92%E5%B9%B6"><span class="toc-text">“4路”归并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F-%E6%89%8B%E7%AE%97"><span class="toc-text">归并排序(手算)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%95%88%E7%8E%87%E5%88%86%E6%9E%90"><span class="toc-text">算法效率分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F-Radix-Sort"><span class="toc-text">基数排序 Radix Sort</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="toc-text">算法思想</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-text">算法性能分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">空间复杂度</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">时间复杂度</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-text">稳定性</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">基数排序的应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-6-%E5%90%84%E7%A7%8D%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83%E5%8F%8A%E5%BA%94%E7%94%A8"><span class="toc-text">8.6 各种内部排序算法的比较及应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">内部排序算法的比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%9D%A5%E7%9C%8B"><span class="toc-text">从时间复杂度来看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%9D%A5%E7%9C%8B"><span class="toc-text">从空间复杂度来看:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%9D%A5%E7%9C%8B"><span class="toc-text">从稳定性来看</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">内部排序算法的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98-1"><span class="toc-text">习题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/44803/" title="第八章 排序(四)">第八章 排序(四)</a><time datetime="2022-09-28T11:54:17.000Z" title="发表于 2022-09-28 19:54:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/14847/" title="第八章 排序(三)">第八章 排序(三)</a><time datetime="2022-09-28T11:52:50.000Z" title="发表于 2022-09-28 19:52:50">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/43357/" title="第八章 排序(二)">第八章 排序(二)</a><time datetime="2022-09-28T11:50:30.000Z" title="发表于 2022-09-28 19:50:30">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/27129/" title="第八章 排序(一)">第八章 排序(一)</a><time datetime="2022-09-28T11:47:17.000Z" title="发表于 2022-09-28 19:47:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/15017/" title="第七章 查找(四)">第七章 查找(四)</a><time datetime="2022-09-28T11:33:21.000Z" title="发表于 2022-09-28 19:33:21">2022-09-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="关关雎鸠,在河之洲,窈窕淑女,what' your qq" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

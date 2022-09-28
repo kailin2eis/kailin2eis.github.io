@@ -1,0 +1,988 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>第八章 排序(四) | 派总</title><meta name="keywords" content="408数据结构"><meta name="author" content="kailin2eis"><meta name="copyright" content="kailin2eis"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="8.7 外部排序外部排序外存、内存之间的数据交换此处的外存特指“磁盘”。而磁盘是以所谓的“磁盘块”为单位的。 操作系统也是以这些“磁盘块”，对磁盘的存储空间进行管理。 每个磁盘块的大小，比如1KB，比如4KB。此处以1KB为例。 数据信息可以存放在各个磁盘块上。   现在，比如磁盘块4、磁盘块11，里面存放了一些数据。 问题：如果要修改磁盘里面存储的数据，应该怎么办？ 我们要修改磁盘里的数据，需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八章 排序(四)">
+<meta property="og:url" content="http://tikxeis.fun/p/44803/index.html">
+<meta property="og:site_name" content="派总">
+<meta property="og:description" content="8.7 外部排序外部排序外存、内存之间的数据交换此处的外存特指“磁盘”。而磁盘是以所谓的“磁盘块”为单位的。 操作系统也是以这些“磁盘块”，对磁盘的存储空间进行管理。 每个磁盘块的大小，比如1KB，比如4KB。此处以1KB为例。 数据信息可以存放在各个磁盘块上。   现在，比如磁盘块4、磁盘块11，里面存放了一些数据。 问题：如果要修改磁盘里面存储的数据，应该怎么办？ 我们要修改磁盘里的数据，需要">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tikxeis.fun/img/1.png">
+<meta property="article:published_time" content="2022-09-28T11:54:17.000Z">
+<meta property="article:modified_time" content="2022-09-28T11:55:55.158Z">
+<meta property="article:author" content="kailin2eis">
+<meta property="article:tag" content="408数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tikxeis.fun/img/1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://tikxeis.fun/p/44803/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第八章 排序(四)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-28 19:55:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><style>.mjpage .MJX-monospace {
+  font-family: monospace;
+}
+
+.mjpage .MJX-sans-serif {
+  font-family: sans-serif;
+}
+
+.mjpage {
+  display: inline;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  text-indent: 0;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  float: none;
+  direction: ltr;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.mjpage * {
+  transition: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+}
+
+.mjx-svg-href {
+  fill: blue;
+  stroke: blue;
+}
+
+.MathJax_SVG_LineBox {
+  display: table !important;
+}
+
+.MathJax_SVG_LineBox span {
+  display: table-cell !important;
+  width: 10000em !important;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.mjpage__block {
+  text-align: center;
+  margin: 1em 0em;
+  position: relative;
+  display: block !important;
+  text-indent: 0;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+}
+</style></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">派总</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第八章 排序(四)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-28T11:54:17.000Z" title="发表于 2022-09-28 19:54:17">2022-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-28T11:55:55.158Z" title="更新于 2022-09-28 19:55:55">2022-09-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第八章 排序(四)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="8-7-外部排序"><a href="#8-7-外部排序" class="headerlink" title="8.7 外部排序"></a>8.7 外部排序</h2><h3 id="外部排序"><a href="#外部排序" class="headerlink" title="外部排序"></a>外部排序</h3><h4 id="外存、内存之间的数据交换"><a href="#外存、内存之间的数据交换" class="headerlink" title="外存、内存之间的数据交换"></a>外存、内存之间的数据交换</h4><p>此处的外存特指“磁盘”。而磁盘是以所谓的“磁盘块”为单位的。</p>
+<p>操作系统也是以这些“磁盘块”，对磁盘的存储空间进行管理。</p>
+<p>每个磁盘块的大小，比如1KB，比如4KB。此处以1KB为例。</p>
+<p>数据信息可以存放在各个磁盘块上。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-183.png" style="zoom: 67%;" />
+
+<p>现在，比如磁盘块4、磁盘块11，里面存放了一些数据。</p>
+<p>问题：如果要修改磁盘里面存储的数据，应该怎么办？</p>
+<p>我们要修改磁盘里的数据，需要做的事，就是把对应磁盘块里的数据，读到内存里。</p>
+<p>比如说，我们要在内存里申请开辟一块1KB的缓冲区。这样一个缓冲区的大小，是可以和一个磁盘块的大小保持一致的。<br><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-184.png" style="zoom: 67%;" /></p>
+<p>接下来，我们就可以把磁盘块4当中的数据，读到内存当中。</p>
+<p>磁盘的读/写，都是以”块“为单位进行的。也就是说每次都读一块、写一块。</p>
+<p>数据已经读入内存了，接下来我们就可以用程序代码，对内存里的数据进行修改。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-185.png" style="zoom: 67%;" />
+
+<p>现在，我们只是把内存里面的数据修改了，如果要更改磁盘块的数据，那么还需要把这些数据写回磁盘。同样地，还是以“块”为单位，进行“写”操作的。</p>
+<p>所以我们可以把这1KB内存缓冲区中的内容，写回磁盘块4。当然，也可以把它写到其他的磁盘块，比如同时也写到磁盘块11中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-186.png" style="zoom: 67%;" />
+
+<p>这就是外存和内存之间数据交换的原理。每次是以“块”为单位进行读写的。</p>
+<h4 id="外部排序原理"><a href="#外部排序原理" class="headerlink" title="外部排序原理"></a>外部排序原理</h4><p>外部排序是指，我们的这些数据元素是存放在外存，即存放在磁盘的。</p>
+<p>由于磁盘的容量很大，而内存的容量很小。</p>
+<p>所以很多时候我们没有办法，把磁盘当中的所有数据元素都给读入内存，内存存不下这么多。</p>
+<p>所以我们要对存在外存中的这些数据进行排序，这就是所谓的外部排序。</p>
+<p>接下来看如何实现外部排序。</p>
+<p>外部排序实现的思想，其实还是来源于之前的“归并排序”。采用这种方式，我们最少只需要在内存中分配3块大小的缓冲区，就可以完成对任意大小的文件进行排序。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-187.png" style="zoom: 67%;" />
+
+<blockquote>
+<p>其中，这几个缓冲区的大小，是和磁盘块的大小保持一致的。</p>
+<p>此处，我们为了演示方便，磁盘中这个文件大小总共包括了16块数据块，而每个数据块中包括了3个记录。</p>
+</blockquote>
+<p>现在，我们要对整个文件中的所有记录中的关键字，用归并排序的方式，把它变成一个递增的序列。</p>
+<p>回顾一下归并排序，在进行每一趟归并时，需要把两个已经有序的子序列，合并成一个更长的子序列。</p>
+<p>所以在归并排序开始之前，我们需要构造一些已经有序的子序列。</p>
+<h5 id="构造初始”归并段”"><a href="#构造初始”归并段”" class="headerlink" title="构造初始”归并段”"></a>构造初始”归并段”</h5><p>可以这么做：</p>
+<p>由于我们内存当中已经有两块输入缓冲区。我们可以把文件中的第1、2块数据，分别读入内存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-188.png" style="zoom: 67%;" />
+
+<p>那么，这些数据一旦被我们读入内存之后，想怎么处理它，都可以。所以我们对于读入内存中的这些数据，进行一个内部排序。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-189.png" style="zoom: 80%;" />
+
+<p>就将这两块的内容各自都变成了一个递增的状态。</p>
+<p>接下来，先把输入缓冲区1的内容，先放到输出缓冲区当中。</p>
+<p>通过输出缓冲区，再把这些数据写回磁盘。由于缓冲区的大小和磁盘块的大小是一致的，所以可以写回。</p>
+<p>我们把<code>8 9 26</code>写回第一个磁盘块。</p>
+<p>接下来，再把输入缓冲区2的内容，放到输出缓冲区，写到第二个磁盘块当中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-190.png" style="zoom: 33%;" />
+
+<p>那么现在，第一个磁盘块和第二个磁盘块里面的这些记录，就变成了一个递增的有序状态。</p>
+<p>之后我们就可以将这两块的整体内容，作为一个有序的子序列，进行归并排序。这就叫一个有序的“归并段”。</p>
+<p>之后同样地，我们再把磁盘块3、磁盘块4中的内容，读入内存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-191.png" style="zoom:67%;" />
+
+<p>在内存里，对它们进行一个内部排序。然后再将它们写回磁盘。</p>
+<p>于是我们就得到了第二个归并段。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-192.png" style="zoom: 50%;" />
+
+<p>之后同理，过程略。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-193.png" style="zoom: 67%;" />
+
+<p>最终，我们将16个磁盘块，构造成了8个初始归并段。</p>
+<p>其中，经过了16次“读”和16次“写”。</p>
+<h5 id="第一趟归并"><a href="#第一趟归并" class="headerlink" title="第一趟归并"></a>第一趟归并</h5><blockquote>
+<p>接下来，我们可以用刚刚构造的初始归并段，进行接下来的排序。</p>
+<p>把8个有序子序列（归并段）两两归并。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-194.png" style="zoom:67%;" />
+
+<p>接下来，我们会对每两个归并段，进行2路归并。</p>
+<p>我们先把归并段1、归并段2中更小的那两块，分别读入内存，放到输入缓冲区1、缓冲区2。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-195.png" style="zoom:67%;" />
+
+<p>接下来，对这两个缓冲区中的数据进行归并。即利用三个指针i、j、k，将更小的元素依次放入输出缓冲区。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-196.png" style="zoom:67%;" />
+
+<p>不要忘了，我们的输出缓冲区和磁盘块的大小是相等的，都是1KB，并且每次读和写都只能读写1KB。</p>
+<p>那当我们在输出缓冲区当中凑足1KB之后，就可以写回外存了。</p>
+<p>所以现在我们可以把这一块的内容，给写回外存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-197.png" style="zoom:67%;" />
+
+<p>此时输出缓冲区已经清空了，我们对剩下的元素同样进行归并排序。</p>
+<p>注意，当缓冲区1空了的时候，就要立即用归并段1的后一块内容补上。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-198.png" style="zoom:67%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-199.png" style="zoom: 67%;" />
+
+<p>这么做可以保证，我们的输入缓冲区1当中，永远是包含着归并段1里面，此时暂时还没有被归并，但是是数值最小的一个记录。</p>
+<p>下面继续让两个缓冲区进行归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-200.png" style="zoom:33%;" />
+
+<p>现在，输出缓冲区又满了，于是又可以写回外存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-201.png" style="zoom: 33%;" />
+
+<p>同时，现在输入缓冲区2里面已经空了，我们需要立即用归并段2里面的下一块内容补上。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-202.png" style="zoom:67%;" />
+
+<p>之后，经过归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-203.png" style="zoom: 80%;" />
+
+<p>再写回外存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-204.png" style="zoom:67%;" />
+
+<p>到此为止，我们的两个归并段，就归并成为了一个更长、更大的段。</p>
+<p>为了美观一些，我们把其中的数据，在图上放回原来的位置，进行展示。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-205.png" style="zoom:67%;" />
+
+<p>之后，我们会把后续的每两个初始归并段，均归并为一个更长的有序序列。方法是一样的。不再赘述。</p>
+<p>最终结果如下：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-206.png" style="zoom: 33%;" />
+
+<p>经过第一趟归并之后，我们把8个初始归并段，归并成了4个。</p>
+<p>接下来我们可以进行第二趟的归并。</p>
+<h5 id="第二趟归并"><a href="#第二趟归并" class="headerlink" title="第二趟归并"></a>第二趟归并</h5><blockquote>
+<p>把4个有序子序列（归并段）两两归并。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-207.png" style="zoom:67%;" />
+
+<p>先来归并前两个归并段。归并之后，我们会把它写到外存的另外一片空间当中。</p>
+<p>归并的方法和之前是一样的。</p>
+<p>我们先把归并段1、归并段2当中更小的两个块，读入内存。分别放入缓冲区1、缓冲区2中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-208.png" style="zoom: 67%;" />
+
+<p>接下来用归并排序的方法，挑选出三个最小的元素。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-209.png" style="zoom:67%;" />
+
+<p>这样，凑足一整块之后，把它写回外存。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-210.png" style="zoom:67%;" />
+
+<p>接下来继续归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-211.png" style="zoom:67%;" />
+
+<p>此时，输入缓冲区已经空了。那么，我们需要把归并段1当中的下一块内容，读入输入缓冲区1当中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-212.png" style="zoom:67%;" />
+
+<blockquote>
+<p>有人会比较疑惑：</p>
+<p>你把归并段1中的下一块内容读入缓冲区1之后，下一步进行归并操作，不也是读入缓冲区2当中的<code>12</code>吗？</p>
+<p>那你先把<code>13</code>放进去，然后两块缓冲区都空了，一起再读入，是不是也可以呢？</p>
+<p>这种想法是不对的。</p>
+<p>刚才我们读入的三个元素是<code>25 26 27</code>，都比缓冲区2的<code>13</code>要大，所以可能会有这种错觉。</p>
+<p>但是如果我们读入的元素是<code>10 26 27</code>呢？</p>
+<p>所以，如果没有在缓冲区1变空之后，立马将下一个磁盘块记录读入内存，而是先归并的话，就会出错！！</p>
+</blockquote>
+<p><strong>所以再次强调，每当一个输入缓冲区空了的时候，我们都需要立即把与之对应的那个归并段的下一个磁盘块中的内容读入内存，然后才可以接着往下归并。</strong></p>
+<p>那么接下来，将<code>13</code>放入输入缓冲区。那么此时，缓冲区2空了，同样地，我们也要立即把缓冲区2当中的下一块内容读入内存。</p>
+<p>再继续进行归并，写入外存……</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-213.png" style="zoom:67%;" />
+
+<p>到此为止，我们把两个归并段，归并成了一个更长更长的归并段。</p>
+<p>同样地，为了美观，我们把这部分的图像，挪到下面。</p>
+<p>不过，需要知道的是，<strong>我们归并之后得到的这个更长的子序列，其实是放在磁盘的另一片空间当中的，以前的那些空间我们会归还给系统</strong>。</p>
+<p>图像上为了美观，我们把它挪下来，导致看上去像是同一片空间，但是实际的逻辑上并不是同一片空间。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-214.png" style="zoom:67%;" />
+
+<p>现在，我们需要把归并段3、归并段4进行归并。用同样的方法。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-215.png" style="zoom:67%;" />
+
+<p>此时，第二趟归并完成。</p>
+<p>第二趟归并完成之后，我们得到了两个更长的有序的归并段。</p>
+<h5 id="第三趟归并"><a href="#第三趟归并" class="headerlink" title="第三趟归并"></a>第三趟归并</h5><blockquote>
+<p>把2个有序子序列（归并段）归并。</p>
+</blockquote>
+<p>归并的过程和之前的，是一模一样的。只不过是这里的归并段的长度变长了而已。</p>
+<p>此处不再赘述。</p>
+<p>总之，经过这一趟归并之后，整个文件，就变成了一个整体有序的序列了。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-216.png" style="zoom:67%;" />
+
+<h4 id="时间开销分析"><a href="#时间开销分析" class="headerlink" title="时间开销分析"></a>时间开销分析</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-217.png" style="zoom: 67%;" />
+
+<p>回顾一下刚才那个例子。</p>
+<p>在最开始的时候，我们需要把一个磁盘块均完全乱序的文件，两两归并，生成初始归并段。</p>
+<p>进行了读、写操作各16次，而且在数据读入内存之后，还要进行内部排序。</p>
+<p>经过这样的处理之后，我们才得到了8个初始归并段，每个段占两块磁盘块。</p>
+<blockquote>
+<p>这是因为，在我们这个例子当中，只使用了两块的输入缓冲区（输入缓冲区1、输入缓冲区2），所以我们每次只能读入两块的内容，对它们进行内部排序。</p>
+<p>如果分配的内存缓冲区更大，那我们得到的这个初始归并段的长度，相应的也会变得更长。</p>
+<p>但总之，在我们的例子当中，我们会生成8个初始的归并段，每段占两块。</p>
+</blockquote>
+<p>接下来，我们会进行三趟的归并，把有序的归并段归并成一个更长的整体。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-218.png" style="zoom: 67%;" />
+
+<p>每一趟归并，会基于上一趟归并的结果，再次把两个有序的归并段合并成更长的一个归并段。</p>
+<p>这样经过三趟归并之后，就可以得到一个整体有序的文件。</p>
+<p>通过刚才我们对归并过程的演示，不难发现，我们每一趟归并，其实都需要把16个磁盘块的数据，都需要读入内存，并写回外存。所以每一趟归并，读、写磁盘块的次数，都是16次。当然了，在每一趟读入内存之后，还需要在内存处进行内部的归并排序。</p>
+<p>所以我们外部排序的时间开销如下：</p>
+<p>外部排序时间开销 = 读写外存的时间 + 内部排序所需时间 + 内部归并所需时间</p>
+<p>其实读写外存的时间，基本上和读写磁盘的次数，是成正比的。</p>
+<p>刚才的例子中，我们需要读写磁盘的次数共有<code>32*4 = 128</code>次。</p>
+<p>那么，如果每次读或写磁盘都需要10ms的时间的话，整体来看，读写磁盘的时间就需要1280ms，也就是1.28s。</p>
+<p>对于计算机来说，内部排序、内部归并，由于是在内存里面进行的，这个速度是很快的，肯定达不到“秒”这样的级别。</p>
+<p><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-219.png" alt=""></p>
+<p>然，文件的总块数是多少，我们没法改变。但是，归并的趟数，其实我们可以想办法，让它缩小。</p>
+<p>只要归并的趟数缩小了，那么我们读写磁盘的次数就会减少，相应的，外部排序的时间开销就会下降。</p>
+<p>所以，这是我们接下来进行优化的一个思路：怎么减少归并的趟数。</p>
+<h4 id="优化-多路归并"><a href="#优化-多路归并" class="headerlink" title="优化:多路归并"></a>优化:多路归并</h4><blockquote>
+<p>刚才我们说了，如果能够减少归并的趟数，相应的就会减少读写磁盘的次数。</p>
+</blockquote>
+<p>那么怎么做呢？</p>
+<p>我们可以用多路归并。之前我们是用了2路归并。现在我们来看一下，如果采用4路归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-220.png" style="zoom:67%;" />
+
+<p>相应的，如果要进行4路归并，我们就需要在内存中分配四个输入缓冲区。</p>
+<p>然后把4个归并段中的内容，分别读入这四个缓冲区当中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-221.png" style="zoom:67%;" />
+
+<p>接下来归并的原理，其实和刚才是一样的。</p>
+<p>每一次从这4个缓冲区当中挑选一个最小的元素，把它放到输出缓冲区。</p>
+<p>凑足一整块之后，把它写回外存。</p>
+<p>同样需要注意的是，每当一个缓冲区空了的时候，我们就需要把这个缓冲区所对应的归并段的下一块的内容，立即读入内存。</p>
+<p>总之，我们进行4路归并之后，可以把这4个归并段，归并为一个更长的有序序列。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-222.png" style="zoom:67%;" />
+
+<p>下面那4个归并段也是一样的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-223.png" style="zoom:67%;" />
+
+<p>所以，在第一趟归并之后，我们整个文件就只剩下两个归并段了。</p>
+<p>那么，接下来我们再对这两个归并段进行一个2路归并，就可以得到一个整体的有序文件了。</p>
+<p>所以，如果我们采用4路归并的话，整体归并的趟数就只有两趟。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-224.png" style="zoom: 50%;" />
+
+<p>采用4路归并，只需进行两趟归并即可。</p>
+<p>读、写磁盘的次数 = <code>32 + 32*2 = 96</code>次。</p>
+<p><strong>重要结论</strong>：采用<strong>多路归并</strong>可以<strong>减少归并趟数</strong>，从而<strong>减少磁盘I/O（读写）次数</strong>。<br>$$<br>对r个初始归并段，做k路归并，则归并树可用k叉树表示。\\若树高为h,则归并趟数=h-1=\lceil log_kr \rceil<br>$$</p>
+<blockquote>
+<p>推导过程:<br>$$<br>k叉树第h层最多有k^{h-1}结点\\则r&lt;=k^{h-1},(h-1)_{最小}=\lceil log_kr \rceil<br>$$</p>
+</blockquote>
+<p>从这个式子，很明显的可以看到，k越大，r越小，则归并趟数越少，读写磁盘次数越少。</p>
+<p>所以我们的优化策略就是，令归并的路数变多一些（k变大），或者令初试归并段的数量少一些（r变小）。</p>
+<p>但是值得一提的是，归并路数并不是越多越好，因为归并路数变多，也会带来一些负面影响：</p>
+<p>①k路归并时，需要开辟k个输入缓冲区，内存开销增加。</p>
+<p>②每挑选一个关键字需要对比关键字(k-1)次，内部归并所需时间增加。</p>
+<blockquote>
+<p>当然，这个问题，我们接下来要讲的败者树，可以解决在k路归并的时候，每挑选一次关键字都需要对比关键字k-1次的问题。</p>
+</blockquote>
+<p>接下来我们看怎么减少r，也就是怎么减少初始归并段的数量。</p>
+<p><font color='cornflowerblue'>刚才我们进行4路归并的时候，不是开辟了4个输入缓冲区吗？</font></p>
+<p>那既然我们有4个输入缓冲区，那么对于最开始的一个无序的文件，我们完全可以读入4块的内容，然后把这些内容在内存里面进行一个内部排序。再分别写回外存。这样的话，我们得到的初始归并段就包含了4块的内容。用这种方式构造初始归并段，就只会有4个（对上面的例子来讲）。</p>
+<blockquote>
+<p>所以，生成初始归并段的“内存工作区”（也就是输入缓冲区）越大，初始归并段越长。也就意味着r越小。</p>
+</blockquote>
+<p><strong>结论</strong>：若能增加初始归并段的长度，则可减少初始归并段数量r。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>外部排序</strong></p>
+<ul>
+<li>若要进行k路归并排序，则需要在内存中分配k个输入缓冲区和1个输出缓冲区</li>
+<li>步骤<ul>
+<li>①生成r个初始归并段（对L个记录进行内部排序，组成一个有序的初始归并段）</li>
+<li>②进行S趟k路归并，<code>S = ⌈logk(r)⌉</code></li>
+</ul>
+</li>
+<li>如何进行k路归并<ul>
+<li>把k个归并段的块读入k个输入缓冲区</li>
+<li>用“归并排序”的方法从k个归并段中选出几个最小记录暂存到输出缓冲区中</li>
+<li>当输出缓冲区满时，写出外存</li>
+</ul>
+</li>
+<li>外部排序时间开销：读写外存的时间 + 内部排序所需时间 + 内部归并所需时间</li>
+<li>优化<ul>
+<li>增加归并路数k，进行多路平衡归并<ul>
+<li>代价1：需要增加相应的输入缓冲区</li>
+<li>代价2：每次从k个归并段中选一个最小元素需要（k-1）次关键字对比</li>
+</ul>
+</li>
+<li>减少初始归并段数量r</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对于“代价2”，在下一小节中，我们将介绍“败者树”，来减少关键字对比次数。</p>
+</blockquote>
+<p><font color='red'>注</font>：按照本节介绍的方法生成的初始归并段，若共N个记录，内存工作区可容纳L个记录，则初始归并段数量 <code>r = ⌈ N/L ⌉</code>。</p>
+<blockquote>
+<p>对于此处，我们在之后的小节当中，会介绍一种“置换—选择排序”的方法，进一步减少初始归并段数量。</p>
+</blockquote>
+<blockquote>
+<p>那么此处提到的“败者树”，和“归并—选择排序”，就是我们接下来要学习的内容。</p>
+</blockquote>
+<h4 id="纠正-多路平衡归并是什么"><a href="#纠正-多路平衡归并是什么" class="headerlink" title="纠正:多路平衡归并是什么"></a>纠正:多路平衡归并是什么</h4><p>课本上写的是：对r个初始归并段，做k路平衡归并，归并树可用严格k叉树（即只有度为k与度为0的结点的k叉树）来表示。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-225.png" style="zoom:50%;" />
+
+<p><font color='red'>上面这种说法是有疏漏的</font>（但是图确实是一个4路平衡归并）。因为，这是4路归并，但是对于根结点来说，根结点是2叉的，并不是4叉的，与它的文字描述相矛盾。</p>
+<p><font color='orange'>我们把这种说法纠正一下，如下</font>：</p>
+<p><strong>k路平衡归并</strong>：</p>
+<p>①最多只能有k个段归并为一个；</p>
+<p>②每一趟归并中，若有m个归并段参与归并，则经过这一趟处理得到<code>⌈ m/k ⌉</code>个新的归并段。</p>
+<p>如果不满足这两个条件，就不能称之为“k路<strong>平衡</strong>归并”。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-226.png" style="zoom:50%;" />
+
+<p>因此，对于上图：</p>
+<p>这个例子是不是4路归并排序？——是。</p>
+<p>这个例子是不是4路平衡归并排序？——不是。</p>
+<blockquote>
+<p>因为，最初有8个归并段<code>R1~R8</code>，对于第一趟归并，其将8个归并段归并为了3个新的归并段，<code>R1&#39; R2&#39; R3&#39;</code>。</p>
+<p>对于4路归并来说，如果当前这一趟有8个归并段参与归并的话，最后应当得到<code>⌈ 8/4 ⌉ = 2</code>个新的归并段，而不是3个。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-225.png" style="zoom:50%;" />
+
+<p>再来看书上的这个图。</p>
+<p>第一趟归并，把8个归并段归并成了2个新的归并段，OK。</p>
+<p>第二趟归并，把2个归并段归并成了<code>⌈ 2/4 ⌉ = 1</code>个新的归并段，也没问题。</p>
+<p>所以这个图，的确是一个4路平衡归并的排序过程。</p>
+<h3 id="败者树"><a href="#败者树" class="headerlink" title="败者树"></a>败者树</h3><blockquote>
+<p>上面外部排序中，我们说过，对于外部排序，若使得归并路数k增加，则归并趟数会减小，从而读写磁盘总次数减少。</p>
+<p>但是问题是，归并路数k如果过大，由于k路归并的过程需要对比关键字k-1次才能选出一个最小元素，从而导致内部归并所需时间增加。</p>
+<p>这样一来，多路归并虽然减少了读写磁盘次数，但是又会使得内部归并所需时间增加。</p>
+</blockquote>
+<blockquote>
+<p>对于这个，增加归并路数所带来的负面影响，可以用败者树来进行优化。</p>
+<p>可以让我们从k个归并段中选出最小元素，需要对比关键字的次数更少。</p>
+</blockquote>
+<h4 id="什么是败者树"><a href="#什么是败者树" class="headerlink" title="什么是败者树"></a>什么是败者树</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-227.png" style="zoom:67%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-228.png" style="zoom:67%;" />
+
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-229.png" style="zoom:67%;" />
+
+<p>可以看到，若有8位参赛者，则构造败者树需要7次比拼。</p>
+<p>这就是败者树，所有选手进行一回合一回合的晋级，最终选出获胜者。</p>
+<p>我们把它简化一下，如下，就成为了一棵二叉树。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-230.png" style="zoom:67%;" />
+
+<p><strong>败者树</strong>——可视为一棵完全二叉树（多了一个头）。k个叶结点分别是当前参加比较的元素，非叶子结点用来记忆左右子树中的“失败者”，而让胜者往上继续进行比较，一直到根结点为止。</p>
+<blockquote>
+<p>上图，最下面一层8个叶子结点就是参加比较的元素，上面的若干非叶子结点用来记忆中间的失败者。</p>
+</blockquote>
+<p>那么，最终“天津饭”就是冠军。</p>
+<p>但是，此时，如果“天津饭”退出比赛，并且由“派大星”顶替。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-231.png" style="zoom:67%;" />
+
+<blockquote>
+<p>现在冠军走了，那么是不是意味着，我们需要重新进行7个回合的比赛？</p>
+</blockquote>
+<p>其实是不需要这样的。</p>
+<p>我们完全可以基于之前构造好的这棵败者树，来对比赛的流程进行优化，可以进行更少的比赛就可以找出谁最强。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-232.png" style="zoom:50%;" />
+
+<p>此时，若要让这8个人重新选出一个冠军。其实右半边的那几场比赛完全没有必要再进行一次（上图圈住的部分）。因为那几个人，谁更厉害，在之前就已经得知了。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-233.png" style="zoom:67%;" />
+
+<p>此时，我们可以让“派大星”和“阿乐”打一场。因为阿乐只是输给了之前的那个人，但是不能确定阿乐和派大星谁更厉害。所以必须让派大星和阿乐打一场。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-234.png" style="zoom:67%;" />
+
+<p>此时，如果派大星赢了，那么接下来再让派大星和程龙打一场。</p>
+<p>如果派大星又打赢了，那么接下来可以让派大星和孙悟空打一场。它们俩对打之后，就得出了冠军是谁。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-235.png" style="zoom: 67%;" />
+
+<p>此时，原来的冠军走了，派大星加入之后，新的冠军，就求了出来。</p>
+<p>可见，对于这个例子，基于已经构建好的败者树，选出新的胜者只需进行3场比赛。（并不需要重新打7场）</p>
+<blockquote>
+<p>例子中的“对打”，其实就是我们关键字的对比。</p>
+</blockquote>
+<h4 id="败者树在多路平衡归并中的应用"><a href="#败者树在多路平衡归并中的应用" class="headerlink" title="败者树在多路平衡归并中的应用"></a>败者树在多路平衡归并中的应用</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-236.png" style="zoom: 67%;" />
+
+<p>这里有8个归并段，我们要在这8个归并段当中选出一个最小的元素。之前，每选出一个最小的元素，我们都需要进行7次的对比。</p>
+<p>但是现在，我们可以这么做。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-237.png" style="zoom:67%;" />
+
+<p>先来构造一棵败者树。败者树中的每一个叶子结点，会对应我们的每一个归并段。</p>
+<p>接下来我们会继续构建这棵败者树，从中找出最小的一个元素。</p>
+<blockquote>
+<p>对于败者树来说，在中间的分支节点上（记录失败者信息），我们本应该记录的是失败者的元素。但是在此处，我们对于每个分支节点，要记录失败者是来自哪一个归并段。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-238.png" style="zoom:67%;" />
+
+<p>对于失败者结点，我们只需要记录其来自于归并段的编号，并不需要把其数据元素值记录其中。</p>
+<p>现在我们构建好了一棵败者树，其中，根结点（最顶上的那个结点）记录了冠军，即最小的元素是来自于哪一个归并段当中。</p>
+<p>这里记录的是3，所以，最小的元素是来自于归并段3当中。</p>
+<p>所以，第一轮，我们经过了7次关键字对比，找到了最小的元素。</p>
+<blockquote>
+<p>对于k路归并，第一次构造败者树需要对比关键字k-1次。</p>
+</blockquote>
+<p>接下来，按照归并排序的规则，我们还需要再从这8个归并段中，再选出一个最小的元素。</p>
+<p>因此，我们需要将归并段3中的下一个元素，替代1这个元素原有的位置。（因为1是冠军，已经走了）</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-239.png" style="zoom:67%;" />
+
+<p>接下来，我们只需要用这个新来的元素，和第4个归并段中此时最小的元素进行对比（因为它的父节点是4，表示来自于归并段4的那个失败者，也就是刚刚由归并段4进入败者树的结点，也就是归并段4的第一个结点，而由于归并段是有序的，也就是归并段4的最小的元素）。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-240.png" style="zoom: 33%;" />
+
+<p>这个元素6是更小的，那么它胜出。</p>
+<p>然后就可以进行下一轮的对比，即与归并段2中的最小元素进行对比。对比之后，同样是来自归并段3的胜出。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-241.png" style="zoom:33%;" />
+
+<p>因此，来自归并段3的元素又可以进入下一轮的对比。接下来这一轮，是要和归并段5的最小元素进行对比。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-242.png" style="zoom:33%;" />
+
+<p>归并段5的最小元素是2，显然比6更小，因此5号选手胜出。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-243.png" style="zoom: 50%;" />
+
+<p>那么最终，我们选出了一个新的冠军，即8个归并段中的下一个最小的元素。</p>
+<p>目前来看，最小的元素是来自于5号段中的最小元素，也就是数据元素2。</p>
+<p>所以在这个例子当中，我们可以看到。</p>
+<p>只要我们构建好了败者树，接下来每一次要选出一个最小的元素，只需要进行3次的关键字对比（即灰色结点的层数）。</p>
+<p><strong>结论</strong>：</p>
+<ul>
+<li>对于k路归并，第一次构造败者树需要对比关键字<code>k-1</code>次</li>
+<li>有了败者树，选出最小元素，只需对比关键字<code>⌈ log₂k ⌉</code>次。</li>
+</ul>
+<blockquote>
+<p>此时，如果要进行1024路归并。</p>
+<p>在以前，我们每次要选出最小的关键字，都需要进行1023次对比。</p>
+<p>但如果我们有了败者树，我们每次选出最小关键字就只需要10次对比。</p>
+</blockquote>
+<h4 id="败者树的实现思路"><a href="#败者树的实现思路" class="headerlink" title="败者树的实现思路"></a>败者树的实现思路</h4><blockquote>
+<p>在考研当中，对败者树的考察一般是手算。</p>
+<p>此处讲一下代码的实现思路，作为了解。</p>
+</blockquote>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-244.png" style="zoom: 50%;" />
+
+<p>如果我们要进行8路归并。</p>
+<p>我们要定义一个长度为8的int型数组，用这个数组就可以存储8路归并的败者树。</p>
+<p>其中，数组下标为1的，就可以表示传统意义上的树的根结点，数组下标为0的，就是败者树中新增加的那个头。其他的位置结点，以及一些性质，和一棵完全二叉树是对应的。</p>
+<p>此处会发现，我们最底层的叶子结点，在存储败者树的数组当中是不对应任何数据的。</p>
+<p>也就是说叶子结点是虚拟的。但是从逻辑上看，这些叶子结点是“存在的”，每个叶子结点会对应一个归并段，但实际上，这些叶子结点只是我们脑补上去的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-245.png" style="zoom: 33%;" />
+
+<p>到此，我们应该就能看懂，课本中给的这个图示是什么意思。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-246.png" style="zoom: 50%;" />
+
+<p>5路归并的败者树，其背后实际上对应的是一个长度为5的int型数组。</p>
+<p>数组中，下标为1到4的这几个结点，其实对应的就是失败者的结点，而0号结点就是冠军结点。</p>
+<blockquote>
+<p>并且，对于这个5路归并，根据⌈log₂5⌉ = 3，可知其失败结点总共有三层。因此每次只需3次对比。</p>
+<p>当然，也有可能只需要2次对比。因为，如果我们填补的新元素，在它上方只有2层失败结点，那么就只需两次对比了。（如上图的b0、b1、b2处）</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-247.png" style="zoom: 33%;" />
+</blockquote>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>败者树解决的问题：使用多路平衡归并可减少归并趟数，但是用传统方法，从k个归并段中选出一个最小/最大元素需要对比关键字k-1次，构造败者树可以使关键字对比次数减少到⌈log₂k⌉。</li>
+<li>败者树可视为一棵完全二叉树（多了一个头）。k个叶结点分别对应k个归并段中当前参加比较的元素，非叶子结点用来记忆左右子树的“失败者”，而让胜者往上继续进行比较，一直到根结点。</li>
+<li>如何构造和使用败者树？结合图示进行理解。</li>
+</ul>
+<h3 id="置换-选择排序"><a href="#置换-选择排序" class="headerlink" title="置换-选择排序"></a>置换-选择排序</h3><blockquote>
+<p>在外部排序的时候，生成r个初始归并段，进行S趟k路归并。<br>$$<br>S=\lceil log_kr \rceil<br>$$<br>我们说了，如果让初始归并段r减少，则可以使外部排序的效率提升。</p>
+</blockquote>
+<p>置换-选择排序，就能够用于制造更长的归并段，也就是让初始归并段的数量尽可能的少。</p>
+<h4 id="传统方法制造初始归并段"><a href="#传统方法制造初始归并段" class="headerlink" title="传统方法制造初始归并段"></a>传统方法制造初始归并段</h4><blockquote>
+<p>我们用传统方法制造的初始归并段，就是在内存中开辟两块输入缓冲区与一块输出缓冲区，然后将文件中的2个磁盘块中的乱序内容读入内存中，进行内部排序，再将排好序的两块写回磁盘。</p>
+<p>而由于我们的内存只开辟了两块缓冲区，因此只能对这两块的内容进行内部排序，得到两块整体有序的序列。</p>
+</blockquote>
+<p>如何让这个序列更长呢？</p>
+<p>不难想到，我们可以用一片更大的内存区域来进行内部排序。</p>
+<p>比如我们有六块缓冲区，那么一次可以将6个磁盘块中的数据读入，并且对它们进行内部排序并写回磁盘，最终得到一个长度为六块的有序序列，即长度是6块的初始归并段。</p>
+<p>这样一来，就使得初始归并段的个数降低了。</p>
+<blockquote>
+<p>用于内部排序的内存工作区WA可容纳<code>l</code>个记录，则每个初始归并段也只能包含<code>l</code>个记录。（这个<code>l</code>，就是我上面说的块数乘每块中的记录数）</p>
+</blockquote>
+<p>若文件共有n个记录，则初始归并段的数量<code>r = n / l</code>。</p>
+<h4 id="置换-选择排序-1"><a href="#置换-选择排序-1" class="headerlink" title="置换-选择排序"></a>置换-选择排序</h4><blockquote>
+<p>上面的扩大初始归并段长度的方法，仍然是一种传统思想。其初始归并段的长度，是和内存工作区的大小相等的。</p>
+</blockquote>
+<p>怎样能制造一个比内存工作区更大的初始归并段呢？可以用置换-选择排序来解决。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-248.png" style="zoom: 67%;" />
+
+<p>假设用于内部排序的这个内存工作区，只能容纳3个记录（即，对于传统思路来讲，当存入3个数据元素时，就够一块了，就要写回，并组成一个初始归并段了，因此初始归并段每段的记录也为3，由于总共有24个记录，所以传统方法只能生成8个初始归并段）。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-249.png" style="zoom: 67%;" />
+
+<blockquote>
+<p>我们最终要实现递增的序列。</p>
+</blockquote>
+<p>我们先把文件中的前三个记录读入进来。此时，内存工作区已经填满，我们要把最小的元素置换出去。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-250.png" style="zoom:67%;" />
+
+<p>置换出去，放到归并段1当中。并且，同时，用MINIMAX，把刚才这个变量的值<code>4</code>给记下来。</p>
+<p>接下来，我们会从待排序文件当中读入下一个记录。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-251.png" style="zoom:67%;" />
+
+<p>经过对比发现，此时最小的一个元素是<code>6</code>，并且它的值要比刚才输出的值<code>4</code>更大（即比MINIMAX=4更大）。所以我们要把<code>6</code>放到归并段1的后面，并且令MINIMAX为6。</p>
+<p>此时，6拿出去了，就空出了一个位置。此时，我们要把下一个记录读入进来。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-252.png" style="zoom:67%;" />
+
+<p>在这几个记录当中，最小的是<code>7</code>，同时，<code>7</code>要比刚刚输出的值<code>6</code>更大（即比MINIMAX=6更大）。所以我们要把<code>7</code>这个记录，放到<code>6</code>的后面。同时令MINIMAX为7。</p>
+<p>接下来读入下一个记录。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-253.png" style="zoom: 67%;" />
+
+<p>此时最小的是9，把9放在刚才的7的后面。读入下一个记录。</p>
+<p>…………中间略去若干步骤。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-254.png" style="zoom:67%;" />
+
+<p>此时，最小的记录是<code>10</code>，但是，通过MINIMAX这个变量我们知道，上一个输出到归并段1当中的记录应该是<code>13</code>，所以现在<code>10</code>这个记录，我们不可能把它放到归并段1的末尾。（因为我们的归并段1肯定是要内部递增的）</p>
+<p>因此，虽然10这个记录是最小的，但是我们不能把它置换出去。</p>
+<p>而，除了10之外，最小的是<code>14</code>，而且14要比刚才输出的13更大。所以，我们可以把14放到归并段1的末尾，并令MINIMAX=14。</p>
+<p>…………中间略去若干步骤。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-255.png" style="zoom:67%;" />
+
+<p>此时，最小的是<code>2</code>，并且由于刚才输出的记录是<code>22</code>，因此我们不可能把2放到归并段1的末尾。</p>
+<p>此时，其他的关键字中最小的为<code>30</code>。（10已经不被考虑了）<code>30</code>比22更大，所以将其放到归并段1的末尾，并令MINIMAX=30。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-256.png" style="zoom:67%;" />
+
+<p>接下来，读入记录<code>3</code>。</p>
+<p>现在，<code>3</code>这个元素，要比MINIMAX=30更小，因此不可能把它放到归并段1的末尾。</p>
+<p>而此时，内存工作区内的三个关键字都比MINIMAX更小，则次归并段在此截止。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-257.png" style="zoom:67%;" />
+
+<p>第一个归并段就到此为止，构造完成。</p>
+<p>接下来我们构造第二个归并段，归并段2。</p>
+<p>我们先将刚刚“标红”的三个关键字给解除一下，重新纳入考虑。</p>
+<p>则，首先输出<code>2</code>，并将MINIMAX设为2。</p>
+<p>…………之后步骤和上面同理，略。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-258.png" style="zoom:67%;" />
+
+<p>至此，当前工作区中的关键字都比MINIMAX更小，则归并段2生成完毕。</p>
+<p>接下来构造归并段3的方法是一样的，略。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-259.png" style="zoom:67%;" />
+
+<p>到这一步时，初始的待排序文件已经全部读入完毕了。那么接下来把工作区中的三个记录依次有序输出即可。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-260.png" style="zoom:67%;" />
+
+<p>这样一来，我们就得到了三个初始归并段。</p>
+<p>这些初始归并段的长度，可以超过内存工作区的限制。</p>
+<p>原本内存工作区只能容纳3个记录，而我们生成的归并段中的记录都能够大于3。由于归并段中记录数越多，则归并段个数越少，即r越小，即读写磁盘的次数越少。</p>
+<blockquote>
+<p><strong>注</strong>：</p>
+<p>其实输出文件FO，是在磁盘当中的。</p>
+<p>在刚刚我们演示的例子过程当中，是每次从内存工作区中直接找到最小元素，输出到FO中。</p>
+<p>但是实际上，我们的内存当中是要有一个输出缓冲区的，内存工作区中每次找到的最小元素，要先排列在输出缓冲区当中，当输出缓冲区满了（即达到一个磁盘块的大小了），才一并写入磁盘，存入FO当中。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-261.png" style="zoom:67%;" />
+
+<p>同样地，在从FI文件读入记录至内存工作区时，也不是一个记录一个记录读入的，而是一次读入一块的内容（输入缓冲区）。只不过每次会把一个记录放进内存工作区WA。</p>
+</blockquote>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><p>设初始待排文件为FI，初始归并段输出文件为FO，内存工作区为WA，FO和WA的初始状态为空，WA可容纳w个记录。</p>
+<p>置换-选择排序算法的步骤如下：</p>
+<p>①从FI输入w个记录到工作区WA。</p>
+<p>②从WA中选出其中关键字取最小值的记录，记为MINIMAX记录。</p>
+<p>③将MINIMAX记录输出到FO中去。</p>
+<p>④若FI不空，则从FI输入下一个记录到WA中。</p>
+<p>⑤从WA中所有关键字比MINIMAX记录的关键字大的记录中选出最小关键字记录，作为新的MINIMAX记录。</p>
+<p>⑥重复③-⑤，直至在WA中选不出新的MINIMAX记录为止，由此得到一个初始归并段，输出一个归并段的结束标志到FO中去。</p>
+<p>⑦重复②-⑥，直至WA为空。由此得到全部初始归并段。</p>
+<h3 id="最佳归并树"><a href="#最佳归并树" class="headerlink" title="最佳归并树"></a>最佳归并树</h3><blockquote>
+<p>之前我们学习的归并树，它有一个性质。</p>
+</blockquote>
+<h4 id="归并树的神秘性质"><a href="#归并树的神秘性质" class="headerlink" title="归并树的神秘性质"></a>归并树的神秘性质</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-262.png" style="zoom: 50%;" />
+
+<p>通过上一小节的<code>置换-选择排序</code>，我们了解到，通过那种方法得到的初始归并段，长度是各不相同的。</p>
+<p>我们对于通过置换-选择排序得到的长度不一的初始归并段，对于这些初始归并段，我们来进行二路归并。</p>
+<blockquote>
+<p>上图中，每个数字代表该归并段所占磁盘块的块数。</p>
+</blockquote>
+<p>我们对这5个初始归并段，进行二路归并，即两两归并。</p>
+<p>那么首先我们可以归并R2、R3两个归并段，得到一个长度为6块的归并段。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-263.png" style="zoom:33%;" />
+
+<p>我们要把R2、R3这两个，一个长度为5个磁盘块、一个长度为1个磁盘块，的归并段，来读入内存当中去进行二路归并。而由于我们的读写操作，是以磁盘块为单位的。</p>
+<p>因此，对于R2、R3的二路归并，我们需要进行<code>5+1</code>，即读、写操作各6次。之后，经过我们内存的处理，最终会将R2、R3两个归并段合二为一，得到一个总共占有6个磁盘块的新的归并段。</p>
+<p>然后，我们将R4、R5进行二路归并，同理，总共需要进行读、写操作各8次。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-264.png" style="zoom: 50%;" />
+
+<p>之后，我们再把这个占6块、占8块的两个归并段再次进行归并，得到一个占14块的归并段。并且总共需要进行读、写操作各14次。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-265.png" style="zoom: 33%;" />
+
+<p>最后，我们再把R1这个归并段，和这个14块的归并段进行归并。并且总共需要进行读、写操作各16次。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-266.png" style="zoom: 33%;" />
+
+<p>最终将所有初始归并段，归并为了一个整体，归并完毕。</p>
+<p>最终，我们可以看到，整个过程进行的读、写操作各为<code>6+8+14+16</code>，即44次。</p>
+<p>现在我们把上图中的4个绿色结点看作二叉树的5个叶子结点。</p>
+<p>现在来计算这棵二叉树（归并树）的带权路径长度，<strong>WPL</strong> = 2×1 + (5+1+6+2)×3 = 44 = 读磁盘的次数 = 写磁盘的次数。即读写磁盘的总共操作次数为88次。</p>
+<blockquote>
+<p>如果忘了带权路径长度是什么，可以回去看一下哈夫曼树那一小节。</p>
+</blockquote>
+<p><strong>重要结论</strong>：归并过程中的<strong>磁盘I/O次数 = 归并树的WPL×2</strong>。</p>
+<p><font color='cornflowerblue'>基于此，我们不难想到，如果我们想让归并的过程中磁盘读写的次数最少，那么只需要使归并树的WPL最小，这不就是哈夫曼树吗？</font></p>
+<p>所以接下来我们会构造一棵哈夫曼树，来优化这个二路归并的策略。</p>
+<h4 id="构造2路归并的最佳归并树"><a href="#构造2路归并的最佳归并树" class="headerlink" title="构造2路归并的最佳归并树"></a>构造2路归并的最佳归并树</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-267.png" style="zoom:33%;" />
+
+<p>就是将初始归并段对应的结点，构造成一棵哈夫曼树。</p>
+<blockquote>
+<p>简单描述一下构造哈夫曼树的过程：</p>
+<p>先从5个结点中选出两个权值最小的结点1、2，令他们两个构成兄弟，进行归并，产生一个权值为3的结点；</p>
+<p>此时所有结点中权值最小的两个结点为3和2，令他们两个构成兄弟，进行归并，产生一个权值为5的结点；</p>
+<p>此时所有结点中权值最小的两个结点为5和5，构成兄弟并归并，产生一个10的结点；</p>
+<p>此时最小的两个，10和6，构成兄弟，归并，产生最终的一个结点16。</p>
+</blockquote>
+<p>这个哈夫曼树的含义，或者说按照这棵归并树的操作过程，就是。刚开始我们先把1和2两个归并段进行归并，然后再与长度2的归并段归并，再与长度5的归并段归并，再与长度6的归并段归并。</p>
+<p>最佳归并树，WPL_min = (1+2)×4 + 2×3 + 5×2 + 6×1 = 34。</p>
+<p>也就是用我们这种归并方案，总共需要读、写磁盘各34次，即总的磁盘I/O次数68次。</p>
+<p>这就是一棵最佳归并树，我们按照它来进行归并，能够得到最少的磁盘I/O次数。</p>
+<h4 id="多路并归的情况"><a href="#多路并归的情况" class="headerlink" title="多路并归的情况"></a>多路并归的情况</h4><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-268.png" style="zoom: 50%;" />
+
+<p>有这些初始归并段，同样地，每个小圆圈里面的数字，代表该归并段长度占了多少个磁盘块。</p>
+<h5 id="三路归并"><a href="#三路归并" class="headerlink" title="三路归并"></a>三路归并</h5><p>现在，我们若要进行<strong>3路归并</strong>。</p>
+<p>按照我们之前的传统方法，我们的三路归并应该是如下结果：</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-269.png" style="zoom:50%;" />
+
+<p>那可以计算一下这棵树的带权路径长度，<code>WPL = (9+30+12+18+3+17+2+6+24)*2 = 242</code>，即整个归并过程的磁盘I/O总次数为484次。</p>
+<p>这是我们之前学习的，三路归并的方法。显然这并不是一棵最佳的归并树。</p>
+<p><font color='cornflowerblue'>那三路归并的最佳归并树应该怎么构造呢？</font></p>
+<p>其实原理和二路归并是非常类似的。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-270.png" style="zoom:33%;" />
+
+<blockquote>
+<p>和二路归并构造哈夫曼树的操作非常类似，它只不过是每次拿来权值最小的三个结点。</p>
+<p>首先拿来所有结点中权值最小的三个结点2、3、6，使他们构成兄弟，进行归并，得到一个11的新的结点；</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-271.png" style="zoom: 33%;" />
+
+<p>接下来，权值最小的三个结点就是9、12、11，让他们构成兄弟，进行归并，得到一个32的新结点。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-272.png" style="zoom:33%;" />
+
+<p>此时，权值最小的三个为17、18、24，让他们构成兄弟，进行归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-273.png" style="zoom: 33%;" />
+
+<p>最后，只剩下了三个结点30、32、59，我们再把它们三个进行归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-274.png" style="zoom:33%;" />
+</blockquote>
+<p>用这样的方法得到的一棵三路归并的归并树，它就是一棵最佳归并树。</p>
+<p>WPL_min = (2+3+6)×3 + (9+12+17+24+18)×2 + 30×1 = 223</p>
+<p>那么按照这种归并过程进行的三路归并，总共需要的磁盘I/O次数为446次。</p>
+<h5 id="如果减少一个归并段"><a href="#如果减少一个归并段" class="headerlink" title="如果减少一个归并段"></a>如果减少一个归并段</h5><p>接下来，问题来了，如果我们去掉一个归并段。比如把<code>30</code>这个归并段给去掉。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-275.png" style="zoom:33%;" />
+
+<p>也就是说我们总共只有8个归并段，来参与三路归并。</p>
+<p>那按照三路归并构造哈夫曼树的规则，过程如下：</p>
+<blockquote>
+<p>首先选择最小的三个2、3、6，归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-276.png" style="zoom:33%;" />
+
+<p>此时，最小的三个是9、12、11，归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-277.png" style="zoom:33%;" />
+
+<p>接下来，最小的三个是17、24、18，归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-278.png" style="zoom:33%;" />
+
+<p>现在我们只剩下了这两棵树，而如果我们要把这两棵树进行归并，就只能进行二路归并。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-279.png" style="zoom:33%;" />
+</blockquote>
+<blockquote>
+<p>这棵树的带权路径长度是：</p>
+<p>WPL = (2+3+6)×3 + (9+12+17+24+18)×2 = 193。</p>
+<p>归并过程中，总共的磁盘I/O次数是386次。</p>
+</blockquote>
+<p>此处，要说的是，上述这中构造最佳归并树的方法是不对的。这个并不是最佳归并树。</p>
+<p>最后的一次归并，是进行的二路归并，而不是三路归并。</p>
+<p>而，如果初始归并段能够再多一个，就能够保证刚好都是三路归并了。</p>
+<p>所以，正确的做法应该是这样的，如下。</p>
+<h5 id="正确的做法"><a href="#正确的做法" class="headerlink" title="正确的做法"></a>正确的做法</h5><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-280.png" style="zoom:33%;" />
+
+<p><font color='red'>注意</font>：对于k路归并，若<strong>初始归并段的数量无法构成严格的k叉归并树</strong>，则<strong>需要补充几个长度为0的“虚段”</strong>，再进行k叉哈夫曼树的构造。</p>
+<p>那么像刚才那个例子当中，我们需要补充1个虚段。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-281.png" style="zoom:33%;" />
+
+<p>长度为0的这个结点实际上是不存在的，但是我们把它加上，是为了总共的结点能够刚好凑成k叉归并树。</p>
+<p>我们加入了虚段的结点后，就可以构造出正确的三叉归并树，过程省略，结果如下。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-282.png" style="zoom: 33%;" />
+
+<p>WPL_min = (2+3+0)×3 + (6+9+12+17+18)×2 + 24×1 = 163。</p>
+<p>即，归并过程中，总的磁盘I/O次数为326次。</p>
+<p>上面这个，就是三路归并的最佳归并树。</p>
+<blockquote>
+<p>对于0这个虚段的设置，现实含义为：</p>
+<p>我们在进行三路归并的时候，是在内存中开辟了三个缓冲区。当我们对<code>2 3 0</code>这三个归并段进行归并的时候，我们把<code>2</code>放到缓冲区1当中，把<code>3</code>放到缓冲区2，而缓冲区3中什么都不用放。对于<code>0</code>这个归并段，在参与归并的时候，只需看作已经被归并完毕了的归并段，不用再进行任何操作，就可以了。</p>
+</blockquote>
+<p>总之，当我们进行k路归并的时候，若k&gt;2，则我们就会遇到，初始归并段的数量无法构成严格的k叉归并树的情况。此时我们就要补充若干个长度为0的虚段，再进行处理。</p>
+<p><font color='cornflowerblue'>那么到底要补充几个呢？</font></p>
+<p>我们现在是要进行k路归并，而k路归并的最佳归并树一定是一棵严格的k叉树，即树中只包含度为k、度为0的结点。</p>
+<p>设度为k的结点有<code>n_k</code>个，度为0的结点有<code>n_0</code>个，归并树总结点数位<code>n</code>，则：</p>
+<p>对于初始时给的归并段，以及我们补充上去的虚段，它们最终肯定都是叶子结点，即度为0的结点。即，初始归并段数量 + 虚段数量 = n_0。</p>
+<p>另外，根据k叉树本身的性质，应该有如下两个等式：</p>
+<ul>
+<li>n = n_0 + n_k</li>
+</ul>
+<blockquote>
+<p>这个式子不需要解释。</p>
+</blockquote>
+<ul>
+<li>k × n_k = n-1</li>
+</ul>
+<blockquote>
+<p>对于严格的k叉树，除了根结点外，每个节点头上都会连着一个分叉。</p>
+<p>对于k叉树，每个度为k的结点，共发出k×n_k个分叉，也就是说有k×n_k个结点，但由于这样计算是不会将根结点包含在内的，因此其等于n-1。</p>
+</blockquote>
+<p>由上面这两个式子，可以得出：</p>
+<p>n_0 = (k-1)×n_k + 1</p>
+<p>进而得出：<br>$$<br>n_k=\frac{n_0-1}{k-1}<br>$$<br>由于n_k表示的是，度为k的结点的数量，因此它必须是一个整数。</p>
+<p>也就是说，如果是严格k叉树，则上面这个分式，一定得到的是一个整数的结果，或者说一定能除得尽。</p>
+<p>又因为<code>初始归并段数量 + 虚段数量 = n_0</code>。</p>
+<p>因此，用人话来说一遍就是，初始归并段数量，再加上我们补充的虚段数量，再减1，应该是刚好能除尽（k-1）的。</p>
+<p>即：</p>
+<ul>
+<li>若（初始归并段数量 - 1）% (k - 1) = 0，说明刚好可以构成严格k叉树，此时不需要添加虚段。</li>
+<li>若（初始归并段数量 - 1）% (k - 1) = u ≠ 0，则需要补充（k - 1）- u个虚段。</li>
+</ul>
+<blockquote>
+<p>例子：</p>
+<p>假设我们要进行8路归并，初始归并段数量为19。</p>
+<p>由(19-1)%(8-1) = 4，因此不能直接构成严格8叉树，需要补充虚段。</p>
+<p>再补3个虚段就行了。</p>
+</blockquote>
+<h4 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h4><p><strong>最佳归并树</strong></p>
+<ul>
+<li>理论基础<ul>
+<li>每个初始归并段对应一个叶子结点，把归并段的块数作为叶子的权值</li>
+<li>归并树的WPL = 树中所有叶子结点的带权路径长度之和</li>
+<li>归并过程中的磁盘I/O次数 = 归并树的WPL × 2</li>
+</ul>
+</li>
+<li>注意：k叉归并的最佳归并树一定是严格k叉树，即树中只有度为k、度为0的结点</li>
+<li>如何构造<ul>
+<li>补充虚段：（初始归并段数量 - 1）% (k - 1)<ul>
+<li>若能除尽，则不用补虚段</li>
+<li>若不能除尽，则补一些虚段让它能除尽</li>
+</ul>
+</li>
+<li>构造k叉哈夫曼树：每次选择k个根结点权值最小的树合并，并将k个根结点的权值之和作为新的根结点的权值</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-283.png" alt=""></p>
+<p>告一段落了~</p>
+<h3 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h3><ul>
+<li><p>【2013】已知三叉树 T 中 6 个叶结点的权分别是<code>2 3 4 5 6 7</code> ，T 的带权（外部）路径长度最小是多少–&gt;46</p>
+<blockquote>
+<p>m表示节点个数 k表示K叉树 </p>
+<p>若（m-1）%(k-1) = 0说明不需要虚段，否则需要（K-1）-（m-1）%(k-1)个虚段。 </p>
+<p>本题m=6,k=3。 则（6-1）%（3-1）=1 </p>
+<p>需要虚段 2 - 1 = 1添加的虚段可视为0。然后按照优先取最小的三个的原则，构造三叉树。</p>
+<img src="https://kailin-1312778500.cos.ap-nanjing.myqcloud.com/img/ds8-284.png" style="zoom: 67%;" />
+</blockquote>
+</li>
+<li><p>【2019】设外存上有 120 个初始归并段，进行 12 路归并时，为实现最佳归并，需要补充的虚段个数是多少–&gt;2</p>
+<blockquote>
+<p>设n0,n12,n补,分别为度为零，十二和要补充的结点，则有： </p>
+<p>n0=120+n补(根据哈夫曼树构成，度为零的结点全是初始提供的结点）； </p>
+<p>n0=12*(n12)-(n12)+1;（根据完全十二叉树构成）； </p>
+<p>即n12=（119+n补）/11，且n12为整数，则n补最小为2。</p>
+</blockquote>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tikxeis.fun">kailin2eis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tikxeis.fun/p/44803/">http://tikxeis.fun/p/44803/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tikxeis.fun" target="_blank">派总</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">408数据结构</a></div><div class="post_share"><div class="social-share" data-image="/img/1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/p/14847/"><img class="next-cover" src="/img/1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第八章 排序(三)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/24523/" title="第一章 绪论"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第一章 绪论</div></div></a></div><div><a href="/p/14457/" title="第二章 线性表(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(上)</div></div></a></div><div><a href="/p/12625/" title="第二章 线性表(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第二章 线性表(下)</div></div></a></div><div><a href="/p/63528/" title="第三章 栈、队列和数组(上)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-25</div><div class="title">第三章 栈、队列和数组(上)</div></div></a></div><div><a href="/p/17647/" title="第四章 串"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第四章 串</div></div></a></div><div><a href="/p/58315/" title="第三章 栈、队列和数组(下)"><img class="cover" src="/img/1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="title">第三章 栈、队列和数组(下)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kailin2eis</div><div class="author-info__description">派总's blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-7-%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-text">8.7 外部排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-text">外部排序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%96%E5%AD%98%E3%80%81%E5%86%85%E5%AD%98%E4%B9%8B%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="toc-text">外存、内存之间的数据交换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F%E5%8E%9F%E7%90%86"><span class="toc-text">外部排序原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%88%9D%E5%A7%8B%E2%80%9D%E5%BD%92%E5%B9%B6%E6%AE%B5%E2%80%9D"><span class="toc-text">构造初始”归并段”</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%B6%9F%E5%BD%92%E5%B9%B6"><span class="toc-text">第一趟归并</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%B6%9F%E5%BD%92%E5%B9%B6"><span class="toc-text">第二趟归并</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%B6%9F%E5%BD%92%E5%B9%B6"><span class="toc-text">第三趟归并</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%BC%80%E9%94%80%E5%88%86%E6%9E%90"><span class="toc-text">时间开销分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96-%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6"><span class="toc-text">优化:多路归并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%A0%E6%AD%A3-%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E5%BD%92%E5%B9%B6%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">纠正:多路平衡归并是什么</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A5%E8%80%85%E6%A0%91"><span class="toc-text">败者树</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B4%A5%E8%80%85%E6%A0%91"><span class="toc-text">什么是败者树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%A5%E8%80%85%E6%A0%91%E5%9C%A8%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E5%BD%92%E5%B9%B6%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">败者树在多路平衡归并中的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%A5%E8%80%85%E6%A0%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-text">败者树的实现思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%AE%E6%8D%A2-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">置换-选择排序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95%E5%88%B6%E9%80%A0%E5%88%9D%E5%A7%8B%E5%BD%92%E5%B9%B6%E6%AE%B5"><span class="toc-text">传统方法制造初始归并段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%AE%E6%8D%A2-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F-1"><span class="toc-text">置换-选择排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%BD%92%E5%B9%B6%E6%A0%91"><span class="toc-text">最佳归并树</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%A0%91%E7%9A%84%E7%A5%9E%E7%A7%98%E6%80%A7%E8%B4%A8"><span class="toc-text">归并树的神秘性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A02%E8%B7%AF%E5%BD%92%E5%B9%B6%E7%9A%84%E6%9C%80%E4%BD%B3%E5%BD%92%E5%B9%B6%E6%A0%91"><span class="toc-text">构造2路归并的最佳归并树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%B9%B6%E5%BD%92%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">多路并归的情况</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%89%E8%B7%AF%E5%BD%92%E5%B9%B6"><span class="toc-text">三路归并</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E5%87%8F%E5%B0%91%E4%B8%80%E4%B8%AA%E5%BD%92%E5%B9%B6%E6%AE%B5"><span class="toc-text">如果减少一个归并段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%81%9A%E6%B3%95"><span class="toc-text">正确的做法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-3"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/44803/" title="第八章 排序(四)">第八章 排序(四)</a><time datetime="2022-09-28T11:54:17.000Z" title="发表于 2022-09-28 19:54:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/14847/" title="第八章 排序(三)">第八章 排序(三)</a><time datetime="2022-09-28T11:52:50.000Z" title="发表于 2022-09-28 19:52:50">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/43357/" title="第八章 排序(二)">第八章 排序(二)</a><time datetime="2022-09-28T11:50:30.000Z" title="发表于 2022-09-28 19:50:30">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/27129/" title="第八章 排序(一)">第八章 排序(一)</a><time datetime="2022-09-28T11:47:17.000Z" title="发表于 2022-09-28 19:47:17">2022-09-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/p/15017/" title="第七章 查找(四)">第七章 查找(四)</a><time datetime="2022-09-28T11:33:21.000Z" title="发表于 2022-09-28 19:33:21">2022-09-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By kailin2eis</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="关关雎鸠,在河之洲,窈窕淑女,what' your qq" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
